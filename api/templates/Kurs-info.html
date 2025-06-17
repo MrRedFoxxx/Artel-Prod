@@ -870,6 +870,25 @@
     </div>
 
     <script>
+        // Глобальные функции для работы с видео
+        function openLocalVideoModal() {
+            const modal = document.getElementById('videoModal');
+            const video = modal.querySelector('video');
+            
+            // Сбрасываем видео на начало
+            if (video) {
+                video.currentTime = 0;
+                video.play();
+            }
+            
+            modal.style.display = 'block';
+        }
+        
+        function handleVideoError(videoElement) {
+            console.error('Ошибка загрузки видео:', videoElement.error);
+            alert('Не удалось загрузить видео. Пожалуйста, проверьте путь к файлу и права доступа.');
+        }
+
         // Анимация при загрузке страницы
         document.addEventListener('DOMContentLoaded', function() {
             // Показываем элементы с анимацией
@@ -937,43 +956,18 @@
                 observer.observe(el);
             });
 
-            // Функция для открытия модального окна с локальным видео
-            function openLocalVideoModal() {
-                const modal = document.getElementById('videoModal');
-                const modalContent = document.querySelector('.modal-content');
-                const closeBtn = document.querySelector('.close-modal');
-                
-                modalContent.innerHTML = `
-                    <span class="close-modal" id="closeModal">&times;</span>
-                    <div class="video-container">
-                        <video controls autoplay class="w-full h-full" onerror="handleVideoError(this)">
-                            <source src="/assets/Index/Showreel.mp4" type="video/mp4">
-                            Ваш браузер не поддерживает видео тег.
-                        </video>
-                    </div>
-                `;
-                
-                modal.style.display = 'block';
-                
-                // Закрытие модального окна
-                const newCloseBtn = document.getElementById('closeModal');
-                newCloseBtn.onclick = function() {
-                    modal.style.display = 'none';
-                    modalContent.innerHTML = '';
-                }
-                
-                // Закрытие при клике вне окна
-                window.onclick = function(event) {
-                    if (event.target == modal) {
-                        modal.style.display = 'none';
-                        modalContent.innerHTML = '';
-                    }
-                }
-            }
+            // Обработка модального окна видео
+            const videoModal = document.getElementById('videoModal');
+            const closeVideoModal = document.getElementById('closeModal');
             
-            function handleVideoError(videoElement) {
-                console.error('Ошибка загрузки видео:', videoElement.error);
-                alert('Не удалось загрузить видео. Пожалуйста, проверьте путь к файлу и права доступа.');
+            if (closeVideoModal) {
+                closeVideoModal.addEventListener('click', function() {
+                    videoModal.style.display = 'none';
+                    const video = videoModal.querySelector('video');
+                    if (video) {
+                        video.pause();
+                    }
+                });
             }
 
             // Обработка модальных окон входа и регистрации
@@ -1036,9 +1030,9 @@
                 const videoModal = document.getElementById('videoModal');
                 if (event.target == videoModal) {
                     videoModal.style.display = "none";
-                    const modalContent = videoModal.querySelector('.modal-content');
-                    if (modalContent) {
-                        modalContent.innerHTML = '';
+                    const video = videoModal.querySelector('video');
+                    if (video) {
+                        video.pause();
                     }
                 }
                 if (event.target == loginModal) {
