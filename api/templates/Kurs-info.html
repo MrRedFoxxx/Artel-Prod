@@ -104,6 +104,26 @@
             background-color: rgba(255, 255, 255, 0.1);
         }
         
+        .program-icon {
+            transition: transform 0.3s ease;
+        }
+        
+        .program-item.active .program-icon {
+            transform: rotate(45deg);
+        }
+        
+        .program-content {
+            transition: all 0.3s ease;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+        }
+        
+        .program-content.show {
+            max-height: 1000px;
+            opacity: 1;
+        }
+        
         .dropdown {
             position: relative;
             display: inline-block;
@@ -445,7 +465,7 @@
                         </p>
                     </div>
                     
-                    <div class="flex items-center cursor-pointer" id="showVideoBtn">
+                    <div class="flex items-center cursor-pointer" onclick="openLocalVideoModal()">
                         <div class="bg-white text-black rounded-full w-12 h-12 flex items-center justify-center hover-scale">
                             <i class="fas fa-play text-xl"></i>
                         </div>
@@ -589,42 +609,155 @@
                     <h2 class="text-8xl gothic-font font-normal mb-12">Программа</h2>
                     
                     <div class="border-t border-white pt-8">
-                        <div class="program-item py-4 px-4 rounded-lg transition-all duration-300">
+                        <div class="program-item py-4 px-4 rounded-lg transition-all duration-300 cursor-pointer" data-program="preprod">
                             <div class="flex justify-between items-center">
                                 <p class="text-2xl font-medium">Препродакшн. Анализ контента и поиск идей</p>
-                                <i class="fas fa-plus text-3xl"></i>
+                                <i class="fas fa-plus text-3xl program-icon"></i>
                             </div>
-                            <div class="border-t border-white mt-4"></div>
+                            <div class="program-content mt-6 pt-4 border-t border-white">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <h4 class="text-xl font-bold mb-3">Что изучаем:</h4>
+                                        <ul class="space-y-2 text-lg">
+                                            <li>• Анализ целевой аудитории</li>
+                                            <li>• Исследование конкурентов</li>
+                                            <li>• Создание концепции проекта</li>
+                                            <li>• Разработка сценария</li>
+                                            <li>• Планирование съемок</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xl font-bold mb-3">Практические задания:</h4>
+                                        <ul class="space-y-2 text-lg">
+                                            <li>• Создание брифа проекта</li>
+                                            <li>• Написание сценария</li>
+                                            <li>• Составление раскадровки</li>
+                                            <li>• Планирование локаций</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         
-                        <div class="program-item py-4 px-4 rounded-lg transition-all duration-300">
+                        <div class="program-item py-4 px-4 rounded-lg transition-all duration-300 cursor-pointer" data-program="camera">
                             <div class="flex justify-between items-center">
                                 <p class="text-2xl font-medium">Виды камер и объективов. Настройка</p>
-                                <i class="fas fa-plus text-3xl"></i>
+                                <i class="fas fa-plus text-3xl program-icon"></i>
                             </div>
-                            <div class="border-t border-white mt-4"></div>
+                            <div class="program-content mt-6 pt-4 border-t border-white">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <h4 class="text-xl font-bold mb-3">Теория:</h4>
+                                        <ul class="space-y-2 text-lg">
+                                            <li>• Типы камер (DSLR, Mirrorless, Cinema)</li>
+                                            <li>• Виды объективов и их применение</li>
+                                            <li>• Настройки ISO, выдержки, диафрагмы</li>
+                                            <li>• Фокусное расстояние и его влияние</li>
+                                            <li>• Баланс белого и цветовые профили</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xl font-bold mb-3">Практика:</h4>
+                                        <ul class="space-y-2 text-lg">
+                                            <li>• Настройка камеры для разных условий</li>
+                                            <li>• Выбор объектива под задачу</li>
+                                            <li>• Съемка в ручном режиме</li>
+                                            <li>• Работа с экспозицией</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         
-                        <div class="program-item py-4 px-4 rounded-lg transition-all duration-300">
+                        <div class="program-item py-4 px-4 rounded-lg transition-all duration-300 cursor-pointer" data-program="lighting">
                             <div class="flex justify-between items-center">
                                 <p class="text-2xl font-medium">Свет для видео и фото. Световые схемы</p>
-                                <i class="fas fa-plus text-3xl"></i>
+                                <i class="fas fa-plus text-3xl program-icon"></i>
                             </div>
-                            <div class="border-t border-white mt-4"></div>
+                            <div class="program-content mt-6 pt-4 border-t border-white">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <h4 class="text-xl font-bold mb-3">Оборудование:</h4>
+                                        <ul class="space-y-2 text-lg">
+                                            <li>• Виды источников света</li>
+                                            <li>• Модификаторы света</li>
+                                            <li>• Отражатели и рассеиватели</li>
+                                            <li>• Стойки и крепления</li>
+                                            <li>• Цветовые фильтры</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xl font-bold mb-3">Схемы освещения:</h4>
+                                        <ul class="space-y-2 text-lg">
+                                            <li>• Трехточечное освещение</li>
+                                            <li>• Рембрандтовский свет</li>
+                                            <li>• Бабочка и петля</li>
+                                            <li>• Освещение для интервью</li>
+                                            <li>• Съемка на улице</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         
-                        <div class="program-item py-4 px-4 rounded-lg transition-all duration-300">
+                        <div class="program-item py-4 px-4 rounded-lg transition-all duration-300 cursor-pointer" data-program="production">
                             <div class="flex justify-between items-center">
-                                <p class="text-2xl font-medium">Работа на площадке. Взаимодействие с командой на площадке</p>
-                                <i class="fas fa-plus text-3xl"></i>
+                                <p class="text-2xl font-medium">Работа на площадке. Взаимодействие с командой</p>
+                                <i class="fas fa-plus text-3xl program-icon"></i>
                             </div>
-                            <div class="border-t border-white mt-4"></div>
+                            <div class="program-content mt-6 pt-4 border-t border-white">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <h4 class="text-xl font-bold mb-3">Команда:</h4>
+                                        <ul class="space-y-2 text-lg">
+                                            <li>• Роли в съемочной группе</li>
+                                            <li>• Оператор и его задачи</li>
+                                            <li>• Ассистент оператора</li>
+                                            <li>• Гример и стилист</li>
+                                            <li>• Звукооператор</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xl font-bold mb-3">Организация:</h4>
+                                        <ul class="space-y-2 text-lg">
+                                            <li>• Планирование съемочного дня</li>
+                                            <li>• Работа с актерами/моделями</li>
+                                            <li>• Решение проблем на площадке</li>
+                                            <li>• Эффективная коммуникация</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         
-                        <div class="program-item py-4 px-4 rounded-lg transition-all duration-300">
+                        <div class="program-item py-4 px-4 rounded-lg transition-all duration-300 cursor-pointer" data-program="postprod">
                             <div class="flex justify-between items-center">
                                 <p class="text-2xl font-medium">Постпродакшн. Обработка материала</p>
-                                <i class="fas fa-plus text-3xl"></i>
+                                <i class="fas fa-plus text-3xl program-icon"></i>
+                            </div>
+                            <div class="program-content mt-6 pt-4 border-t border-white">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <h4 class="text-xl font-bold mb-3">Видеомонтаж:</h4>
+                                        <ul class="space-y-2 text-lg">
+                                            <li>• Adobe Premiere Pro основы</li>
+                                            <li>• Организация проекта</li>
+                                            <li>• Монтажные переходы</li>
+                                            <li>• Работа со звуком</li>
+                                            <li>• Экспорт проекта</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xl font-bold mb-3">Обработка фото:</h4>
+                                        <ul class="space-y-2 text-lg">
+                                            <li>• Adobe Lightroom</li>
+                                            <li>• Цветокоррекция</li>
+                                            <li>• Ретушь портретов</li>
+                                            <li>• Стилизация изображений</li>
+                                            <li>• Подготовка к печати</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -693,7 +826,10 @@
         <div class="modal-content">
             <span class="close-modal" id="closeModal">&times;</span>
             <div class="video-container">
-                <iframe id="youtubeVideo" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <video id="modalVideo" controls autoplay muted class="w-full h-full" onerror="handleVideoError(this)">
+                    <source src="/assets/Index/Showreel.mp4" type="video/mp4">
+                    Ваш браузер не поддерживает видео тег.
+                </video>
             </div>
         </div>
     </div>
@@ -742,15 +878,46 @@
                 el.style.opacity = '1';
             });
             
-            // Анимация при наведении на элементы программы
+            // Обработка разворачивания вкладок программы
             const programItems = document.querySelectorAll('.program-item');
             programItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const content = this.querySelector('.program-content');
+                    const icon = this.querySelector('.program-icon');
+                    
+                    // Закрываем все остальные вкладки
+                    programItems.forEach(otherItem => {
+                        if (otherItem !== this) {
+                            otherItem.classList.remove('active');
+                            const otherContent = otherItem.querySelector('.program-content');
+                            otherContent.classList.remove('show');
+                            const otherIcon = otherItem.querySelector('.program-icon');
+                            otherIcon.style.transform = 'rotate(0deg)';
+                        }
+                    });
+                    
+                    // Переключаем текущую вкладку
+                    this.classList.toggle('active');
+                    content.classList.toggle('show');
+                    
+                    if (this.classList.contains('active')) {
+                        icon.style.transform = 'rotate(45deg)';
+                    } else {
+                        icon.style.transform = 'rotate(0deg)';
+                    }
+                });
+                
+                // Анимация при наведении (только если вкладка не активна)
                 item.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateX(10px)';
+                    if (!this.classList.contains('active')) {
+                        this.style.transform = 'translateX(10px)';
+                    }
                 });
                 
                 item.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateX(0)';
+                    if (!this.classList.contains('active')) {
+                        this.style.transform = 'translateX(0)';
+                    }
                 });
             });
             
@@ -770,24 +937,44 @@
                 observer.observe(el);
             });
 
-            // Обработка клика на кнопку "Смотреть шоурилл"
-            const showVideoBtn = document.getElementById('showVideoBtn');
-            const videoModal = document.getElementById('videoModal');
-            const closeModal = document.getElementById('closeModal');
-            const youtubeVideo = document.getElementById('youtubeVideo');
-
-            showVideoBtn.addEventListener('click', function() {
-                // Вставьте ID вашего YouTube видео вместо 'YOUR_VIDEO_ID'
-                youtubeVideo.src = "https://www.youtube.com/embed/YOUR_VIDEO_ID?autoplay=1";
-                videoModal.style.display = "flex";
-                document.body.style.overflow = "hidden";
-            });
-
-            closeModal.addEventListener('click', function() {
-                youtubeVideo.src = "";
-                videoModal.style.display = "none";
-                document.body.style.overflow = "auto";
-            });
+            // Функция для открытия модального окна с локальным видео
+            function openLocalVideoModal() {
+                const modal = document.getElementById('videoModal');
+                const modalContent = document.querySelector('.modal-content');
+                const closeBtn = document.querySelector('.close-modal');
+                
+                modalContent.innerHTML = `
+                    <span class="close-modal" id="closeModal">&times;</span>
+                    <div class="video-container">
+                        <video controls autoplay class="w-full h-full" onerror="handleVideoError(this)">
+                            <source src="/assets/Index/Showreel.mp4" type="video/mp4">
+                            Ваш браузер не поддерживает видео тег.
+                        </video>
+                    </div>
+                `;
+                
+                modal.style.display = 'block';
+                
+                // Закрытие модального окна
+                const newCloseBtn = document.getElementById('closeModal');
+                newCloseBtn.onclick = function() {
+                    modal.style.display = 'none';
+                    modalContent.innerHTML = '';
+                }
+                
+                // Закрытие при клике вне окна
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = 'none';
+                        modalContent.innerHTML = '';
+                    }
+                }
+            }
+            
+            function handleVideoError(videoElement) {
+                console.error('Ошибка загрузки видео:', videoElement.error);
+                alert('Не удалось загрузить видео. Пожалуйста, проверьте путь к файлу и права доступа.');
+            }
 
             // Обработка модальных окон входа и регистрации
             const loginBtn = document.getElementById('loginBtn');
@@ -846,10 +1033,13 @@
 
             // Закрытие модальных окон при клике вне их
             window.addEventListener('click', function(event) {
+                const videoModal = document.getElementById('videoModal');
                 if (event.target == videoModal) {
-                    youtubeVideo.src = "";
                     videoModal.style.display = "none";
-                    document.body.style.overflow = "auto";
+                    const modalContent = videoModal.querySelector('.modal-content');
+                    if (modalContent) {
+                        modalContent.innerHTML = '';
+                    }
                 }
                 if (event.target == loginModal) {
                     closeLoginModalFunc();
