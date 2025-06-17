@@ -25,9 +25,9 @@ app = FastAPI()
 # Настройка CORS с более строгими параметрами
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8000", "http://127.0.0.1:8000"],
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_methods=["*"],
     allow_headers=["*"],
     max_age=3600,
 )
@@ -45,7 +45,7 @@ async def catch_exceptions_middleware(request: Request, call_next):
         )
 
 # Настройки JWT
-SECRET_KEY = "ваш_очень_секретный_ключ_из_32_символов"
+SECRET_KEY = "5f4dcc3b5aa765d61d8327deb882cf99b0b1a6d8a1e2b3c4d5e6f7a8b9c0d1e2"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
@@ -520,4 +520,4 @@ app.mount("/", StaticFiles(directory="templates", html=True), name="static")
 # Запуск сервера
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
