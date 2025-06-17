@@ -381,39 +381,77 @@
 <body class="bg-black text-white font-['Inter'] max-w-[1400px] mx-auto relative overflow-x-hidden">
     
     <!-- Header -->
-        <header class="flex justify-between items-center px-4 md:px-12 lg:px-24 bg-black shadow-lg relative z-50">
-            <a href="/index.html"><img src="assets/Logo.png" alt="Логотип" class="w-48 h-28 object-cover hover-scale"></a>
-            
-            <nav class="hidden md:flex gap-8">
-                <div class="dropdown">
-                    <button class="font-bold text-lg hover:text-gray-300 transition focus:outline-none">ПОРТФОЛИО</button>
-                    <div class="dropdown-content">
-                        <a href="/Portfolio-video.html" class="font-bold text-lg hover:text-gray-300 transition text-center">ВИДЕО</a>
-                        <a href="/Portfolio-photo.html" class="font-bold text-lg hover:text-gray-300 transition text-center">ФОТО</a>
-                    </div>
+    <header class="flex justify-between items-center px-4 md:px-12 lg:px-24 bg-black shadow-lg relative z-50">
+        <a href="/index.html"><img src="assets/Logo.png" alt="Логотип" class="w-48 h-28 object-cover hover-scale"></a>
+        
+        <nav class="hidden md:flex gap-8">
+            <div class="dropdown">
+                <button class="font-bold text-lg hover:text-gray-300 transition focus:outline-none">ПОРТФОЛИО</button>
+                <div class="dropdown-content">
+                    <a href="/Portfolio-video.html" class="font-bold text-lg hover:text-gray-300 transition text-center">ВИДЕО</a>
+                    <a href="/Portfolio-photo.html" class="font-bold text-lg hover:text-gray-300 transition text-center">ФОТО</a>
                 </div>
-                <a href="/Uslugi.html" class="font-bold text-lg hover:text-gray-300 transition">УСЛУГИ</a>
-                <span class="font-bold text-lg text-gray-300">БЛОГ</span>
-                <a href="/Kurs-info.html" class="font-bold text-lg hover:text-gray-300 transition">КУРС</a>
-                
-            </nav>
+            </div>
+            <a href="/Uslugi.html" class="font-bold text-lg hover:text-gray-300 transition">УСЛУГИ</a>
+            <span class="font-bold text-lg text-gray-300">БЛОГ</span>
+            <a href="/Kurs-info.html" class="font-bold text-lg hover:text-gray-300 transition">КУРС</a>
             
-            <div class="hidden md:flex items-center">
-                <span class="font-normal text-xl">+7 980 678 20 93</span>
-                <div class="flex ml-7 gap-4">
+        </nav>
+        
+        <div class="hidden md:flex items-center">
+            <span class="font-normal text-xl">+7 980 678 20 93</span>
+            <div class="flex ml-7 gap-4">
+                <a href="https://t.me/zarokmanager" class="text-white hover:text-blue-400 transition">
+                    <i class="fab fa-telegram text-5xl"></i>
+                </a>
+                <a href="https://wa.me/79806782093?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%F0%9F%91%8B%20%D0%AF%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7..." class="text-white hover:text-green-400 transition">
+                    <i class="fab fa-whatsapp text-5xl"></i>
+                </a>
+            </div>
+        </div>
+        
+        <button class="md:hidden text-white">
+            <i class="fas fa-bars text-3xl"></i>
+        </button>
+    </header>
+    
+    <!-- Мобильное меню -->
+    <div id="mobileMenu" class="fixed top-0 left-0 w-full h-full bg-black z-50 transform translate-x-full transition-transform duration-300 ease-in-out">
+        <div class="flex justify-between items-center p-4 border-b border-white">
+            <a href="/index.html"><img src="assets/Logo.png" alt="Логотип" class="w-32 h-20 object-cover"></a>
+            <button id="closeMobileMenu" class="text-white text-3xl">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <nav class="flex flex-col p-8 space-y-6">
+            <div class="border-b border-white pb-4">
+                <button class="text-white text-2xl font-bold w-full text-left flex justify-between items-center">
+                    ПОРТФОЛИО
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="mt-4 space-y-2 hidden" id="portfolioSubmenu">
+                    <a href="/Portfolio-video.html" class="block text-xl text-gray-300 hover:text-white transition">ВИДЕО</a>
+                    <a href="/Portfolio-photo.html" class="block text-xl text-gray-300 hover:text-white transition">ФОТО</a>
+                </div>
+            </div>
+            <a href="/Uslugi.html" class="text-white text-2xl font-bold hover:text-gray-300 transition">УСЛУГИ</a>
+            <span class="text-white text-2xl font-bold text-gray-300">БЛОГ</span>
+            <a href="/Kurs-info.html" class="text-white text-2xl font-bold hover:text-gray-300 transition">КУРС</a>
+            <div class="border-t border-white pt-4">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xl">+7 980 678 20 93</span>
+                </div>
+                <div class="flex gap-4">
                     <a href="https://t.me/zarokmanager" class="text-white hover:text-blue-400 transition">
-                        <i class="fab fa-telegram text-5xl"></i>
+                        <i class="fab fa-telegram text-4xl"></i>
                     </a>
                     <a href="https://wa.me/79806782093?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%F0%9F%91%8B%20%D0%AF%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7..." class="text-white hover:text-green-400 transition">
-                        <i class="fab fa-whatsapp text-5xl"></i>
+                        <i class="fab fa-whatsapp text-4xl"></i>
                     </a>
                 </div>
             </div>
-            
-            <button class="md:hidden text-white">
-                <i class="fas fa-bars text-3xl"></i>
-            </button>
-        </header>
+        </nav>
+    </div>
     
     <!-- Main Content -->
     <main class="px-4 md:px-8 lg:px-12 py-12 animate-fade-in delay-300">
@@ -525,51 +563,51 @@
     </main>
     
     <!-- Футер -->
-        <footer class="py-16 px-4 md:px-12 lg:px-24 animate-fade-in animate-delay-3">    
-                <div class="flex flex-col md:flex-row">
-                    <div class="md:w-2/5 mb-12 md:mb-0">
-                        <h3 class="font-bold text-lg mb-4">О нас</h3>
-                        <p class="text-lg">
-                            Artel production – фото и видео<br>продакшн полного цикла.<br>Работаем в Москве, Санкт-<br>Петербурге и по всему миру.
-                        </p>
+    <footer class="py-16 px-4 md:px-12 lg:px-24 animate-fade-in animate-delay-3">    
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-2/5 mb-12 md:mb-0">
+                    <h3 class="font-bold text-lg mb-4">О нас</h3>
+                    <p class="text-lg">
+                        Artel production – фото и видео<br>продакшн полного цикла.<br>Работаем в Москве, Санкт-<br>Петербурге и по всему миру.
+                    </p>
+                </div>
+                
+                <div class="md:w-2/5 mb-12 md:mb-0 md:px-8">
+                    <h3 class="font-bold text-lg mb-4">Быстрые ссылки</h3>
+                    <div class="flex flex-col gap-2">
+                        <a href="/index.html" class="text-lg hover:text-gray-300 transition">Главная</a>
+                        <a href="#" class="text-lg hover:text-gray-300 transition" onclick="openPrivacyPopup()">Политика конфиденциальности</a>
+                        <a href="/Portfolio-video.html" class="text-lg hover:text-gray-300 transition">Видео работы</a>
+                        <a href="/Portfolio-photo.html" class="text-lg hover:text-gray-300 transition">Фото работы</a>
+                        <a href="/Uslugi.html" class="text-lg hover:text-gray-300 transition">Услуги</a>
+                        <a href="/Blog-news.html" class="text-lg hover:text-gray-300 transition">Блог</a>
+                        <a href="/Kurs-info.html" class="text-lg hover:text-gray-300 transition">Курс</a>
                     </div>
-                    
-                    <div class="md:w-2/5 mb-12 md:mb-0 md:px-8">
-                        <h3 class="font-bold text-lg mb-4">Быстрые ссылки</h3>
-                        <div class="flex flex-col gap-2">
-                            <a href="/index.html" class="text-lg hover:text-gray-300 transition">Главная</a>
-                            <a href="#" class="text-lg hover:text-gray-300 transition" onclick="openPrivacyPopup()">Политика конфиденциальности</a>
-                            <a href="/Portfolio-video.html" class="text-lg hover:text-gray-300 transition">Видео работы</a>
-                            <a href="/Portfolio-photo.html" class="text-lg hover:text-gray-300 transition">Фото работы</a>
-                            <a href="/Uslugi.html" class="text-lg hover:text-gray-300 transition">Услуги</a>
-                            <a href="/Blog-news.html" class="text-lg hover:text-gray-300 transition">Блог</a>
-                            <a href="/Kurs-info.html" class="text-lg hover:text-gray-300 transition">Курс</a>
+                </div>
+                
+                <div class="md:w-1/5">
+                    <h3 class="font-bold text-lg mb-4">Контакты</h3>
+                    <div class="mb-6">
+                        <div class="flex items-center">
+                            <i class="fas fa-envelope mr-2"></i>
+                            <span class="text-lg">info@artel.ru</span>
                         </div>
                     </div>
-                    
-                    <div class="md:w-1/5">
-                        <h3 class="font-bold text-lg mb-4">Контакты</h3>
-                        <div class="mb-6">
-                            <div class="flex items-center">
-                                <i class="fas fa-envelope mr-2"></i>
-                                <span class="text-lg">info@artel.ru</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <a href="https://t.me/pagezarok" class="text-white hover:text-blue-400 transition">
-                                <i class="fab fa-telegram text-2xl"></i>
-                            </a>
-                            <a href="https://wa.me/79806782093?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%F0%9F%91%8B%20%D0%AF%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7..." class="text-white hover:text-green-400 transition">
-                                <i class="fab fa-whatsapp text-2xl"></i>
-                            </a>
-                            <a href="https://vk.com/zarok485prod" class="text-white hover:text-green-400 transition">
-                                <i class="fab fa-vk text-2xl"></i>
-                            </a>
-                        </div>
+                    <div class="flex items-center gap-4">
+                        <a href="https://t.me/pagezarok" class="text-white hover:text-blue-400 transition">
+                            <i class="fab fa-telegram text-2xl"></i>
+                        </a>
+                        <a href="https://wa.me/79806782093?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%F0%9F%91%8B%20%D0%AF%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7..." class="text-white hover:text-green-400 transition">
+                            <i class="fab fa-whatsapp text-2xl"></i>
+                        </a>
+                        <a href="https://vk.com/zarok485prod" class="text-white hover:text-green-400 transition">
+                            <i class="fab fa-vk text-2xl"></i>
+                        </a>
                     </div>
                 </div>
             </div>
-        </footer>
+        </div>
+    </footer>
     
     <!-- Modal Windows -->
     <!-- Modal 1 -->
@@ -956,6 +994,44 @@
             
             const animatedElements = document.querySelectorAll('.animate-on-scroll');
             animatedElements.forEach(el => observer.observe(el));
+        });
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Мобильное меню
+            const mobileMenuButton = document.querySelector('button.md\\:hidden');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const closeMobileMenu = document.getElementById('closeMobileMenu');
+            const portfolioButton = document.querySelector('#mobileMenu button');
+            const portfolioSubmenu = document.getElementById('portfolioSubmenu');
+            
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.remove('translate-x-full');
+                });
+            }
+            
+            if (closeMobileMenu) {
+                closeMobileMenu.addEventListener('click', function() {
+                    mobileMenu.classList.add('translate-x-full');
+                });
+            }
+            
+            if (portfolioButton) {
+                portfolioButton.addEventListener('click', function() {
+                    const icon = this.querySelector('i');
+                    portfolioSubmenu.classList.toggle('hidden');
+                    icon.classList.toggle('fa-chevron-down');
+                    icon.classList.toggle('fa-chevron-up');
+                });
+            }
+            
+            // Закрытие мобильного меню при клике вне его
+            document.addEventListener('click', function(event) {
+                if (mobileMenu && !mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
+                    mobileMenu.classList.add('translate-x-full');
+                }
+            });
         });
     </script>
 </body>

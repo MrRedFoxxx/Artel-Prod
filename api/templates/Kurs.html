@@ -303,7 +303,30 @@
                     <i class="fas fa-user text-white text-2xl"></i>
                 </div>
             </div>
+            <button class="md:hidden text-white">
+                <i class="fas fa-bars text-3xl"></i>
+            </button>
         </header>
+
+        <!-- Мобильное меню -->
+        <div id="mobileMenu" class="fixed top-0 left-0 w-full h-full bg-black z-50 transform translate-x-full transition-transform duration-300 ease-in-out">
+            <div class="flex justify-between items-center p-4 border-b border-white">
+                <a href="/index.html"><img src="assets/Logo.png" alt="Логотип" class="w-32 h-20 object-cover"></a>
+                <button id="closeMobileMenu" class="text-white text-3xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="flex flex-col p-8 space-y-6">
+                <a href="/index.html" class="text-white text-2xl font-bold hover:text-gray-300 transition">ГЛАВНАЯ</a>
+                <a href="#" class="text-white text-2xl font-bold hover:text-gray-300 transition">ПОМОЩЬ</a>
+                <div class="border-t border-white pt-4">
+                    <div class="flex items-center justify-between mb-4">
+                        <span id="mobileUserName" class="text-xl">Загрузка...</span>
+                    </div>
+                    <button onclick="logout()" class="text-white text-lg hover:text-gray-300 transition">Выйти</button>
+                </div>
+            </nav>
+        </div>
 
         <!-- Main Content -->
         <main class="container mx-auto px-12 py-16">
@@ -1655,6 +1678,30 @@
             document.addEventListener('DOMContentLoaded', async () => {
                 await loadUserData();
                 await loadUserProgress();
+            });
+            
+            // Мобильное меню
+            const mobileMenuButton = document.querySelector('button.md\\:hidden');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const closeMobileMenu = document.getElementById('closeMobileMenu');
+            
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.remove('translate-x-full');
+                });
+            }
+            
+            if (closeMobileMenu) {
+                closeMobileMenu.addEventListener('click', function() {
+                    mobileMenu.classList.add('translate-x-full');
+                });
+            }
+            
+            // Закрытие мобильного меню при клике вне его
+            document.addEventListener('click', function(event) {
+                if (mobileMenu && !mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
+                    mobileMenu.classList.add('translate-x-full');
+                }
             });
         </script>
     </div>

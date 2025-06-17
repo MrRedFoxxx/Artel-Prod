@@ -547,6 +547,44 @@
                 <i class="fas fa-bars text-3xl"></i>
             </button>
         </header>
+        
+        <!-- Мобильное меню -->
+        <div id="mobileMenu" class="fixed top-0 left-0 w-full h-full bg-black z-50 transform translate-x-full transition-transform duration-300 ease-in-out">
+            <div class="flex justify-between items-center p-4 border-b border-white">
+                <a href="/index.html"><img src="assets/Logo.png" alt="Логотип" class="w-32 h-20 object-cover"></a>
+                <button id="closeMobileMenu" class="text-white text-3xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="flex flex-col p-8 space-y-6">
+                <div class="border-b border-white pb-4">
+                    <button class="text-white text-2xl font-bold w-full text-left flex justify-between items-center">
+                        ПОРТФОЛИО
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="mt-4 space-y-2 hidden" id="portfolioSubmenu">
+                        <a href="/Portfolio-video.html" class="block text-xl text-gray-300 hover:text-white transition">ВИДЕО</a>
+                        <span class="block text-xl text-white">ФОТО</span>
+                    </div>
+                </div>
+                <a href="/Uslugi.html" class="text-white text-2xl font-bold hover:text-gray-300 transition">УСЛУГИ</a>
+                <a href="/Blog-news.html" class="text-white text-2xl font-bold hover:text-gray-300 transition">БЛОГ</a>
+                <a href="/Kurs-info.html" class="text-white text-2xl font-bold hover:text-gray-300 transition">КУРС</a>
+                <div class="border-t border-white pt-4">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xl">+7 980 678 20 93</span>
+                    </div>
+                    <div class="flex gap-4">
+                        <a href="https://t.me/zarokmanager" class="text-white hover:text-blue-400 transition">
+                            <i class="fab fa-telegram text-4xl"></i>
+                        </a>
+                        <a href="https://wa.me/79806782093?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%F0%9F%91%8B%20%D0%AF%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7..." class="text-white hover:text-green-400 transition">
+                            <i class="fab fa-whatsapp text-4xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
 
         <!-- Main Content -->
         <main class="w-full px-4 lg:px-32 xl:px-48 py-12 animate__animated animate__fadeIn animate__delay-1s">
@@ -1262,6 +1300,41 @@
                         currentProject = null;
                     }, 300);
                 }
+
+                // Инициализация при загрузке страницы
+                const mobileMenuButton = document.querySelector('button.md\\:hidden');
+                const mobileMenu = document.getElementById('mobileMenu');
+                const closeMobileMenu = document.getElementById('closeMobileMenu');
+                const portfolioButton = document.querySelector('#mobileMenu button');
+                const portfolioSubmenu = document.getElementById('portfolioSubmenu');
+                
+                if (mobileMenuButton) {
+                    mobileMenuButton.addEventListener('click', function() {
+                        mobileMenu.classList.remove('translate-x-full');
+                    });
+                }
+                
+                if (closeMobileMenu) {
+                    closeMobileMenu.addEventListener('click', function() {
+                        mobileMenu.classList.add('translate-x-full');
+                    });
+                }
+                
+                if (portfolioButton) {
+                    portfolioButton.addEventListener('click', function() {
+                        const icon = this.querySelector('i');
+                        portfolioSubmenu.classList.toggle('hidden');
+                        icon.classList.toggle('fa-chevron-down');
+                        icon.classList.toggle('fa-chevron-up');
+                    });
+                }
+                
+                // Закрытие мобильного меню при клике вне его
+                document.addEventListener('click', function(event) {
+                    if (mobileMenu && !mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
+                        mobileMenu.classList.add('translate-x-full');
+                    }
+                });
             });
         </script>
     </div>
