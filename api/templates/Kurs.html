@@ -1196,7 +1196,7 @@
                 }
 
                 try {
-                    const response = await fetch('http://localhost:8000/users/me/', {
+                    const response = await fetch('http://89.169.4.94:8000/users/me/', {
                         headers: {
                             'Authorization': `Bearer ${token}`
                         }
@@ -1219,7 +1219,7 @@
                 if (!token) return;
 
                 try {
-                    const response = await fetch('http://localhost:8000/progress/', {
+                    const response = await fetch('http://89.169.4.94:8000/progress/', {
                         headers: {
                             'Authorization': `Bearer ${token}`
                         }
@@ -1454,7 +1454,7 @@
                 
                 // Отправляем прогресс на сервер
                 try {
-                    const response = await fetch('http://localhost:8000/progress/', {
+                    const response = await fetch('http://89.169.4.94:8000/progress/', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -1621,7 +1621,7 @@
                     const lessonNumber = parseInt(answer.lessonId.replace(/[^0-9]/g, ''));
                     
                     try {
-                        const response = await fetch('http://localhost:8000/progress/', {
+                        const response = await fetch('http://89.169.4.94:8000/progress/', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
