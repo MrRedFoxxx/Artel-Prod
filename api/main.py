@@ -13,6 +13,7 @@ import models
 from database import engine, SessionLocal, get_db
 import logging
 import re
+import os
 from sqlalchemy import func
 
 # Настройка логирования
@@ -21,6 +22,9 @@ logger = logging.getLogger(__name__)
 
 # Инициализация FastAPI
 app = FastAPI()
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 
 # Настройка CORS с более строгими параметрами
 app.add_middleware(
