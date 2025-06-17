@@ -520,7 +520,7 @@ async def get_videos():
     finally:
         db.close()
 
-app.mount("/", StaticFiles(directory="templates", html=True), name="static")
+app.mount("/", StaticFiles(directory=TEMPLATES_DIR, html=True), name="static")
 # Запуск сервера
 if __name__ == "__main__":
     import uvicorn
