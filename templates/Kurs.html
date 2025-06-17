@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artel Prod. - Курс</title>
+    <link rel="icon" href="/assets/Icon.png" type="image/png">
+    <script src="https://cdn.tailwindcss.com">
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!localStorage.getItem('access_token')) {
+                alert('Пожалуйста, войдите в систему');
+                window.location.href = 'Kurs-info.html';
+            }
+        });
+    </script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
+    <!-- Добавляем Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+        @font-face {
+        font-family: 'Alternate-Gothic-No1';
+        src: 
+        url('assets/Fonts/alternategothicno1.woff') format('woff');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap; /* Чтобы текст не "прыгал" при загрузке */
+        }
+
+        .inter {
+        font-family: "Inter", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+        }
+        
+        body {
+        font-family: 'Inter', sans-serif;
+        font-weight: 400;
+        background-color: #000;
+        color: white;
+        overflow-x: hidden;
+        }
+
+        .main {
+            max-width: 1400px;
+            margin: auto;
+        }
+
+        .gothic-font {
+            font-family: 'Alternate-Gothic-No1', sans-serif;
+        }
+
+        .lesson-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .lesson-card:hover {
+            transform: translateY(-5px);
+        }
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+        .status-completed {
+            background-color: #10B981;
+        }
+        .status-not-completed {
+            background-color: #EF4444;
+        }
+        .status-unavailable {
+            background-color: #6B7280;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        .modal-content {
+            background-color: #111;
+            margin: 5% auto;
+            padding: 30px;
+            width: 80%;
+            max-width: 900px;
+            border-radius: 10px;
+            position: relative;
+        }
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+        }
+        .test-question {
+            margin-bottom: 20px;
+        }
+        .test-option {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #222;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border: 1px solid transparent;
+        }
+        .test-option:hover {
+            background-color: #333;
+        }
+        .test-option.selected {
+            border-color: #3B82F6;
+            background-color: #1E40AF;
+        }
+        .test-option.correct {
+            background-color: #10B981;
+            border-color: #047857;
+        }
+        .test-option.incorrect {
+            background-color: #EF4444;
+            border-color: #B91C1C;
+        }
+        #test-container, #test-result {
+            display: none;
+        }
+        .progress-bar {
+            height: 6px;
+            background-color: #333;
+            margin-bottom: 20px;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: #3B82F6;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        /* Popup styles */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .popup-container {
+            background-color: #1F2937;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            animation: popupFadeIn 0.3s ease-out;
+        }
+        @keyframes popupFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .popup-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: white;
+        }
+        .popup-message {
+            margin-bottom: 20px;
+            color: #E5E7EB;
+        }
+        .popup-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        .popup-button {
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .popup-button-primary {
+            background-color: #3B82F6;
+            color: white;
+        }
+        .popup-button-primary:hover {
+            background-color: #2563EB;
+        }
+        .popup-button-secondary {
+            background-color: #374151;
+            color: white;
+        }
+        .popup-button-secondary:hover {
+            background-color: #4B5563;
+        }
+        /* Иконки для уроков */
+        .lesson-icon {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 10px;
+        }
+        .lesson-icon-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+        /* Стили для изображений уроков */
+        .lesson-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .lesson-image-container {
+            width: 192px;
+            height: 128px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+        .grayscale {
+            filter: grayscale(100%);
+            opacity: 0.7;
+        }
+        .play-icon-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 2.5rem;
+            z-index: 2;
+        }
+        /* Добавляем стили для попапа предварительного теста */
+        #preTestPopup .popup-container {
+            max-width: 800px;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #preTestPopup .popup-message {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 10px;
+            margin-bottom: 20px;
+        }
+
+        #preTestPopup .popup-message::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #preTestPopup .popup-message::-webkit-scrollbar-track {
+            background: #374151;
+            border-radius: 4px;
+        }
+
+        #preTestPopup .popup-message::-webkit-scrollbar-thumb {
+            background: #4B5563;
+            border-radius: 4px;
+        }
+
+        #preTestPopup .popup-message::-webkit-scrollbar-thumb:hover {
+            background: #6B7280;
+        }
+
+        #preTestPopup .popup-buttons {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid #374151;
+        }
+    </style>
+</head>
+<div class="main">
+    <body class="min-h-screen">
+        <!-- Header -->
+        <header class="flex justify-between items-center px-4 md:px-12 lg:px-24 bg-black shadow-lg relative z-50">
+            <a href="/index.html"><img src="assets/Logo.png" alt="Логотип" class="w-48 h-28 object-cover hover-scale"></a>
+            
+            <nav class="hidden md:flex gap-8">
+                <a href="/index.html" class="font-bold text-lg hover:text-gray-300 transition">ГЛАВНАЯ</a>
+                <a href="№" class="font-bold text-lg hover:text-gray-300 transition">ПОМОЩЬ</a>
+            </nav>
+            <div class="hidden md:flex items-center gap-8">
+                <span id="userFullName" class="text-white text-xl user-name" onclick="showLogoutConfirmation()">Загрузка...</span>
+                <div class="w-12 h-12 rounded-full bg-gray-600 flex items-center justify-center user-avatar-container" onclick="showLogoutConfirmation()">
+                    <i class="fas fa-user text-white text-2xl"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto px-12 py-16">
+            <!-- Препродакшн -->
+            <section class="mb-24">
+                <h2 class="gothic-font text-8xl mb-16">Препродакшн</h2>
+                
+                <div class="space-y-8">
+                    <!-- Урок 1 -->
+                    <div class="lesson-card bg-gray-900 rounded-lg overflow-hidden" onclick="openLesson('lesson1', 'preproduction')">
+                        <div class="flex items-center p-8">
+                            <div class="w-1/4">
+                                <h3 class="gothic-font text-6xl">Урок 1</h3>
+                            </div>
+                            <div class="w-1/4 flex justify-center">
+                                <div class="lesson-image-container">
+                                    <img src="/assets/kurs/urok.png" 
+                                        alt="Где искать идеи" 
+                                        class="lesson-image">
+                                    <div class="play-icon-overlay">
+                                        <i class="fas fa-play"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/2 flex justify-between px-8">
+                                <div>
+                                    <p class="text-gray-400">О чем урок:</p>
+                                    <p class="text-xl mt-2">Где искать идеи и как их развивать</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-400">Статус:</p>
+                                    <div class="status-badge status-not-completed mt-2">Тест не пройден</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-700"></div>
+                    </div>
+                    
+                    <!-- Урок 2 -->
+                    <div class="lesson-card bg-gray-900 rounded-lg overflow-hidden" onclick="openLesson('lesson2', 'preproduction')">
+                        <div class="flex items-center p-8">
+                            <div class="w-1/4">
+                                <h3 class="gothic-font text-6xl">Урок 2</h3>
+                            </div>
+                            <div class="w-1/4 flex justify-center">
+                                <div class="lesson-image-container">
+                                    <img src="/assets/kurs/urok.png" 
+                                        alt="Сценарий и раскадровка" 
+                                        class="lesson-image grayscale">
+                                    <div class="play-icon-overlay">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/2 flex justify-between px-8">
+                                <div>
+                                    <p class="text-gray-400">О чем урок:</p>
+                                    <p class="text-xl mt-2">Сценарий и раскадровка</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-400">Статус:</p>
+                                    <div class="status-badge status-unavailable mt-2">Недоступно</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-700"></div>
+                    </div>
+                    
+                    <!-- Урок 3 -->
+                    <div class="lesson-card bg-gray-900 rounded-lg overflow-hidden" onclick="openLesson('lesson3', 'preproduction')">
+                        <div class="flex items-center p-8">
+                            <div class="w-1/4">
+                                <h3 class="gothic-font text-6xl">Урок 3</h3>
+                            </div>
+                            <div class="w-1/4 flex justify-center">
+                                <div class="lesson-image-container">
+                                    <img src="/assets/kurs/urok.png" 
+                                        alt="Подготовка к съемке" 
+                                        class="lesson-image grayscale">
+                                    <div class="play-icon-overlay">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/2 flex justify-between px-8">
+                                <div>
+                                    <p class="text-gray-400">О чем урок:</p>
+                                    <p class="text-xl mt-2">Подготовка к съемке</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-400">Статус:</p>
+                                    <div class="status-badge status-unavailable mt-2">Недоступно</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Настройка камеры -->
+            <section class="mb-24">
+                <h2 class="gothic-font text-8xl mb-16">Настройка камеры. Виды оборудования</h2>
+                
+                <div class="space-y-8">
+                    <!-- Урок 1 -->
+                    <div class="lesson-card bg-gray-900 rounded-lg overflow-hidden" onclick="openLesson('lesson4', 'camera')">
+                        <div class="flex items-center p-8">
+                            <div class="w-1/4">
+                                <h3 class="gothic-font text-6xl">Урок 1</h3>
+                            </div>
+                            <div class="w-1/4 flex justify-center">
+                                <div class="lesson-image-container">
+                                    <img src="/assets/kurs/urok.png" 
+                                        alt="Основные настройки камеры" 
+                                        class="lesson-image">
+                                    <div class="play-icon-overlay">
+                                        <i class="fas fa-play"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/2 flex justify-between px-8">
+                                <div>
+                                    <p class="text-gray-400">О чем урок:</p>
+                                    <p class="text-xl mt-2">Основные настройки камеры</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-400">Статус:</p>
+                                    <div class="status-badge status-not-completed mt-2">Тест не пройден</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-700"></div>
+                    </div>
+                    
+                    <!-- Урок 2 -->
+                    <div class="lesson-card bg-gray-900 rounded-lg overflow-hidden" onclick="openLesson('lesson5', 'camera')">
+                        <div class="flex items-center p-8">
+                            <div class="w-1/4">
+                                <h3 class="gothic-font text-6xl">Урок 2</h3>
+                            </div>
+                            <div class="w-1/4 flex justify-center">
+                                <div class="lesson-image-container">
+                                    <img src="/assets/kurs/urok.png" 
+                                        alt="Типы камер и их особенности" 
+                                        class="lesson-image grayscale">
+                                    <div class="play-icon-overlay">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/2 flex justify-between px-8">
+                                <div>
+                                    <p class="text-gray-400">О чем урок:</p>
+                                    <p class="text-xl mt-2">Типы камер и их особенности</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-400">Статус:</p>
+                                    <div class="status-badge status-unavailable mt-2">Недоступно</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-700"></div>
+                    </div>
+                    
+                    <!-- Урок 3 -->
+                    <div class="lesson-card bg-gray-900 rounded-lg overflow-hidden" onclick="openLesson('lesson6', 'camera')">
+                        <div class="flex items-center p-8">
+                            <div class="w-1/4">
+                                <h3 class="gothic-font text-6xl">Урок 3</h3>
+                            </div>
+                            <div class="w-1/4 flex justify-center">
+                                <div class="lesson-image-container">
+                                    <img src="/assets/kurs/urok.png" 
+                                        alt="Дополнительное оборудование" 
+                                        class="lesson-image grayscale">
+                                    <div class="play-icon-overlay">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/2 flex justify-between px-8">
+                                <div>
+                                    <p class="text-gray-400">О чем урок:</p>
+                                    <p class="text-xl mt-2">Дополнительное оборудование</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-400">Статус:</p>
+                                    <div class="status-badge status-unavailable mt-2">Недоступно</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Видео и студийный свет -->
+            <section class="mb-24">
+                <h2 class="gothic-font text-8xl mb-16">Видео и студийный свет. Световые схемы</h2>
+                
+                <div class="space-y-8">
+                    <!-- Урок 1 -->
+                    <div class="lesson-card bg-gray-900 rounded-lg overflow-hidden" onclick="openLesson('lesson7', 'light')">
+                        <div class="flex items-center p-8">
+                            <div class="w-1/4">
+                                <h3 class="gothic-font text-6xl">Урок 1</h3>
+                            </div>
+                            <div class="w-1/4 flex justify-center">
+                                <div class="lesson-image-container">
+                                    <img src="/assets/kurs/urok.png" 
+                                        alt="Основные виды освещения" 
+                                        class="lesson-image">
+                                    <div class="play-icon-overlay">
+                                        <i class="fas fa-play"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/2 flex justify-between px-8">
+                                <div>
+                                    <p class="text-gray-400">О чем урок:</p>
+                                    <p class="text-xl mt-2">Основные виды освещения</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-400">Статус:</p>
+                                    <div class="status-badge status-not-completed mt-2">Тест не пройден</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-700"></div>
+                    </div>
+                    
+                    <!-- Урок 2 -->
+                    <div class="lesson-card bg-gray-900 rounded-lg overflow-hidden" onclick="openLesson('lesson8', 'light')">
+                        <div class="flex items-center p-8">
+                            <div class="w-1/4">
+                                <h3 class="gothic-font text-6xl">Урок 2</h3>
+                            </div>
+                            <div class="w-1/4 flex justify-center">
+                                <div class="lesson-image-container">
+                                    <img src="/assets/kurs/urok.png" 
+                                        alt="Световые схемы для разных сцен" 
+                                        class="lesson-image grayscale">
+                                    <div class="play-icon-overlay">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/2 flex justify-between px-8">
+                                <div>
+                                    <p class="text-gray-400">О чем урок:</p>
+                                    <p class="text-xl mt-2">Световые схемы для разных сцен</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-400">Статус:</p>
+                                    <div class="status-badge status-unavailable mt-2">Недоступно</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-700"></div>
+                    </div>
+                    
+                    <!-- Урок 3 -->
+                    <div class="lesson-card bg-gray-900 rounded-lg overflow-hidden" onclick="openLesson('lesson9', 'light')">
+                        <div class="flex items-center p-8">
+                            <div class="w-1/4">
+                                <h3 class="gothic-font text-6xl">Урок 3</h3>
+                            </div>
+                            <div class="w-1/4 flex justify-center">
+                                <div class="lesson-image-container">
+                                    <img src="/assets/kurs/urok.png" 
+                                        alt="Работа с цветом и температура света" 
+                                        class="lesson-image grayscale">
+                                    <div class="play-icon-overlay">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/2 flex justify-between px-8">
+                                <div>
+                                    <p class="text-gray-400">О чем урок:</p>
+                                    <p class="text-xl mt-2">Работа с цветом и температура света</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-400">Статус:</p>
+                                    <div class="status-badge status-unavailable mt-2">Недоступно</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Работа на площадке -->
+            <section>
+                <h2 class="gothic-font text-8xl mb-16">Работа на площадке</h2>
+                
+                <div class="space-y-8">
+                    <!-- Урок 1 -->
+                    <div class="lesson-card bg-gray-900 rounded-lg overflow-hidden" onclick="openLesson('lesson10', 'production')">
+                        <div class="flex items-center p-8">
+                            <div class="w-1/4">
+                                <h3 class="gothic-font text-6xl">Урок 1</h3>
+                            </div>
+                            <div class="w-1/4 flex justify-center">
+                                <div class="lesson-image-container">
+                                    <img src="/assets/kurs/urok.png" 
+                                        alt="Организация съемочного процесса" 
+                                        class="lesson-image">
+                                    <div class="play-icon-overlay">
+                                        <i class="fas fa-play"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/2 flex justify-between px-8">
+                                <div>
+                                    <p class="text-gray-400">О чем урок:</p>
+                                    <p class="text-xl mt-2">Организация съемочного процесса</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-400">Статус:</p>
+                                    <div class="status-badge status-not-completed mt-2">Тест не пройден</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-700"></div>
+                    </div>
+                    
+                    <!-- Урок 2 -->
+                    <div class="lesson-card bg-gray-900 rounded-lg overflow-hidden" onclick="openLesson('lesson11', 'production')">
+                        <div class="flex items-center p-8">
+                            <div class="w-1/4">
+                                <h3 class="gothic-font text-6xl">Урок 2</h3>
+                            </div>
+                            <div class="w-1/4 flex justify-center">
+                                <div class="lesson-image-container">
+                                    <img src="/assets/kurs/urok.png" 
+                                        alt="Работа с актерами и командой" 
+                                        class="lesson-image grayscale">
+                                    <div class="play-icon-overlay">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/2 flex justify-between px-8">
+                                <div>
+                                    <p class="text-gray-400">О чем урок:</p>
+                                    <p class="text-xl mt-2">Работа с актерами и командой</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-400">Статус:</p>
+                                    <div class="status-badge status-unavailable mt-2">Недоступно</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-700"></div>
+                    </div>
+                    
+                    <!-- Урок 3 -->
+                    <div class="lesson-card bg-gray-900 rounded-lg overflow-hidden" onclick="openLesson('lesson12', 'production')">
+                        <div class="flex items-center p-8">
+                            <div class="w-1/4">
+                                <h3 class="gothic-font text-6xl">Урок 3</h3>
+                            </div>
+                            <div class="w-1/4 flex justify-center">
+                                <div class="lesson-image-container">
+                                    <img src="/assets/kurs/urok.png" 
+                                        alt="Решение проблем на площадке" 
+                                        class="lesson-image grayscale">
+                                    <div class="play-icon-overlay">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/2 flex justify-between px-8">
+                                <div>
+                                    <p class="text-gray-400">О чем урок:</p>
+                                    <p class="text-xl mt-2">Решение проблем на площадке</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-400">Статус:</p>
+                                    <div class="status-badge status-unavailable mt-2">Недоступно</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Футер -->
+        <footer class="py-16 px-4 md:px-12 lg:px-24 animate-fade-in animate-delay-3">    
+                <div class="flex flex-col md:flex-row">
+                    <div class="md:w-2/5 mb-12 md:mb-0">
+                        <h3 class="font-bold text-lg mb-4">О нас</h3>
+                        <p class="text-lg">
+                            Artel production – фото и видео<br>продакшн полного цикла.<br>Работаем в Москве, Санкт-<br>Петербурге и по всему миру.
+                        </p>
+                    </div>
+                    
+                    <div class="md:w-2/5 mb-12 md:mb-0 md:px-8">
+                        <h3 class="font-bold text-lg mb-4">Быстрые ссылки</h3>
+                        <div class="flex flex-col gap-2">
+                            <a href="/index.html" class="text-lg hover:text-gray-300 transition">Главная</a>
+                            <a href="#" class="text-lg hover:text-gray-300 transition" onclick="openPrivacyPopup()">Политика конфиденциальности</a>
+                            <a href="/Portfolio-video.html" class="text-lg hover:text-gray-300 transition">Видео работы</a>
+                            <a href="/Portfolio-photo.html" class="text-lg hover:text-gray-300 transition">Фото работы</a>
+                            <a href="/Uslugi.html" class="text-lg hover:text-gray-300 transition">Услуги</a>
+                            <a href="/Blog-news.html" class="text-lg hover:text-gray-300 transition">Блог</a>
+                            <a href="/Kurs-info.html" class="text-lg hover:text-gray-300 transition">Курс</a>
+                        </div>
+                    </div>
+                    
+                    <div class="md:w-1/5">
+                        <h3 class="font-bold text-lg mb-4">Контакты</h3>
+                        <div class="mb-6">
+                            <div class="flex items-center">
+                                <i class="fas fa-envelope mr-2"></i>
+                                <span class="text-lg">info@artel.ru</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <a href="#" class="text-white hover:text-blue-400 transition">
+                                <i class="fab fa-telegram text-2xl"></i>
+                            </a>
+                            <a href="#" class="text-white hover:text-green-400 transition">
+                                <i class="fab fa-whatsapp text-2xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Lesson Modal -->
+        <div id="lessonModal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeModal()">&times;</span>
+                <h2 id="lessonTitle" class="gothic-font text-4xl mb-6"></h2>
+                
+                <div id="video-container">
+                    <div class="progress-bar">
+                        <div id="videoProgress" class="progress-fill"></div>
+                    </div>
+                    <div class="aspect-w-16 aspect-h-9">
+                        <iframe id="lessonVideo" width="100%" height="500" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="mt-6 flex justify-between items-center">
+                        <p class="text-gray-400">Пожалуйста, посмотрите видео перед прохождением теста</p>
+                        <button id="startTestBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded transition opacity-50 cursor-not-allowed" onclick="startTest()" disabled>Начать тест</button>
+                    </div>
+                </div>
+                
+                <div id="test-container">
+                    <h3 class="text-2xl font-bold mb-6">Тест по уроку</h3>
+                    <div id="test-questions"></div>
+                    <button id="submitTestBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded text-lg mt-6 transition" onclick="submitTest()">Завершить тест</button>
+                </div>
+                
+                <div id="test-result" class="text-center py-10">
+                    <h3 class="text-3xl font-bold mb-6">Результаты теста</h3>
+                    <p id="resultText" class="text-xl mb-8"></p>
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded text-lg transition" onclick="closeModal()">Закрыть</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Popup Modal -->
+        <div id="popupOverlay" class="popup-overlay">
+            <div class="popup-container">
+                <div class="popup-title" id="popupTitle">Уведомление</div>
+                <div class="popup-message" id="popupMessage">Сообщение</div>
+                <div class="popup-buttons">
+                    <button class="popup-button popup-button-secondary" id="popupCancelBtn" style="display: none;">Отмена</button>
+                    <button class="popup-button popup-button-primary" id="popupConfirmBtn">OK</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logout Confirmation Popup -->
+        <div id="logoutPopup" class="popup-overlay">
+            <div class="popup-container">
+                <div class="popup-title">Подтверждение выхода</div>
+                <div class="popup-message">Вы уверены, что хотите выйти из системы?</div>
+                <div class="popup-buttons">
+                    <button class="popup-button popup-button-secondary" onclick="hideLogoutConfirmation()">Нет</button>
+                    <button class="popup-button popup-button-primary" onclick="logout()">Да</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Предварительный тест Popup -->
+        <div id="preTestPopup" class="popup-overlay">
+            <div class="popup-container">
+                <div class="popup-title">Предварительный тест</div>
+                <div class="popup-message">
+                    <p class="mb-4">Добро пожаловать! Для начала работы с курсом, пожалуйста, пройдите предварительный тест.</p>
+                    <div id="preTestQuestions" class="space-y-6"></div>
+                </div>
+                <div class="popup-buttons">
+                    <button class="popup-button popup-button-primary" onclick="submitPreTest()">Завершить тест</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+
+            // Текущий открытый урок и его раздел
+            let currentLesson = null;
+            let currentSection = null;
+            let videoProgressInterval = null;
+            let videoProgress = 0;
+            let selectedAnswers = {};
+            
+            // Вопросы для каждого урока
+            const lessonTests = {
+                // Препродакшн
+                'lesson1': [
+                    {
+                        question: "Какой метод генерации идей предполагает свободное ассоциирование?",
+                        options: [
+                            { text: "Мозговой штурм", correct: true },
+                            { text: "SWOT-анализ", correct: false },
+                            { text: "Метод 5 почему", correct: false },
+                            { text: "Метод Дельфи", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Какой инструмент помогает визуализировать связи между идеями?",
+                        options: [
+                            { text: "Ментальная карта", correct: true },
+                            { text: "Гантт-диаграмма", correct: false },
+                            { text: "Таблица решений", correct: false },
+                            { text: "Бизнес-модель", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Какой вопрос НЕ стоит задавать при оценке идеи?",
+                        options: [
+                            { text: "Кто будет целевой аудиторией?", correct: false },
+                            { text: "Какие ресурсы потребуются?", correct: false },
+                            { text: "Сколько денег я на этом заработаю?", correct: true },
+                            { text: "Какую проблему решает эта идеа?", correct: false }
+                        ]
+                    }
+                ],
+                'lesson2': [
+                    {
+                        question: "Как называется документ, описывающий сцену за сценой?",
+                        options: [
+                            { text: "Синопсис", correct: false },
+                            { text: "Тритмент", correct: false },
+                            { text: "Сценарий", correct: true },
+                            { text: "Логлайн", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Какой элемент раскадровки показывает движение камеры?",
+                        options: [
+                            { text: "Кадр", correct: false },
+                            { text: "Описание", correct: false },
+                            { text: "Стрелки", correct: true },
+                            { text: "Номер сцены", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Какой формат записи диалогов используется в сценариях?",
+                        options: [
+                            { text: "По центру страницы", correct: true },
+                            { text: "Слева", correct: false },
+                            { text: "Справа", correct: false },
+                            { text: "В столбик", correct: false }
+                        ]
+                    }
+                ],
+                'lesson3': [
+                    {
+                        question: "Какой документ содержит список всего необходимого для съемки?",
+                        options: [
+                            { text: "Калл-лист", correct: true },
+                            { text: "Шутинг-лист", correct: false },
+                            { text: "Смета", correct: false },
+                            { text: "Контракт", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Как называется встреча перед съемкой с ключевыми участниками?",
+                        options: [
+                            { text: "Брифинг", correct: false },
+                            { text: "Премьер", correct: false },
+                            { text: "Питчинг", correct: false },
+                            { text: "Продюсерская встреча", correct: true }
+                        ]
+                    },
+                    {
+                        question: "Что НЕ входит в подготовку локации?",
+                        options: [
+                            { text: "Получение разрешений", correct: false },
+                            { text: "Технический рекки", correct: false },
+                            { text: "Закупка реквизита", correct: false },
+                            { text: "Монтаж видео", correct: true }
+                        ]
+                    }
+                ],
+                // Настройка камеры
+                'lesson4': [
+                    {
+                        question: "Какой параметр отвечает за количество света, попадающего на матрицу?",
+                        options: [
+                            { text: "Выдержка", correct: false },
+                            { text: "Диафрагма", correct: true },
+                            { text: "ISO", correct: false },
+                            { text: "Баланс белого", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Как называется эффект размытия фона?",
+                        options: [
+                            { text: "Глубина резкости", correct: false },
+                            { text: "Боке", correct: true },
+                            { text: "Шум", correct: false },
+                            { text: "Виньетирование", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Какой режим съемки дает полный контроль над настройками?",
+                        options: [
+                            { text: "Авто", correct: false },
+                            { text: "Приоритет диафрагма", correct: false },
+                            { text: "Приоритет выдержки", correct: false },
+                            { text: "Ручной", correct: true }
+                        ]
+                    }
+                ],
+                'lesson5': [
+                    {
+                        question: "Какой тип камеры чаще используют для кинопроизводства?",
+                        options: [
+                            { text: "Зеркальные", correct: false },
+                            { text: "Беззеркальные", correct: false },
+                            { text: "Кинотехника", correct: true },
+                            { text: "Смартфоны", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Какой формат матрицы дает меньшую глубина резкости?",
+                        options: [
+                            { text: "Micro 4/3", correct: false },
+                            { text: "APS-C", correct: false },
+                            { text: "Полнокадровая", correct: true },
+                            { text: "1 дюйм", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Какой параметр НЕ влияет на качество видео?",
+                        options: [
+                            { text: "Битрейт", correct: false },
+                            { text: "Разрешение", correct: false },
+                            { text: "Частота кадров", correct: false },
+                            { text: "Вес камеры", correct: true }
+                        ]
+                    }
+                ],
+                'lesson6': [
+                    {
+                        question: "Для чего используют стабилизатор?",
+                        options: [
+                            { text: "Уменьшение шума", correct: false },
+                            { text: "Сглаживание дрожания", correct: true },
+                            { text: "Увеличение резкости", correct: false },
+                            { text: "Коррекция цвета", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Как называется устройство для плавного перемещения камеря?",
+                        options: [
+                            { text: "Слайдер", correct: true },
+                            { text: "Долли", correct: false },
+                            { text: "Кран", correct: false },
+                            { text: "Стедикам", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Что НЕ относится к звуковому оборудованию?",
+                        options: [
+                            { text: "Петличка", correct: false },
+                            { text: "Рычаг", correct: true },
+                            { text: "Бумер", correct: false },
+                            { text: "Рекордер", correct: false }
+                        ]
+                    }
+                ],
+                // Свет
+                'lesson7': [
+                    {
+                        question: "Как называется основной источник света в схеме?",
+                        options: [
+                            { text: "Заполняющий", correct: false },
+                            { text: "Контровой", correct: false },
+                            { text: "Ключевой", correct: true },
+                            { text: "Фоновый", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Какой тип света дает мягкие тени?",
+                        options: [
+                            { text: "Направленный", correct: false },
+                            { text: "Рассеянный", correct: true },
+                            { text: "Точечный", correct: false },
+                            { text: "Жесткий", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Для чего используют отражатель?",
+                        options: [
+                            { text: "Усиление света", correct: false },
+                            { text: "Заполнение теней", correct: true },
+                            { text: "Создание контраста", correct: false },
+                            { text: "Изменение температуры", correct: false }
+                        ]
+                    }
+                ],
+                'lesson8': [
+                    {
+                        question: "Как называется схема с тремя источниками света?",
+                        options: [
+                            { text: "Рембрандтовская", correct: false },
+                            { text: "Петлевая", correct: false },
+                            { text: "Трехточечная", correct: true },
+                            { text: "Бабочка", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Какой свет используют для отделения объекта от фона?",
+                        options: [
+                            { text: "Заполняющий", correct: false },
+                            { text: "Контровой", correct: true },
+                            { text: "Ключевой", correct: false },
+                            { text: "Фоновый", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Какой угол дает драматичный эффект на лице?",
+                        options: [
+                            { text: "Фронтальный", correct: false },
+                            { text: "Боковой", correct: true },
+                            { text: "Верхний", correct: false },
+                            { text: "Нижний", correct: false }
+                        ]
+                    }
+                ],
+                'lesson9': [
+                    {
+                        question: "Какой цветовой баланс соответствует дневному свету?",
+                        options: [
+                            { text: "3200K", correct: false },
+                            { text: "5600K", correct: true },
+                            { text: "7500K", correct: false },
+                            { text: "10000K", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Какой фильтр используют для коррекции температуры света?",
+                        options: [
+                            { text: "ND", correct: false },
+                            { text: "CTO/CTB", correct: true },
+                            { text: "Polarizing", correct: false },
+                            { text: "UV", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Как называется шкала для оценки цветопередачи?",
+                        options: [
+                            { text: "Кельвин", correct: false },
+                            { text: "CRI", correct: true },
+                            { text: "Люкс", correct: false },
+                            { text: "Люмен", correct: false }
+                        ]
+                    }
+                ],
+                // Работа на площадке
+                'lesson10': [
+                    {
+                        question: "Как называется план съемочного дня?",
+                        options: [
+                            { text: "Шутинг-лист", correct: true },
+                            { text: "Калл-лист", correct: false },
+                            { text: "Смета", correct: false },
+                            { text: "Контракт", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Кто отвечает за организацию процесса на площадке?",
+                        options: [
+                            { text: "Режиссер", correct: false },
+                            { text: "Оператор", correct: false },
+                            { text: "Продюсер", correct: false },
+                            { text: "Помощник режиссера", correct: true }
+                        ]
+                    },
+                    {
+                        question: "Как называется дубль без остановки камеры?",
+                        options: [
+                            { text: "Мастер-дубль", correct: false },
+                            { text: "Хронометражный дубль", correct: false },
+                            { text: "Раннер", correct: true },
+                            { text: "Технический дубль", correct: false }
+                        ]
+                    }
+                ],
+                'lesson11': [
+                    {
+                        question: "Как называется репетиция перед съемкой?",
+                        options: [
+                            { text: "Блокинг", correct: true },
+                            { text: "Разминка", correct: false },
+                            { text: "Прогон", correct: false },
+                            { text: "Читка", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Кой отвечает за взаимодействие с актерами?",
+                        options: [
+                            { text: "Режиссер", correct: true },
+                            { text: "Оператор", correct: false },
+                            { text: "Сценарист", correct: false },
+                            { text: "Художник", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Как называется человек, заменяющий актера при настройке света?",
+                        options: [
+                            { text: "Дублер", correct: false },
+                            { text: "Стенди-ин", correct: true },
+                            { text: "Каскадер", correct: false },
+                            { text: "Ассистент", correct: false }
+                        ]
+                    }
+                ],
+                'lesson12': [
+                    {
+                        question: "Что делать при нехватке времени на съемку?",
+                        options: [
+                            { text: "Увеличить темп работы", correct: false },
+                            { text: "Пересмотреть план съемки", correct: true },
+                            { text: "Пропустить сцены", correct: false },
+                            { text: "Снимать без дублей", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Как избежать конфликтов в команде?",
+                        options: [
+                            { text: "Четкие роли и обязанности", correct: true },
+                            { text: "Авторитарное управление", correct: false },
+                            { text: "Игнорировать проблемы", correct: false },
+                            { text: "Частая смена состава", correct: false }
+                        ]
+                    },
+                    {
+                        question: "Что НЕ является решением технических проблем?",
+                        options: [
+                            { text: "Резервное оборудование", correct: false },
+                            { text: "Технические репетиции", correct: false },
+                            { text: "Импровизация на месте", correct: true },
+                            { text: "Профессиональная команда", correct: false }
+                        ]
+                    }
+                ]
+            };
+            
+            const lessonVideos = {
+                lesson1: 'https://www.youtube.com/embed/s8IfCO8VWC8?autoplay=1',
+                lesson2: 'https://www.youtube.com/embed/VqkQBKmDS1M?autoplay=1',
+                lesson3: 'https://www.youtube.com/embed/6eRnBtKicOI?autoplay=1',
+                lesson4: 'https://www.youtube.com/embed/J5yLjy9eJpM?autoplay=1',
+                lesson5: 'https://www.youtube.com/embed/IW-oVKrHupY?autoplay=1',
+                lesson6: 'https://www.youtube.com/embed/OWcf7RN7mdQ?autoplay=1',
+                lesson7: 'https://www.youtube.com/embed/wpTY3LM5bc?autoplay=1',
+                lesson8: 'https://www.youtube.com/embed/4Sqmmyyh-30?autoplay=1',
+                lesson9: 'https://www.youtube.com/embed/VPzve1P2g6o?autoplay=1',
+                lesson10: 'https://www.youtube.com/embed/KxxEcOWdZsg?autoplay=1',
+                lesson11: 'https://www.youtube.com/embed/SZuN2QzKUtA?autoplay=1',
+                lesson12: 'https://www.youtube.com/embed/kgz1KNVMaUU?autoplay=1',
+            };
+
+            // Загрузка данных пользователя
+            async function loadUserData() {
+                const token = localStorage.getItem('access_token');
+                if (!token) {
+                    window.location.href = 'Kurs-info.html';
+                    return;
+                }
+
+                try {
+                    const response = await fetch('http://localhost:8000/users/me/', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        const user = await response.json();
+                        document.getElementById('userFullName').textContent = `${user.first_name} ${user.last_name}`;
+                    } else {
+                        console.error('Ошибка загрузки данных пользователя');
+                    }
+                } catch (error) {
+                    console.error('Ошибка:', error);
+                }
+            }
+
+            // Загрузка сохраненного прогресса
+            async function loadUserProgress() {
+                const token = localStorage.getItem('access_token');
+                if (!token) return;
+
+                try {
+                    const response = await fetch('http://localhost:8000/progress/', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        
+                        // Если нет прогресса, показываем предварительный тест
+                        if (data.progress.length === 0) {
+                            createPreTest();
+                            document.getElementById('preTestPopup').style.display = 'flex';
+                            return;
+                        }
+
+                        data.progress.forEach(item => {
+                            const lessonId = `lesson${item.lesson_id}`;
+                            const lessonElement = document.querySelector(`[onclick*="${lessonId}"]`);
+                            
+                            if (lessonElement && item.is_completed) {
+                                updateLessonUI(lessonElement, true);
+                                
+                                // Разблокируем следующий урок
+                                const nextLessonNumber = item.lesson_id + 1;
+                                const nextLessonId = `lesson${nextLessonNumber}`;
+                                const nextLessonElement = document.querySelector(`[onclick*="${nextLessonId}"]`);
+                                
+                                if (nextLessonElement) {
+                                    updateLessonUI(nextLessonElement, false, true);
+                                }
+                            }
+                        });
+                    }
+                } catch (error) {
+                    console.error('Ошибка загрузки прогресса:', error);
+                }
+            }
+
+            // Обновление UI урока
+            function updateLessonUI(lessonElement, isCompleted, isUnlock = false) {
+                const statusBadge = lessonElement.querySelector('.status-badge');
+                
+                if (isCompleted) {
+                    statusBadge.classList.remove('status-not-completed');
+                    statusBadge.classList.add('status-completed');
+                    statusBadge.textContent = 'Пройден';
+                } else if (isUnlock) {
+                    statusBadge.classList.remove('status-unavailable');
+                    statusBadge.classList.add('status-not-completed');
+                    statusBadge.textContent = 'Тест не пройден';
+                    
+                    const lessonImage = lessonElement.querySelector('.lesson-image');
+                    if (lessonImage) lessonImage.classList.remove('grayscale');
+                    
+                    const lessonIcon = lessonElement.querySelector('.play-icon-overlay i');
+                    if (lessonIcon) {
+                        lessonIcon.classList.remove('fa-lock');
+                        lessonIcon.classList.add('fa-play');
+                    }
+                }
+            }
+
+            // Открытие модального окна с уроком
+            async function openLesson(lessonId, section) {
+                const token = localStorage.getItem('access_token');
+                if (!token) {
+                    window.location.href = 'Kurs-info.html';
+                    return;
+                }
+
+                const lessonElement = document.querySelector(`[onclick="openLesson('${lessonId}', '${section}')"]`);
+                const statusBadge = lessonElement.querySelector('.status-badge');
+                
+                // Проверяем статус урока
+                if (statusBadge.classList.contains('status-unavailable')) {
+                    showPopup('Урок недоступен', 'Этот урок пока недоступен! Сначала нужно пройти предыдущие уроки в этом разделе.');
+                    return;
+                }
+                
+                currentLesson = lessonId;
+                currentSection = section;
+                const modal = document.getElementById('lessonModal');
+                const videoContainer = document.getElementById('video-container');
+                const testContainer = document.getElementById('test-container');
+                const testResult = document.getElementById('test-result');
+                
+                // Сбрасываем состояние модального окна
+                videoContainer.style.display = 'block';
+                testContainer.style.display = 'none';
+                testResult.style.display = 'none';
+                document.getElementById('startTestBtn').disabled = true;
+                document.getElementById('startTestBtn').classList.add('opacity-50', 'cursor-not-allowed');
+                videoProgress = 0;
+                document.getElementById('videoProgress').style.width = '0%';
+                selectedAnswers = {};
+                
+                // Устанавливаем заголовок урока
+                const lessonTitle = lessonElement.querySelector('.gothic-font').textContent + ': ' + 
+                                lessonElement.querySelector('.text-xl').textContent;
+                document.getElementById('lessonTitle').textContent = lessonTitle;
+                
+                // Устанавливаем видео
+                document.getElementById('lessonVideo').src = lessonVideos[lessonId] || '';
+                
+                // Запускаем отслеживание прогресса просмотра видео
+                if (videoProgressInterval) clearInterval(videoProgressInterval);
+                videoProgressInterval = setInterval(() => {
+                    videoProgress += 1;
+                    document.getElementById('videoProgress').style.width = `${videoProgress}%`;
+                    
+                    if (videoProgress >= 100) {
+                        clearInterval(videoProgressInterval);
+                        document.getElementById('startTestBtn').disabled = false;
+                        document.getElementById('startTestBtn').classList.remove('opacity-50', 'cursor-not-allowed');
+                    }
+                }, 100);
+                
+                // Показываем модальное окно
+                modal.style.display = 'block';
+            }
+            
+            // Закрытие модального окна
+            function closeModal() {
+                const modal = document.getElementById('lessonModal');
+                modal.style.display = 'none';
+                
+                // Останавливаем видео и прогресс
+                document.getElementById('lessonVideo').src = '';
+                if (videoProgressInterval) clearInterval(videoProgressInterval);
+            }
+            
+            // Начало теста
+            function startTest() {
+                document.getElementById('video-container').style.display = 'none';
+                document.getElementById('test-container').style.display = 'block';
+                
+                // Генерируем вопросы для текущего урока
+                const testQuestions = lessonTests[currentLesson];
+                const testContainer = document.getElementById('test-questions');
+                testContainer.innerHTML = '';
+                
+                testQuestions.forEach((q, index) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'test-question';
+                    questionDiv.innerHTML = `
+                        <p class="text-xl mb-4">${index + 1}. ${q.question}</p>
+                    `;
+                    
+                    q.options.forEach((opt, optIndex) => {
+                        const optionDiv = document.createElement('div');
+                        optionDiv.className = 'test-option';
+                        optionDiv.textContent = opt.text;
+                        optionDiv.dataset.questionIndex = index;
+                        optionDiv.dataset.optionIndex = optIndex;
+                        optionDiv.onclick = function() { 
+                            // Сбрасываем все варианты в этом вопросе
+                            const options = this.parentElement.querySelectorAll('.test-option');
+                            options.forEach(opt => {
+                                opt.classList.remove('selected');
+                            });
+                            
+                            // Помечаем выбранный вариант
+                            this.classList.add('selected');
+                            
+                            // Сохраняем выбранный ответ
+                            selectedAnswers[index] = {
+                                optionIndex: optIndex,
+                                isCorrect: opt.correct
+                            };
+                            
+                            // Активируем кнопку завершения теста, если все вопросы отвечены
+                            const allQuestions = document.querySelectorAll('.test-question');
+                            if (Object.keys(selectedAnswers).length === allQuestions.length) {
+                                document.getElementById('submitTestBtn').disabled = false;
+                            } else {
+                                document.getElementById('submitTestBtn').disabled = true;
+                            }
+                        };
+                        questionDiv.appendChild(optionDiv);
+                    });
+                    
+                    testContainer.appendChild(questionDiv);
+                });
+            }
+            
+            // Завершение теста
+            async function submitTest() {
+                const token = localStorage.getItem('access_token');
+                if (!token) {
+                    window.location.href = 'Kurs-info.html';
+                    return;
+                }
+
+                // Проверяем, что на все вопросы даны ответы
+                const testQuestions = lessonTests[currentLesson];
+                if (Object.keys(selectedAnswers).length !== testQuestions.length) {
+                    showPopup('Не все вопросы отвечены', 'Пожалуйста, ответьте на все вопросы перед завершением теста.');
+                    return;
+                }
+                
+                // Считаем правильные ответы
+                let correctCount = 0;
+                for (const questionIndex in selectedAnswers) {
+                    if (selectedAnswers[questionIndex].isCorrect) {
+                        correctCount++;
+                    }
+                }
+                
+                const resultText = document.getElementById('resultText');
+                const testResult = document.getElementById('test-result');
+                const lessonPassed = correctCount >= 2;
+                const lessonNumber = parseInt(currentLesson.replace(/[^0-9]/g, ''));
+                
+                // Обновляем UI
+                if (lessonPassed) {
+                    resultText.innerHTML = `Поздравляем! Вы ответили правильно на ${correctCount} из ${testQuestions.length} вопросов.<br>Статус урока изменен на "Пройден".`;
+                    
+                    const currentLessonElement = document.querySelector(`[onclick="openLesson('${currentLesson}', '${currentSection}')"]`);
+                    updateLessonUI(currentLessonElement, true);
+                    
+                    // Разблокируем следующий урок
+                    const nextLessonNumber = lessonNumber + 1;
+                    const nextLessonId = currentLesson.replace(/\d+/, nextLessonNumber);
+                    const nextLessonElement = document.querySelector(`[onclick="openLesson('${nextLessonId}', '${currentSection}')"]`);
+                    
+                    if (nextLessonElement) {
+                        updateLessonUI(nextLessonElement, false, true);
+                    }
+                } else {
+                    resultText.innerHTML = `К сожалению, вы ответили правильно только на ${correctCount} из ${testQuestions.length} вопросов.<br>Попробуйте еще раз после повторного просмотра видео.`;
+                }
+                
+                // Отправляем прогресс на сервер
+                try {
+                    const response = await fetch('http://localhost:8000/progress/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            lesson_id: lessonNumber,
+                            is_completed: lessonPassed
+                        })
+                    });
+
+                    if (!response.ok) {
+                        console.error('Ошибка сохранения прогресса');
+                    }
+                } catch (error) {
+                    console.error('Ошибка:', error);
+                }
+                
+                document.getElementById('test-container').style.display = 'none';
+                testResult.style.display = 'block';
+            }
+            
+            // Показ попап-уведомления
+            function showPopup(title, message, confirmCallback = null, cancelCallback = null) {
+                const popupOverlay = document.getElementById('popupOverlay');
+                const popupTitle = document.getElementById('popupTitle');
+                const popupMessage = document.getElementById('popupMessage');
+                const popupConfirmBtn = document.getElementById('popupConfirmBtn');
+                const popupCancelBtn = document.getElementById('popupCancelBtn');
+                
+                popupTitle.textContent = title;
+                popupMessage.textContent = message;
+                
+                if (confirmCallback) {
+                    popupConfirmBtn.onclick = function() {
+                        confirmCallback();
+                        popupOverlay.style.display = 'none';
+                    };
+                } else {
+                    popupConfirmBtn.onclick = function() {
+                        popupOverlay.style.display = 'none';
+                    };
+                }
+                
+                if (cancelCallback) {
+                    popupCancelBtn.style.display = 'inline-block';
+                    popupCancelBtn.onclick = function() {
+                        cancelCallback();
+                        popupOverlay.style.display = 'none';
+                    };
+                } else {
+                    popupCancelBtn.style.display = 'none';
+                }
+                
+                popupOverlay.style.display = 'flex';
+            }
+            
+            // Закрытие модального окна при клике вне его
+            window.onclick = function(event) {
+                const modal = document.getElementById('lessonModal');
+                if (event.target == modal) {
+                    closeModal();
+                }
+                
+                const popupOverlay = document.getElementById('popupOverlay');
+                if (event.target == popupOverlay) {
+                    popupOverlay.style.display = 'none';
+                }
+            }
+
+            // Показать подтверждение выхода
+            function showLogoutConfirmation() {
+                document.getElementById('logoutPopup').style.display = 'flex';
+            }
+
+            // Скрыть подтверждение выхода
+            function hideLogoutConfirmation() {
+                document.getElementById('logoutPopup').style.display = 'none';
+            }
+
+            // Выход из системы
+            function logout() {
+                // Здесь можно добавить логику выхода (очистка localStorage и т.д.)
+                localStorage.removeItem('access_token');
+                window.location.href = 'Kurs-info.html';
+            }
+
+            // Закрытие попапа при клике вне его
+            window.onclick = function(event) {
+                const popupOverlay = document.getElementById('logoutPopup');
+                if (event.target == popupOverlay) {
+                    hideLogoutConfirmation();
+                }
+            }
+
+            // Функция для получения случайного вопроса из теста
+            function getRandomQuestion(test) {
+                const randomIndex = Math.floor(Math.random() * test.length);
+                return test[randomIndex];
+            }
+
+            // Функция для создания предварительного теста
+            function createPreTest() {
+                const preTestQuestions = document.getElementById('preTestQuestions');
+                preTestQuestions.innerHTML = '';
+                selectedAnswers = {};
+
+                // Получаем по одному случайному вопросу из каждого урока
+                Object.entries(lessonTests).forEach(([lessonId, questions], index) => {
+                    const randomQuestion = getRandomQuestion(questions);
+                    
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'test-question';
+                    questionDiv.innerHTML = `
+                        <p class="text-xl mb-4">${index + 1}. ${randomQuestion.question}</p>
+                    `;
+                    
+                    randomQuestion.options.forEach((opt, optIndex) => {
+                        const optionDiv = document.createElement('div');
+                        optionDiv.className = 'test-option';
+                        optionDiv.textContent = opt.text;
+                        optionDiv.dataset.questionIndex = index;
+                        optionDiv.dataset.optionIndex = optIndex;
+                        optionDiv.onclick = function() {
+                            // Сбрасываем все варианты в этом вопросе
+                            const options = this.parentElement.querySelectorAll('.test-option');
+                            options.forEach(opt => {
+                                opt.classList.remove('selected');
+                            });
+                            
+                            // Помечаем выбранный вариант
+                            this.classList.add('selected');
+                            
+                            // Сохраняем выбранный ответ
+                            selectedAnswers[index] = {
+                                optionIndex: optIndex,
+                                isCorrect: opt.correct,
+                                lessonId: lessonId
+                            };
+                        };
+                        questionDiv.appendChild(optionDiv);
+                    });
+                    
+                    preTestQuestions.appendChild(questionDiv);
+                });
+            }
+
+            // Функция для отправки результатов предварительного теста
+            async function submitPreTest() {
+                const token = localStorage.getItem('access_token');
+                if (!token) {
+                    window.location.href = 'Kurs-info.html';
+                    return;
+                }
+
+                // Проверяем, что на все вопросы даны ответы
+                if (Object.keys(selectedAnswers).length !== Object.keys(lessonTests).length) {
+                    showPopup('Не все вопросы отвечены', 'Пожалуйста, ответьте на все вопросы перед завершением теста.');
+                    return;
+                }
+
+                // Отправляем прогресс для каждого урока
+                for (const answer of Object.values(selectedAnswers)) {
+                    const lessonNumber = parseInt(answer.lessonId.replace(/[^0-9]/g, ''));
+                    
+                    try {
+                        const response = await fetch('http://localhost:8000/progress/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
+                            body: JSON.stringify({
+                                lesson_id: lessonNumber,
+                                is_completed: answer.isCorrect
+                            })
+                        });
+
+                        if (!response.ok) {
+                            console.error('Ошибка сохранения прогресса');
+                        }
+                    } catch (error) {
+                        console.error('Ошибка:', error);
+                    }
+                }
+
+                // Обновляем UI
+                await loadUserProgress();
+                
+                // Скрываем попап
+                document.getElementById('preTestPopup').style.display = 'none';
+                
+                // Показываем уведомление об успешном завершении
+                showPopup('Тест завершен', 'Спасибо за прохождение предварительного теста! Теперь вы можете начать обучение.');
+            }
+
+            // Инициализация при загрузке страницы
+            document.addEventListener('DOMContentLoaded', async () => {
+                await loadUserData();
+                await loadUserProgress();
+            });
+        </script>
+    </div>
+</body>
+</html>

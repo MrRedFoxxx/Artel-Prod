@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artel Prod. - О курсе</title>
+    <link rel="icon" href="/assets/Icon.png" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+        @font-face {
+        font-family: 'Alternate-Gothic-No1';
+        src: 
+        url('assets/Fonts/alternategothicno1.woff') format('woff');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap; /* Чтобы текст не "прыгал" при загрузке */
+        }
+
+        .inter {
+        font-family: "Inter", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+        }
+        
+        body {
+        font-family: 'Inter', sans-serif;
+        font-weight: 400;
+        background-color: #000;
+        color: white;
+        overflow-x: hidden;
+        }
+
+        .main {
+            max-width: 1400px;
+            margin: auto;
+        }
+
+        .gothic-font {
+            font-family: 'Alternate-Gothic-No1', sans-serif;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+        
+        .animate-slide-left {
+            animation: slideInLeft 0.8s ease-out forwards;
+        }
+        
+        .animate-slide-right {
+            animation: slideInRight 0.8s ease-out forwards;
+        }
+        
+        .animate-delay-1 {
+            animation-delay: 0.2s;
+        }
+        
+        .animate-delay-2 {
+            animation-delay: 0.4s;
+        }
+        
+        .animate-delay-3 {
+            animation-delay: 0.6s;
+        }
+        
+        .animate-delay-4 {
+            animation-delay: 0.8s;
+        }
+        
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+        
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+        
+        .program-item {
+            transition: all 0.3s ease;
+        }
+        
+        .program-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #000;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 100;
+            padding: 12px 0;
+            left: 0;
+            top: 100%;
+        }
+        
+        .dropdown-content a {
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-content a:hover {
+            color: #ccc;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .arrow-line {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .arrow-line::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 105%;
+            width: 18.6rem;
+            height: 3px;
+            background-color: white;
+            transform: translateY(-50%);
+        }
+        
+        .author-arrow {
+            position: absolute;
+            top: 50%;
+            left: 40rem;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 24px;
+        }
+
+        /* Модальные окна */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            width: 90%;
+            max-width: 500px;
+            background-color: #111;
+            padding: 30px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: #ccc;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .form-input {
+            background-color: #222;
+            border: 1px solid #444;
+            color: white;
+            padding: 12px 15px;
+            border-radius: 6px;
+            width: 100%;
+            margin-bottom: 15px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #666;
+        }
+
+        .form-submit {
+            background-color: #fff;
+            color: #000;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .form-submit:hover {
+            background-color: #ddd;
+        }
+
+        .form-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #aaa;
+        }
+
+        .form-footer a {
+            color: #fff;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        
+        /* Стили для черно-белой фотографии */
+        .author-image-container {
+            position: relative;
+            width: 100%;
+            height: auto;
+        }
+        
+        .author-main-image {
+            margin-top: 12rem;
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transition: transform 0.3s ease;
+        }
+        
+        .author-bw-image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 75%; /* На 25% меньше основной */
+            height: auto;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 1.5rem;
+            filter: grayscale(100%);
+            opacity: 0.9;
+            z-index: 1;
+            transition: all 0.3s ease;
+            mix-blend-mode: hard-light;
+        }
+        
+        /* Стили для фонового изображения */
+        .bg-section {
+            position: relative;
+            width: 100%;
+            padding: 5rem 0;
+        }
+        
+        .bg-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('assets/kurs/fon.png');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.15;
+            z-index: -1;
+        }
+        
+        @media (max-width: 1024px) {
+            .responsive-flex {
+                flex-direction: column;
+            }
+            
+            .responsive-text {
+                font-size: 2.5rem;
+                line-height: 3rem;
+            }
+            
+            .responsive-padding {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            .responsive-section {
+                width: 100%;
+                padding: 0.5rem;
+            }
+            
+            .arrow-line::after {
+                width: 50px;
+            }
+            
+            .author-arrow {
+                left: calc(100% + 50px);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .responsive-text {
+                font-size: 2rem;
+                line-height: 2.5rem;
+            }
+            
+            .hero-title-text-style {
+                font-size: 3rem;
+                line-height: 3.5rem;
+            }
+            
+            .navigation-bar {
+                display: none;
+            }
+            
+            .contact-info-section2 {
+                display: none;
+            }
+            
+            .arrow-line::after {
+                display: none;
+            }
+            
+            .author-arrow {
+                display: none;
+            }
+            
+            .author-bw-image {
+                width: 70%;
+                max-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-black text-white font-sans">
+    <div class="max-w-screen-2xl mx-auto">
+        <!-- Header -->
+        <header class="flex justify-between items-center px-4 md:px-12 lg:px-24 bg-black shadow-lg relative z-50">
+            <a href="/index.html"><img src="assets/Logo.png" alt="Логотип" class="w-48 h-28 object-cover hover-scale"></a>
+            
+            <nav class="hidden md:flex gap-8">
+                <div class="dropdown">
+                    <button class="font-bold text-lg hover:text-gray-300 transition focus:outline-none">ПОРТФОЛИО</button>
+                    <div class="dropdown-content">
+                        <a href="/Portfolio-video.html" class="font-bold text-lg hover:text-gray-300 transition text-center">ВИДЕО</a>
+                        <a href="/Portfolio-photo.html" class="font-bold text-lg hover:text-gray-300 transition text-center">ФОТО</a>
+                    </div>
+                </div>
+                <a href="/Uslugi.html" class="font-bold text-lg hover:text-gray-300 transition">УСЛУГИ</a>
+                <a href="/Blog-news.html" class="font-bold text-lg hover:text-gray-300 transition">БЛОГ</a>
+                <span class="font-bold text-lg text-gray-300">КУРС</span>
+            </nav>
+            
+            <div class="hidden md:flex items-center">
+                <span class="font-normal text-xl">+7 980 678 20 93</span>
+                <div class="flex ml-7 gap-4">
+                    <a href="https://t.me/zarokmanager" class="text-white hover:text-blue-400 transition">
+                        <i class="fab fa-telegram text-5xl"></i>
+                    </a>
+                    <a href="https://wa.me/79806782093?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%F0%9F%91%8B%20%D0%AF%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7..." class="text-white hover:text-green-400 transition">
+                        <i class="fab fa-whatsapp text-5xl"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <button class="md:hidden text-white">
+                <i class="fas fa-bars text-3xl"></i>
+            </button>
+        </header>
+        <!-- Hero Section -->
+        <section class="py-12 px-4 md:px-12 lg:px-24 animate-fade-in">
+            <div class="flex flex-col lg:flex-row justify-between items-start">
+                <div class="lg:w-1/2 animate-slide-left">
+                    <h1 class="text-6xl gothic-font font-normal mb-8 leading-tight">
+                        БЕСПЛАТНЫЙ КУРС<br>ПО ФОТО И ВИДЕО СЪЕМКЕ
+                    </h1>
+                    
+                    <div class="mb-12">
+                        <p class="font-bold text-lg mb-4">Автор курса</p>
+                        <div class="flex items-center relative">
+                            <p class="text-6xl gothic-font font-normal mr-8 arrow-line">Киселев Антон</p>
+                            <i class="fas fa-arrow-right author-arrow"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-12">
+                        <p class="text-lg">
+                            <span>- </span><span class="font-bold">профессиональный фотограф, оператор, продюсер и монтажер</span><span>. Основатель продакшн студии Artel Production<br><br>- 5 лет в индустрии</span>
+                        </p>
+                    </div>
+                    
+                    <div class="flex items-center cursor-pointer" id="showVideoBtn">
+                        <div class="bg-white text-black rounded-full w-12 h-12 flex items-center justify-center hover-scale">
+                            <i class="fas fa-play text-xl"></i>
+                        </div>
+                        <p class="ml-4 text-lg">
+                            <span class="font-bold">СМОТРЕТЬ ШОУРИЛЛ<br></span><span class="font-normal">ARTEL 2025</span>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2 mt-12 lg:mt-0 animate-slide-right relative">
+                    <div class="flex justify-end mb-4">
+                        <div class="flex items-center gap-4 gothic-font">
+                            <span class="text-6xl font-normal opacity-50 cursor-pointer" id="loginBtn">ВХОД /</span>
+                            <span class="text-6xl font-normal cursor-pointer" id="registerBtn">РЕГИСТРАЦИЯ</span>
+                        </div>
+                    </div>
+                    <div class="author-image-container hover-scale">
+                        <img src="assets/kurs/pod_avtor.png" alt="Автор курса" class="author-main-image">
+                        <img src="assets/kurs/avtor.png" alt="Автор курса (ч/б)" class="author-bw-image">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Course For Whom Section -->
+        <section class="py-12 px-4 md:px-12 lg:px-24 animate-fade-in animate-delay-1">
+            <div class="flex flex-col md:flex-row mb-16">
+                <div class="md:w-1/2 bg-white text-black py-4 px-8 text-center">
+                    <h2 class="font-bold text-lg">Для кого этот курс</h2>
+                </div>
+                <div class="md:w-1/2 border border-white py-4 px-8 text-center">
+                    <h2 class="font-bold text-lg">Чему ты научишься</h2>
+                </div>
+            </div>
+            
+            <div class="mb-16">
+                <div class="flex flex-col md:flex-row mb-8 gothic-font">
+                    <h3 class="md:w-1/2 text-6xl font-normal mb-4 md:mb-0">Начинающих киноделов</h3>
+                    <h3 class="md:w-1/2 text-6xl font-normal">Новичков в видео</h3>
+                </div>
+                
+                <div class="flex flex-col md:flex-row">
+                    <p class="md:w-1/2 text-lg leading-relaxed mb-4 md:mb-0">
+                        Уже снимаешь, но хочешь получить теоретическую базу и улучшить свои навыки
+                    </p>
+                    <p class="md:w-1/2 text-lg leading-relaxed">
+                        Хочешь попробовать на себя работу оператора и фотографа
+                    </p>
+                </div>
+            </div>
+            
+            <div class="mb-16">
+                <div class="flex flex-col md:flex-row mb-8 gothic-font">
+                    <h3 class="md:w-1/2 text-6xl font-normal mb-4 md:mb-0">Блогеров</h3>
+                    <h3 class="md:w-1/2 text-6xl font-normal">Любителей</h3>
+                </div>
+                
+                <div class="flex flex-col md:flex-row">
+                    <p class="md:w-1/2 text-lg leading-relaxed mb-4 md:mb-0">
+                        Хочешь создавать более качественный контент, научиться ставить свет, выбирать ракурсы и продумывать монтаж
+                    </p>
+                    <p class="md:w-1/2 text-lg leading-relaxed">
+                        Снимаешь для себя и хочешь научиться создавать интересные и красивые истории из своих кадров
+                    </p>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row mb-16">
+                <div class="md:w-1/2 border border-white py-4 px-8 text-center">
+                    <h2 class="font-bold text-lg">Для кого этот курс</h2>
+                </div>
+                <div class="md:w-1/2 bg-white text-black py-4 px-8 text-center">
+                    <h2 class="font-bold text-lg">Чему ты научишься</h2>
+                </div>
+            </div>
+            <div>
+                <div class="flex flex-col md:flex-row mb-8 gothic-font">
+                    <h3 class="md:w-1/2 text-6xl font-normal mb-4 md:mb-0">Настройки камеры</h3>
+                    <h3 class="md:w-1/2 text-6xl font-normal">Организовывать процесс</h3>
+                </div>
+                
+                <div class="flex flex-col md:flex-row">
+                    <p class="md:w-1/2 text-lg leading-relaxed mb-4 md:mb-10">
+                        Правильно настраивать камеру: разберёшься с ISO, выдержкой, диафрагмой, фокусным расстоянием
+                    </p>
+                    <p class="md:w-1/2 text-lg leading-relaxed">
+                        Узнаешь из кого состоит съемочная команда, кто и для каких задач нужен, кого брать к себе в команду
+                    </p>
+                </div>
+                <div class="flex flex-col md:flex-row mb-8 gothic-font">
+                    <h3 class="md:w-1/2 text-6xl font-normal mb-4 md:mb-0">Свет и приборы</h3>
+                    <h3 class="md:w-1/2 text-6xl font-normal">Обработка</h3>
+                </div>
+                
+                <div class="flex flex-col md:flex-row">
+                    <p class="md:w-1/2 text-lg leading-relaxed mb-4 md:mb-0">
+                        Правильно выставлять свет и световые схемы, применять световые приборы, снимать в разных локация
+                    </p>
+                    <p class="md:w-1/2 text-lg leading-relaxed">
+                        Где и как делать постпродакшн материала, цветокоррекция и ретушь фото, монтаж в Adobe Premier Pro
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Learning Process Section -->
+        <section class="bg-section">
+            <div class="max-w-6xl mx-auto px-4 md:px-12 lg:px-24 animate-fade-in animate-delay-2">
+                <div class="flex flex-col md:flex-row items-center mb-16">
+                    <h2 class="text-8xl font-normal mb-4 md:mb-0 md:mr-12 gothic-font ">Как проходит обучение?</h2>
+                    <p class="text-2xl font-medium">
+                        Курс - это капля теории<br>и море практики
+                    </p>
+                </div>
+                
+                <div class="border-t border-white pt-8 mb-16">
+                    <div class="flex flex-col md:flex-row">
+                        <div class="md:w-2/3 flex flex-col md:flex-row">
+                            <div class="md:w-1/2 mb-8 md:mb-0 md:pr-8">
+                                <h3 class="text-5xl gothic-font font-normal mb-4">Изучаешь лекции</h3>
+                                <p class="text-lg leading-relaxed">
+                                    Смотришь уроки и изучаешь сопроводительные материалы
+                                </p>
+                            </div>
+                            <div class="md:w-1/2 md:pl-8">
+                                <h3 class="text-5xl gothic-font font-normal mb-4">Проходишь тесты</h3>
+                                <p class="text-lg leading-relaxed">
+                                    Закрепляешь знания на и открываешь себе доступ к новым лекции
+                                </p>
+                            </div>
+                        </div>
+                        <div class="md:w-1/3 md:pl-8">
+                            <h3 class="text-5xl gothic-font font-normal mb-4">Выпускной проект</h3>
+                            <p class="text-lg leading-relaxed">
+                                На основе выполненных заданий готовишь выпускной ролик или фотосъемку
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-20">
+                    <h2 class="text-8xl gothic-font font-normal mb-12">Программа</h2>
+                    
+                    <div class="border-t border-white pt-8">
+                        <div class="program-item py-4 px-4 rounded-lg transition-all duration-300">
+                            <div class="flex justify-between items-center">
+                                <p class="text-2xl font-medium">Препродакшн. Анализ контента и поиск идей</p>
+                                <i class="fas fa-plus text-3xl"></i>
+                            </div>
+                            <div class="border-t border-white mt-4"></div>
+                        </div>
+                        
+                        <div class="program-item py-4 px-4 rounded-lg transition-all duration-300">
+                            <div class="flex justify-between items-center">
+                                <p class="text-2xl font-medium">Виды камер и объективов. Настройка</p>
+                                <i class="fas fa-plus text-3xl"></i>
+                            </div>
+                            <div class="border-t border-white mt-4"></div>
+                        </div>
+                        
+                        <div class="program-item py-4 px-4 rounded-lg transition-all duration-300">
+                            <div class="flex justify-between items-center">
+                                <p class="text-2xl font-medium">Свет для видео и фото. Световые схемы</p>
+                                <i class="fas fa-plus text-3xl"></i>
+                            </div>
+                            <div class="border-t border-white mt-4"></div>
+                        </div>
+                        
+                        <div class="program-item py-4 px-4 rounded-lg transition-all duration-300">
+                            <div class="flex justify-between items-center">
+                                <p class="text-2xl font-medium">Работа на площадке. Взаимодействие с командой на площадке</p>
+                                <i class="fas fa-plus text-3xl"></i>
+                            </div>
+                            <div class="border-t border-white mt-4"></div>
+                        </div>
+                        
+                        <div class="program-item py-4 px-4 rounded-lg transition-all duration-300">
+                            <div class="flex justify-between items-center">
+                                <p class="text-2xl font-medium">Постпродакшн. Обработка материала</p>
+                                <i class="fas fa-plus text-3xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-16 px-4 md:px-12 lg:px-24 animate-fade-in animate-delay-3">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex justify-center mb-16">
+                    <div class="flex items-center gap-4 gothic-font">
+                        <span class="text-6xl font-normal opacity-50 cursor-pointer" id="loginBtnFooter">ВХОД /</span>
+                        <span class="text-6xl font-normal cursor-pointer" id="registerBtnFooter">РЕГИСТРАЦИЯ</span>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col md:flex-row">
+                    <div class="md:w-2/5 mb-12 md:mb-0">
+                        <h3 class="font-bold text-lg mb-4">О нас</h3>
+                        <p class="text-lg">
+                            Artel production – фото и видео продакшн полного цикла. Работаем в Москве, Санкт-Петербурге и по всему миру.
+                        </p>
+                    </div>
+                    
+                    <div class="md:w-2/5 mb-12 md:mb-0 md:px-8">
+                        <h3 class="font-bold text-lg mb-4">Быстрые ссылки</h3>
+                        <div class="flex flex-col gap-2">
+                            <a href="/index.html" class="text-lg hover:text-gray-300 transition">Главная</a>
+                            <a href="#" class="text-lg hover:text-gray-300 transition" onclick="openPrivacyPopup()">Политика конфиденциальности</a>
+                            <a href="/Portfolio-video.html" class="text-lg hover:text-gray-300 transition">Видео работы</a>
+                            <a href="/Portfolio-photo.html" class="text-lg hover:text-gray-300 transition">Фото работы</a>
+                            <a href="/Uslugi.html" class="text-lg hover:text-gray-300 transition">Услуги</a>
+                            <a href="/Blog-news.html" class="text-lg hover:text-gray-300 transition">Блог</a>
+                            <a href="/Kurs-info.html" class="text-lg hover:text-gray-300 transition">Курс</a>
+                        </div>
+                    </div>
+                    
+                    <div class="md:w-1/5">
+                        <h3 class="font-bold text-lg mb-4">Контакты</h3>
+                        <div class="mb-6">
+                            <div class="flex items-center">
+                                <i class="fas fa-envelope mr-2"></i>
+                                <span class="text-lg">info@artel.ru</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <a href="https://t.me/pagezarok" class="text-white hover:text-blue-400 transition">
+                                <i class="fab fa-telegram text-2xl"></i>
+                            </a>
+                            <a href="https://wa.me/79806782093?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%F0%9F%91%8B%20%D0%AF%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7..." class="text-white hover:text-green-400 transition">
+                                <i class="fab fa-whatsapp text-2xl"></i>
+                            </a>
+                            <a href="https://vk.com/zarok485prod" class="text-white hover:text-green-400 transition">
+                                <i class="fab fa-vk text-2xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Модальное окно для видео -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <div class="video-container">
+                <iframe id="youtubeVideo" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для входа -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeLoginModal">&times;</span>
+            <h2 class="form-title">Вход в систему</h2>
+            <form id="loginForm">
+                <input type="text" id="loginUsername" class="form-input" required placeholder="Логин" >
+                <input type="password"  id="loginPassword" required placeholder="Пароль" class="form-input">
+                <button type="submit" class="form-submit">Войти</button>
+                <div class="form-footer">
+                    Нет аккаунта? <a id="switchToRegister">Зарегистрироваться</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно для регистрации -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeRegisterModal">&times;</span>
+            <h2 class="form-title">Регистрация</h2>
+            <form id="registerForm">
+                <input type="text" class="form-input" id="regFirstName" required placeholder="Имя">
+                <input type="text" class="form-input" id="regLastName" required placeholder="Фамилия">
+                <input type="text" class="form-input" id="regUsername" required placeholder="Логин">
+                <input type="password" class="form-input" id="regPassword" required placeholder="Пароль">
+                <input type="password" class="form-input" required placeholder="Повторите пароль" >
+                <button type="submit" class="form-submit">Зарегистрироваться</button>
+                <div class="form-footer">
+                    Уже есть аккаунт? <a id="switchToLogin">Войти</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Анимация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Показываем элементы с анимацией
+            const animatedElements = document.querySelectorAll('.animate-fade-in, .animate-slide-left, .animate-slide-right');
+            animatedElements.forEach(el => {
+                el.style.opacity = '1';
+            });
+            
+            // Анимация при наведении на элементы программы
+            const programItems = document.querySelectorAll('.program-item');
+            programItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateX(10px)';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateX(0)';
+                });
+            });
+            
+            // Анимация при скролле
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('opacity-100', 'translate-y-0');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('[data-animate-on-scroll]').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Обработка клика на кнопку "Смотреть шоурилл"
+            const showVideoBtn = document.getElementById('showVideoBtn');
+            const videoModal = document.getElementById('videoModal');
+            const closeModal = document.getElementById('closeModal');
+            const youtubeVideo = document.getElementById('youtubeVideo');
+
+            showVideoBtn.addEventListener('click', function() {
+                // Вставьте ID вашего YouTube видео вместо 'YOUR_VIDEO_ID'
+                youtubeVideo.src = "https://www.youtube.com/embed/YOUR_VIDEO_ID?autoplay=1";
+                videoModal.style.display = "flex";
+                document.body.style.overflow = "hidden";
+            });
+
+            closeModal.addEventListener('click', function() {
+                youtubeVideo.src = "";
+                videoModal.style.display = "none";
+                document.body.style.overflow = "auto";
+            });
+
+            // Обработка модальных окон входа и регистрации
+            const loginBtn = document.getElementById('loginBtn');
+            const registerBtn = document.getElementById('registerBtn');
+            const loginBtnFooter = document.getElementById('loginBtnFooter');
+            const registerBtnFooter = document.getElementById('registerBtnFooter');
+            
+            const loginModal = document.getElementById('loginModal');
+            const registerModal = document.getElementById('registerModal');
+            
+            const closeLoginModal = document.getElementById('closeLoginModal');
+            const closeRegisterModal = document.getElementById('closeRegisterModal');
+            
+            const switchToRegister = document.getElementById('switchToRegister');
+            const switchToLogin = document.getElementById('switchToLogin');
+
+            // Функции для открытия/закрытия модальных окон
+            function openLoginModal() {
+                loginModal.style.display = "flex";
+                document.body.style.overflow = "hidden";
+            }
+
+            function closeLoginModalFunc() {
+                loginModal.style.display = "none";
+                document.body.style.overflow = "auto";
+            }
+
+            function openRegisterModal() {
+                registerModal.style.display = "flex";
+                document.body.style.overflow = "hidden";
+            }
+
+            function closeRegisterModalFunc() {
+                registerModal.style.display = "none";
+                document.body.style.overflow = "auto";
+            }
+
+            // Обработчики событий
+            loginBtn.addEventListener('click', openLoginModal);
+            registerBtn.addEventListener('click', openRegisterModal);
+            loginBtnFooter.addEventListener('click', openLoginModal);
+            registerBtnFooter.addEventListener('click', openRegisterModal);
+            
+            closeLoginModal.addEventListener('click', closeLoginModalFunc);
+            closeRegisterModal.addEventListener('click', closeRegisterModalFunc);
+            
+            switchToRegister.addEventListener('click', function() {
+                closeLoginModalFunc();
+                openRegisterModal();
+            });
+            
+            switchToLogin.addEventListener('click', function() {
+                closeRegisterModalFunc();
+                openLoginModal();
+            });
+
+            // Закрытие модальных окон при клике вне их
+            window.addEventListener('click', function(event) {
+                if (event.target == videoModal) {
+                    youtubeVideo.src = "";
+                    videoModal.style.display = "none";
+                    document.body.style.overflow = "auto";
+                }
+                if (event.target == loginModal) {
+                    closeLoginModalFunc();
+                }
+                if (event.target == registerModal) {
+                    closeRegisterModalFunc();
+                }
+            });
+
+            // Обработка форм
+            document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+    
+            // Получаем данные из формы
+            const formData = new URLSearchParams();
+            formData.append('username', document.getElementById('loginUsername').value);
+            formData.append('password', document.getElementById('loginPassword').value);
+
+            try {
+                // Отправляем запрос на сервер (обратите внимание на /token)
+                const response = await fetch('http://localhost:8000/token', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: formData
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    // Сохраняем токен и ID пользователя
+                    localStorage.setItem('access_token', result.access_token);
+                    localStorage.setItem('user_id', result.user_id);
+                    
+                    alert('Вход выполнен!');
+                    closeLoginModalFunc();
+                    
+                    // Перенаправляем на страницу курса
+                    window.location.href = 'Kurs.html';
+                } else {
+                    alert('Ошибка: ' + (result.detail || 'Неверный логин или пароль'));
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                alert('Сервер не отвечает. Попробуйте позже.');
+            }
+        });
+
+            document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+    
+            // Получаем данные из формы
+            const formData = {
+                first_name: document.getElementById('regFirstName').value,
+                last_name: document.getElementById('regLastName').value,
+                username: document.getElementById('regUsername').value,
+                password: document.getElementById('regPassword').value
+            };
+
+            try {
+                // Отправляем запрос на сервер
+                const response = await fetch('http://localhost:8000/register/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    // Сохраняем токен и ID пользователя
+                    localStorage.setItem('access_token', result.access_token);
+                    localStorage.setItem('user_id', result.user_id);
+                    
+                    alert('Регистрация успешна!');
+                    closeRegisterModalFunc();
+                    
+                    // Перенаправляем на страницу курса
+                    window.location.href = 'Kurs.html';
+                } else {
+                    alert('Ошибка: ' + (result.detail || 'Неизвестная ошибка'));
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                alert('Сервер не отвечает. Попробуйте позже.');
+            }
+        });
+        });
+    </script>
+</body>
+</html>

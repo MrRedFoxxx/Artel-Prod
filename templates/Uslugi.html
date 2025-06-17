@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artel Prod. - Услуги</title>
+    <link rel="icon" href="/assets/Icon.png" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+        @font-face {
+        font-family: 'Alternate-Gothic-No1';
+        src: 
+        url('assets/Fonts/alternategothicno1.woff') format('woff');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap; /* Чтобы текст не "прыгал" при загрузке */
+        }
+
+        .inter {
+        font-family: "Inter", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+        }
+        
+        body {
+        font-family: 'Inter', sans-serif;
+        font-weight: 400;
+        background-color: #000;
+        color: white;
+        overflow-x: hidden;
+        }
+
+        .main {
+            max-width: 1400px;
+            margin: auto;
+        }
+
+        .gothic-font {
+            font-family: 'Alternate-Gothic-No1', sans-serif;
+        }
+        .nav-link {
+            transition: color 0.3s;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+    
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #000;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 100;
+            padding: 12px 0;
+            left: 0;
+            top: 100%;
+        }
+        
+        .dropdown-content a {
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-content a:hover {
+            color: #ccc;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .nav-link:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        .service-card {
+            transition: transform 0.3s;
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+        .contact-input {
+            background: transparent;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .contact-input:focus {
+            outline: none;
+            border-bottom: 1px solid white;
+        }
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .feature-icon {
+            margin-right: 0.75rem;
+            min-width: 20px;
+            text-align: center;
+        }
+        .dark-text {
+            opacity: 0.5;
+        }
+        .section-container {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        .section-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.1;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        @media (min-width: 768px) {
+            .features-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .content-wrapper {
+                padding: 0 2rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .content-wrapper {
+                padding: 0 4rem;
+            }
+        }
+        .feature-column {
+            display: flex;
+            flex-direction: column;
+        }
+        .feature-title {
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        .feature-title:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: white;
+        }
+        .service-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+        @media (min-width: 768px) {
+            .service-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1.5rem;
+            }
+        }
+        .service-card {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+        }
+    </style>
+</head>
+<body class="bg-black text-white">
+    <div class="main">
+        <!-- Header -->
+        <header class="flex justify-between items-center px-4 md:px-12 lg:px-24 bg-black shadow-lg relative z-50">
+            <a href="/index.html"><img src="assets/Logo.png" alt="Логотип" class="w-48 h-28 object-cover hover-scale"></a>
+            
+            <nav class="hidden md:flex gap-8">
+                <div class="dropdown">
+                    <button class="font-bold text-lg hover:text-gray-300 transition focus:outline-none">ПОРТФОЛИО</button>
+                    <div class="dropdown-content">
+                        <a href="/Portfolio-video.html" class="font-bold text-lg hover:text-gray-300 transition text-center">ВИДЕО</a>
+                        <a href="/Portfolio-photo.html" class="font-bold text-lg hover:text-gray-300 transition text-center">ФОТО</a>
+                    </div>
+                </div>
+                <span class="font-bold text-lg text-gray-300">УСЛУГИ</span>
+                <a href="/Blog-news.html" class="font-bold text-lg hover:text-gray-300 transition">БЛОГ</a>
+                <a href="/Kurs-info.html" class="font-bold text-lg hover:text-gray-300 transition">КУРС</a>
+                
+            </nav>
+            
+            <div class="hidden md:flex items-center">
+                <span class="font-normal text-xl">+7 980 678 20 93</span>
+                <div class="flex ml-7 gap-4">
+                    <a href="https://t.me/zarokmanager" class="text-white hover:text-blue-400 transition">
+                        <i class="fab fa-telegram text-5xl"></i>
+                    </a>
+                    <a href="https://wa.me/79806782093?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%F0%9F%91%8B%20%D0%AF%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7..." class="text-white hover:text-green-400 transition">
+                        <i class="fab fa-whatsapp text-5xl"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <button class="md:hidden text-white">
+                <i class="fas fa-bars text-3xl"></i>
+            </button>
+        </header>
+
+        <!-- Hero Section - Видеосъемка -->
+        <section class="section-container flex items-center">
+            <img src="/assets/Uslugi/Video.jpg" alt="Видеосъемка" class="section-bg">
+            <div class="content-wrapper pt-16 pb-20">
+                <h1 class="gothic-font text-6xl mb-12">ВИДЕОСЪЕМКА</h1>
+                
+                <div class="service-grid">
+                    <!-- Low Budget -->
+                    <div class="service-card">
+                        <h3 class="font-bold text-lg mb-2">Низкий бюджет</h3>
+                        <p class="gothic-font text-6xl mb-4">от 50 000 р</p>
+                        <button class="w-full bg-gray-300 text-black py-3 px-4 font-medium hover:bg-gray-400 transition">
+                            ЗАКАЗАТЬ
+                        </button>
+                    </div>
+                    
+                    <!-- Medium Budget -->
+                    <div class="service-card">
+                        <h3 class="font-bold text-lg mb-2">Средний бюджет</h3>
+                        <p class="gothic-font text-6xl mb-4">от 100 000 р</p>
+                        <button class="w-full bg-gray-300 text-black py-3 px-4 font-medium hover:bg-gray-400 transition">
+                            ЗАКАЗАТЬ
+                        </button>
+                    </div>
+                    
+                    <!-- High Budget -->
+                    <div class="service-card">
+                        <h3 class="font-bold text-lg mb-2">Высокий бюджет</h3>
+                        <p class="gothic-font text-6xl mb-4">от 300 000 р</p>
+                        <button class="w-full bg-red-700 text-white py-3 px-4 font-medium hover:bg-red-800 transition">
+                            ЗАКАЗАТЬ
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Features Grid -->
+                <div class="features-grid">
+                    <!-- Low Budget Features -->
+                    <div class="feature-column">
+                        <h4 class="font-bold mb-4 feature-title">Предпродакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Сценарий</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50">Раскадровка</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50">Креатив</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50">Режиссерский сценарий</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50 mb-6">Скаутинг локации</p>
+                        </div>
+                        
+                        <h4 class="font-bold mb-4 feature-title">Продакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Сокращенная команда</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Низкобюджетное оборудование</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50">Гример</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50 mb-6">Костюмер</p>
+                        </div>
+                        
+                        <h4 class="font-bold mb-4 feature-title">Постпродакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Монтаж</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Инфографика</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Саунддизайн</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50">2D графика</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50">3D графика</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Medium Budget Features -->
+                    <div class="feature-column">
+                        <h4 class="font-bold mb-4 feature-title">Предпродакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Сценарий</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Раскадровка</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50">Креатив</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50">Режиссерский сценарий</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50 mb-6">Скаутинг локации</p>
+                        </div>
+                        
+                        <h4 class="font-bold mb-4 feature-title">Продакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Стандартная команда</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Среднебюджетное оборудование</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Гример</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50 mb-6">Костюмер</p>
+                        </div>
+                        
+                        <h4 class="font-bold mb-4 feature-title">Постпродакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Монтаж</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Инфографика</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Саунддизайн</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">2D графика</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50">3D графика</p>
+                        </div>
+                    </div>
+                    
+                    <!-- High Budget Features -->
+                    <div class="feature-column">
+                        <h4 class="font-bold mb-4 feature-title">Предпродакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Сценарий</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Раскадровка</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Креатив</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Режиссерский сценарий</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75 mb-6">Скаутинг локации</p>
+                        </div>
+                        
+                        <h4 class="font-bold mb-4 feature-title">Продакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Оптимальная команда</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Высокобюджетное оборудование</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75 mb-6">Гример</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75 mb-6">Костюмер</p>
+                        </div>
+
+                        <h4 class="font-bold mb-4 feature-title">Постпродакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Монтаж</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Инфографика</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Саунддизайн</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">2D графика</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">3D графика</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reels Section -->
+        <section class="section-container flex items-center">
+            <div class="content-wrapper pt-16 pb-20">
+                <h1 class="gothic-font text-6xl mb-12">СЪЕМКА REELS</h1>
+                
+                <div class="service-grid">
+                    <!-- Low Budget -->
+                    <div class="service-card">
+                        <h3 class="font-bold text-lg mb-2">Низкий бюджет</h3>
+                        <p class="gothic-font text-6xl mb-4">от 15 000 р</p>
+                        <button class="w-full bg-gray-300 text-black py-3 px-4 font-medium hover:bg-gray-400 transition">
+                            ЗАКАЗАТЬ
+                        </button>
+                    </div>
+                    
+                    <!-- Medium Budget -->
+                    <div class="service-card">
+                        <h3 class="font-bold text-lg mb-2">Средний бюджет</h3>
+                        <p class="gothic-font text-6xl mb-4">от 50 000 р</p>
+                        <button class="w-full bg-gray-300 text-black py-3 px-4 font-medium hover:bg-gray-400 transition">
+                            ЗАКАЗАТЬ
+                        </button>
+                    </div>
+                    
+                    <!-- High Budget -->
+                    <div class="service-card">
+                        <h3 class="font-bold text-lg mb-2">Высокий бюджет</h3>
+                        <p class="gothic-font text-6xl mb-4">от 150 000 р</p>
+                        <button class="w-full bg-red-700 text-white py-3 px-4 font-medium hover:bg-red-800 transition">
+                            ЗАКАЗАТЬ
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Features Grid -->
+                <div class="features-grid">
+                    <!-- Low Budget Features -->
+                    <div class="feature-column">
+                        <h4 class="font-bold mb-4 feature-title">Предпродакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">1-5 видео</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Сценарий</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50">Раскадровка</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50 mb-6">Креатив</p>
+                        </div>
+                        
+                        <h4 class="font-bold mb-4 feature-title">Продакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Сокращенная команда</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Низкобюджетное оборудование</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50 mb-6">Гример</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50 mb-6">Костюмер</p>
+                        </div>
+                        
+                        <h4 class="font-bold mb-4 feature-title">Постпродакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Монтаж</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50">Инфографика</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50">Саунддизайн</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50">2D графика</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50">3D графика</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Medium Budget Features -->
+                    <div class="feature-column">
+                        <h4 class="font-bold mb-4 feature-title">Предпродакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">5-10 видео</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Сценарий</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50">Раскадровка</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50 mb-6">Креатив</p>
+                        </div>
+                        
+                        <h4 class="font-bold mb-4 feature-title">Продакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Стандартная команда</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Среднебюджетное оборудование</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75 mb-6">Гример</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50">Костюмер</p>
+                        </div>
+                        
+                        <h4 class="font-bold mb-4 feature-title">Постпродакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Монтаж</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Инфографика</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Саунддизайн</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50">2D графика</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50">3D графика</p>
+                        </div>
+                    </div>
+                    
+                    <!-- High Budget Features -->
+                    <div class="feature-column">
+                        <h4 class="font-bold mb-4 feature-title">Предпродакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">10-20 видео</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Сценарий</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Раскадровка</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75 mb-6">Креатив</p>
+                        </div>
+                        
+                        <h4 class="font-bold mb-4 feature-title">Продакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Оптимальная команда</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Высокобюджетное оборудование</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75 mb-6">Гример</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75 mb-6">Костюмер</p>
+                        </div>
+                        
+                        <h4 class="font-bold mb-4 feature-title">Постпродакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Монтаж</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Инфографика</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Саунддизайн</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">2D графика</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">3D графика</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Photo Section -->
+        <section class="section-container flex items-center">
+            <img src="/assets/Uslugi/Foto.png" alt="Фотосъемка" class="section-bg">
+            <div class="content-wrapper pt-16 pb-20">
+                <h1 class="gothic-font text-6xl mb-12 uppercase">ФОТОСЪЕМКА</h1>
+                
+                <div class="service-grid">
+                    <!-- Low Budget -->
+                    <div class="service-card">
+                        <h3 class="font-bold text-lg mb-2">Низкий бюджет</h3>
+                        <p class="gothic-font text-6xl mb-4">от 20 000 р</p>
+                        <button class="w-full bg-gray-300 text-black py-3 px-4 font-medium hover:bg-gray-400 transition">
+                            ЗАКАЗАТЬ
+                        </button>
+                    </div>
+                    
+                    <!-- Medium Budget -->
+                    <div class="service-card">
+                        <h3 class="font-bold text-lg mb-2">Средний бюджет</h3>
+                        <p class="gothic-font text-6xl mb-4">от 100 000 р</p>
+                        <button class="w-full bg-gray-300 text-black py-3 px-4 font-medium hover:bg-gray-400 transition">
+                            ЗАКАЗАТЬ
+                        </button>
+                    </div>
+                    
+                    <!-- High Budget -->
+                    <div class="service-card">
+                        <h3 class="font-bold text-lg mb-2">Высокий бюджет</h3>
+                        <p class="gothic-font text-6xl mb-4">от 200 000 р</p>
+                        <button class="w-full bg-red-700 text-white py-3 px-4 font-medium hover:bg-red-800 transition">
+                            ЗАКАЗАТЬ
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Features Grid -->
+                <div class="features-grid">
+                    <!-- Low Budget Features -->
+                    <div class="feature-column">
+                        <h4 class="font-bold mb-4 feature-title">Предпродакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Скаутинг локации</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50">Концепция</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50 mb-6">Раскадровка</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50 mb-6">Креатив</p>
+                        </div>
+                        
+                        <h4 class="font-bold mb-4 feature-title">Продакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Сокращенная команда</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">1-2ч. съемочного процесса</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50 mb-6">Модели</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50 mb-6">Гример</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50 mb-6">Стилист</p>
+                        </div>
+                        
+                        <h4 class="font-bold mb-4 feature-title">Постпродакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Отбор фото</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Цветкор</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">До 20 фото в ретуши</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Отдаем исходники</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50">Графика</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Medium Budget Features -->
+                    <div class="feature-column">
+                        <h4 class="font-bold mb-4 feature-title">Предпродакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Скаутинг локации</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Концепция</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Раскадровка</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50 mb-6">Креатив</p>
+                        </div>
+                        
+                        <h4 class="font-bold mb-4 feature-title">Продакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Стандартная команда</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">3-5ч. съемочного процесса</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75 mb-6">Модели</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75 mb-6">Гример</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50 mb-6">Стилист</p>
+                        </div>
+                        
+                        <h4 class="font-bold mb-4 feature-title">Постпродакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Отбор фото</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Цветкор</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">До 100 фото в ретуши</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Отдаем исходники</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50">Графика</p>
+                        </div>
+                    </div>
+                    
+                    <!-- High Budget Features -->
+                    <div class="feature-column">
+                        <h4 class="font-bold mb-4 feature-title">Предпродакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Скаутинг локации</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Концепция</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Раскадровка</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75 mb-6">Креатив</p>
+                        </div>
+                        
+                        <h4 class="font-bold mb-4 feature-title">Продакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Сокращенная команда</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">1-2ч. съемочного процесса</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75 mb-6">Модели</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75 mb-6">Гример</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75 mb-6">Стилист</p>
+                        </div>
+                        
+                        <h4 class="font-bold mb-4 feature-title">Постпродакшен</h4>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Отбор фото</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Цветкор</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">До 200 фото в ретуши</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Отдаем исходники</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-75">Графика</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Work Stages Section -->
+        <section class="py-20 px-4 lg:px-32 xl:px-44">
+            <div class="container mx-auto">
+                <h2 class="gothic-font text-6xl mb-16 uppercase">Этапы работы</h2>
+                
+                <div class="w-full h-px bg-white mb-12"></div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                    <div>
+                        <h3 class="gothic-font text-6xl mb-6">01 / Предпродакшн</h3>
+                        <p class="text-lg leading-relaxed text-justify">
+                            Он включает в себя подготовительные работы к съёмкам. Данный процесс наиболее важный. 
+                            От него во многом зависит успешность процесса и результат съёмок видео. В препродакшн 
+                            входит работа по написанию сценария. Причем сценарий пишется для видео любой длительности – 
+                            от нескольких минут, до нескольких часов. Создание сценария – один из наиболее ответственных 
+                            этапов создания видео.
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="gothic-font text-6xl mb-6">02 / Продакшн</h3>
+                        <p class="text-lg leading-relaxed text-justify">
+                            Это и есть процесс съёмок. На съёмочной площадке команда снимают сырой видеоматериал, 
+                            из которого в последствии создается готовый видеопродукт. Этап продакшн в основном 
+                            включает в себя все, что касается непосредственно съемки видео. Создание видео помимо 
+                            съемки включает в себя огромное количество закадровых работ поэтому этапом продакшн 
+                            создание видео не ограничивается.
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="gothic-font text-6xl mb-6">03 / Постпродакшн</h3>
+                        <p class="text-lg leading-relaxed text-justify">
+                            Это приведение отснятого материала к запланированному виду. Сюда входит целый комплекс 
+                            мероприятий: работа по видеомонтажу и композитингу, дизайн и анимация, звукорежиссура 
+                            и озвучивание видеоматериала, а также финальная цветокоррекция. Именно на финале 
+                            постпродакшн заканчивается производство видеороликов любого назначения, размера, 
+                            длительности и формата.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="py-20 px-4 lg:px-32 xl:px-44">
+            <div class="container mx-auto">
+                <div class="flex flex-col lg:flex-row justify-between">
+                    <div class="lg:w-1/3 mb-12 lg:mb-0">
+                        <h3 class="gothic-font text-6xl mb-8">Контакты</h3>
+                        <p class="gothic-font text-6xl mb-6">INFO@ARTEL.RU</p>
+                        <p class="gothic-font text-6xl mb-12">+7 (985) 514 80 76</p>
+                        
+                        <div class="flex space-x-6">
+                            <a href="#" class="text-white hover:text-blue-300">
+                                <i class="fab fa-telegram text-9xl"></i>
+                            </a>
+                            <a href="#" class="text-white hover:text-green-300">
+                                <i class="fab fa-whatsapp text-9xl"></i>
+                            </a>
+                            <a href="#" class="text-white hover:text-blue-300">
+                                <i class="fab fa-vk text-9xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="lg:w-1/2">
+                        <h3 class="gothic-font text-6xl mb-12 text-right font-bold">Оставь заявку</h3>
+                        
+                        <p class="text-lg leading-relaxed text-right mb-12 max-w-lg ml-auto">
+                            Расскажите о себе и том чем мы можем<br>вам помочь, мы свяжемся с вами, 
+                            чтобы<br>обсудить подробности и познакомиться
+                        </p>
+                        
+                        <form class="space-y-8">
+                            <div>
+                                <p class="mb-2">Имя</p>
+                                <input type="text" class="w-full contact-input py-2">
+                            </div>
+                            
+                            <div>
+                                <p class="mb-2">Номер телефона</p>
+                                <input type="tel" class="w-full contact-input py-2" placeholder="+7 (999) 999-99-99">
+                            </div>
+                            
+                            <div>
+                                <p class="mb-2">Ваша задача</p>
+                <input type="text" class="w-full contact-input py-2">
+            </div>
+            
+            <div class="text-right">
+                <button class="border-2 border-white px-12 py-3 font-medium hover:bg-white hover:text-black transition">
+                    Отправить
+                </button>
+                <p class="text-xs mt-4">
+                    Нажимая кнопку "Отправить", вы соглашаетесь с <a href="#" class="underline">Политикой конфиденциальности</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+            </div>
+        </section>
+
+        <!-- Футер -->
+        <footer class="py-16 px-4 md:px-12 lg:px-24 animate-fade-in animate-delay-3">    
+                <div class="flex flex-col md:flex-row">
+                    <div class="md:w-2/5 mb-12 md:mb-0">
+                        <h3 class="font-bold text-lg mb-4">О нас</h3>
+                        <p class="text-lg">
+                            Artel production – фото и видео<br>продакшн полного цикла.<br>Работаем в Москве, Санкт-<br>Петербурге и по всему миру.
+                        </p>
+                    </div>
+                    
+                    <div class="md:w-2/5 mb-12 md:mb-0 md:px-8">
+                        <h3 class="font-bold text-lg mb-4">Быстрые ссылки</h3>
+                        <div class="flex flex-col gap-2">
+                            <a href="/index.html" class="text-lg hover:text-gray-300 transition">Главная</a>
+                            <a href="#" class="text-lg hover:text-gray-300 transition" onclick="openPrivacyPopup()">Политика конфиденциальности</a>
+                            <a href="/Portfolio-video.html" class="text-lg hover:text-gray-300 transition">Видео работы</a>
+                            <a href="/Portfolio-photo.html" class="text-lg hover:text-gray-300 transition">Фото работы</a>
+                            <a href="/Uslugi.html" class="text-lg hover:text-gray-300 transition">Услуги</a>
+                            <a href="/Blog-news.html" class="text-lg hover:text-gray-300 transition">Блог</a>
+                            <a href="/Kurs-info.html" class="text-lg hover:text-gray-300 transition">Курс</a>
+                        </div>
+                    </div>
+                    
+                    <div class="md:w-1/5">
+                        <h3 class="font-bold text-lg mb-4">Контакты</3>
+                        <div class="mb-6">
+                            <div class="flex items-center">
+                                <i class="fas fa-envelope mr-2"></i>
+                                <span class="text-lg">info@artel.ru</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <a href="https://t.me/pagezarok" class="text-white hover:text-blue-400 transition">
+                                <i class="fab fa-telegram text-2xl"></i>
+                            </a>
+                            <a href="https://wa.me/79806782093?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%F0%9F%91%8B%20%D0%AF%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7..." class="text-white hover:text-green-400 transition">
+                                <i class="fab fa-whatsapp text-2xl"></i>
+                            </a>
+                            <a href="https://vk.com/zarok485prod" class="text-white hover:text-green-400 transition">
+                                <i class="fab fa-vk text-2xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <script>
+            // Mobile menu toggle functionality can be added here if needed
+            document.addEventListener('DOMContentLoaded', function() {
+                // Any JavaScript functionality can be added here
+            });
+        </script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artel Prod. - Главная</title>
+  <link rel="icon" href="/assets/Icon.png" type="image/png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    
+    @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+    @font-face {
+    font-family: 'Alternate-Gothic-No1';
+    src: 
+      url('assets/Fonts/alternategothicno1.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap; 
+    }
+
+    .inter {
+      font-family: "Inter", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 400;
+      font-style: normal;
+    }
+    
+    body {
+      font-family: 'Alternate-Gothic-No1', arial;
+      font-weight: 400;
+      background-color: #000;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    .main {
+      margin: auto;
+    }
+    
+    .content-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    
+    .image-opacity {
+      opacity: 0.85;
+      transition: opacity 0.3s ease;
+    }
+
+    
+    .image-opacity:hover {
+      opacity: 1;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    
+    .animate-fade-in {
+      animation: fadeIn 0.8s ease forwards;
+    }
+    
+    .animate-slide-left {
+      animation: slideInLeft 0.8s ease forwards;
+    }
+    
+    .animate-slide-right {
+      animation: slideInRight 0.8s ease forwards;
+    }
+    
+    /* Анимация движения */
+    @keyframes marquee {
+      0% { transform: translateX(-20%); }  
+      100% { transform: translateX(-50%); }  
+    }
+
+    /* Основной контейнер */
+    .marquee-section {
+      width: 100%;
+      overflow: visible;  
+      position: relative;
+    }
+
+    /* Бегущий текст */
+    .animate-marquee {
+      display: inline-block;
+      white-space: nowrap;
+      padding-right: 100%;  
+      animation: marquee 15s linear infinite;
+    }
+    
+    .hover-scale {
+      transition: transform 0.3s ease;
+    }
+    
+    .hover-scale:hover {
+      transform: scale(1.03);
+    }
+    
+    .hover-underline {
+      position: relative;
+    }
+    
+    .hover-underline::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background-color: white;
+      transition: width 0.3s ease;
+    }
+    
+    .hover-underline:hover::after {
+      width: 100%;
+    }
+    
+    .border-animate {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .border-animate::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 2px;
+    }
+    
+    .border-animate:hover::before {
+      left: 0;
+    }
+    
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #000;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 100;
+      padding: 12px 0;
+      left: 0;
+      top: 100%;
+    }
+    
+    .dropdown-content a {
+      color: white;
+      padding: 8px 16px;
+      text-decoration: none;
+      display: block;
+      font-size: 16px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    
+    .dropdown-content a:hover {
+      color: #ccc;
+    }
+    
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    
+    /* Модальное окно */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      overflow: auto;
+    }
+    
+    .modal-content {
+      position: relative;
+      margin: auto;
+      padding: 0;
+      width: 80%;
+      max-width: 1200px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: white;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 1001;
+    }
+    
+    /* Видео контейнер */
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      z-index: 4;
+    }
+    
+    .video-container iframe,
+    .video-container video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    
+    /* YouTube видео фон */
+    .hero-video-container {
+      position: relative;
+      width: 100%;
+      height: 1050px;
+      overflow: hidden;
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    
+    .youtube-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    
+    .youtube-background iframe {
+      width: 100vw;
+      height: 56.25vw;
+      min-height: 100vh;
+      min-width: 177.77vh;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.7;
+    }
+    
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
+    
+    /* Стили для кнопки play */
+    .video-thumbnail {
+      position: relative;
+      cursor: pointer;
+    }
+    
+    .play-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      font-size: 3rem;
+      color: white;
+      text-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+    
+    .video-thumbnail:hover .play-button {
+      opacity: 1;
+    }
+    
+    /* Попап для заказа звонка */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .popup-content {
+      background-color: #000;
+      padding: 40px;
+      border: 1px solid white;
+      max-width: 500px;
+      width: 90%;
+      position: relative;
+    }
+    
+    .close-popup {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    
+    /* Попап для политики конфиденциальности */
+    .privacy-popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      overflow-y: auto;
+      padding: 40px 0;
+    }
+    
+    .privacy-content {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #000;
+      padding: 40px;
+      border: 1px solid white;
+      position: relative;
+    }
+    
+    .close-privacy {
+      position: absolute;
+      top: 12px;
+      right: 28px;
+      font-size: 40px;
+      cursor: pointer;
+    }
+    
+    /* Стили для команды */
+    .team-member {
+      position: relative;
+      cursor: pointer;
+    }
+    
+    .team-name {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.7);
+      text-align: center;
+    }
+    
+    .team-member:hover .team-name {
+      transform: translateY(0);
+    }
+    
+    .hero-last-block {
+      margin-bottom: 1rem;
+    }
+    
+    .call-button {
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding-left: 3rem;
+      cursor: pointer;
+    }
+    
+    .call-button::before {
+      content: '→';
+      font-size: 2rem;
+      position: absolute;
+      left: 0;
+    }
+    
+    /* Уменьшаем отступ между видео и бегущей строкой */
+    .marquee-section {
+      margin-top: 2rem;
+    }
+    
+    /* Шапка с ограничением по ширине */
+    .header-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 2rem;
+    }
+    
+    /* Полноразмерные элементы */
+    .full-width {
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+    }
+    
+    /* Новые стили для преимуществ */
+    .advantages-bg {
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+    }
+    
+    .advantages-bg::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    
+    .advantages-content {
+      position: relative;
+      z-index: 2;
+    }
+    
+    /* Мобильное меню */
+    .mobile-menu {
+      z-index: 1000;
+    }
+
+    /* Новые стили для работ */
+    .work-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 5rem;
+    }
+
+    .work-title {
+      flex: 1;
+      text-align: center;
+    }
+
+    .work-image {
+      flex: 1;
+      max-width: 400px;
+      margin: 0 2rem;
+    }
+
+    .work-details {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+    }
+
+    .work-detail {
+      text-align: center;
+    }
+
+    .photo-video-text {
+      margin-top: 14rem;
+      text-align: left;
+      margin-left: 0;
+      padding-left: 0;
+    }
+
+    .showreel-block {
+      margin-top: 12rem;
+    }
+
+    .hero-main-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      width: 100%;
+      margin-top: 40rem;
+    }
+
+    .hero-text-content {
+      flex: 1;
+      margin-top: -66rem;
+    }
+
+    .call-button-container {
+      align-self: flex-start;
+      margin-top: -55rem;
+    }
+  
+  /* Адаптивные стили */
+    @media (max-width: 1920px) {
+      
+    }
+  
+  </style>
+</head>
+<body class="bg-black text-white">
+  <div class="main">
+    <!-- Модальное окно для видео -->
+    <div id="videoModal" class="modal">
+      <span class="close">&times;</span>
+      <div class="modal-content">
+        <div class="video-container">
+          <video id="modalVideo" controls autoplay muted class="w-full h-full" onerror="handleVideoError(this)"><source src="/assets/Index/Showreel.mp4" type="video/mp4">Ваш браузер не поддерживает видео тег.</video>
+        </div>
+      </div>
+    </div>
+
+    <!-- Попап для заказа звонка -->
+    <div id="callPopup" class="popup">
+      <div class="popup-content">
+        <span class="close-popup">&times;</span>
+        <h3 class="text-3xl mb-6">Оставить заявку</h3>
+        <form class="space-y-6">
+          <div class="border-animate">
+            <label class="block text-lg mb-2">Имя</label>
+            <input type="text" class="w-full bg-transparent border-b border-white py-2 focus:outline-none">
+          </div>
+          
+          <div class="border-animate">
+            <label class="block text-lg mb-2">Номер телефона</label>
+            <input type="tel" class="w-full bg-transparent border-b border-white py-2 focus:outline-none" placeholder="+7 (999) 999-99-99">
+          </div>
+          
+          <div class="border-animate">
+            <label class="block text-lg mb-2">Ваша задача</label>
+            <input type="text" class="w-full bg-transparent border-b border-white py-2 focus:outline-none">
+          </div>
+          
+          <button type="submit" class="w-full bg-white text-black py-3 text-lg hover:bg-gray-200 transition-colors duration-300 mt-8">
+            Отправить
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Попап для политики конфиденциальности -->
+    <div id="privacyPopup" class="privacy-popup">
+      <div class="privacy-content text-justify inter">
+        <span class="close-privacy" onclick="closePrivacyPopup()">&times;</span>
+        <h2 class="text-4xl mb-8 font-bold">Политика конфиденциальности</h2>
+        
+        <div class="space-y-6">
+          <div>
+            <h3 class="text-2xl mb-4 font-bold">1. Общие положения</h3>
+            <p class="text-lg">1.1. Настоящая Политика конфиденциальности (далее — Политика) определяет порядок обработки персональных данных и меры по обеспечению безопасности персональных данных в компании Artel Production (далее — Оператор).</p>
+            <p class="text-lg">1.2. Оператор ставит своей важнейшей целью и условием осуществления своей деятельности соблюдение прав и свобод человека и гражданина при обработке его персональных данных, в том числе защиты прав на неприкосновенность частной жизни, личную и семейную тайну.</p>
+          </div>
+          
+          <div>
+            <h3 class="text-2xl mb-4 font-bold">2. Основные понятия</h3>
+            <p class="text-lg">2.1. Персональные данные — любая информация, относящаяся к прямо или косвенно определенному или определяемому физическому лицу (субъекту персональных данных).</p>
+            <p class="text-lg">2.2. Обработка персональных данных — любое действие (операция) или совокупность действий (операций), совершаемых с использованием средств автоматизации или без использования таких средств с персональными данными, включая сбор, запись, систематизацию, накопление, хранение, уточнение (обновление, изменение), извлечение, использование, передачу (распространение, предоставление, доступ), обезличивание, блокирование, удаление, уничтожение персональных данных.</p>
+          </div>
+          
+          <div>
+            <h3 class="text-2xl mb-4 font-bold">3. Цели обработки персональных данных</h3>
+            <p class="text-lg">3.1. Цель обработки персональных данных Пользователя — заключение, исполнение и прекращение гражданско-правовых договоров; предоставление доступа Пользователю к сервисам, информации и/или материалам, содержащимся на веб-сайте; уточнение деталей заказа.</p>
+            <p class="text-lg">3.2. Также Оператор имеет право направлять Пользователю уведомления о новых продуктах и услугах, специальных предложениях и различных событиях. Пользователь всегда может отказаться от получения информационных сообщений, направив Оператору письмо на адрес электронной почты info@artel.ru с пометкой «Отказ от уведомлений о новых продуктах и услугах и специальных предложениях».</p>
+          </div>
+          
+          <div>
+            <h3 class="text-2xl mb-4 font-bold">4. Правовые основания обработки персональных данных</h3>
+            <p class="text-lg">4.1. Оператор обрабатывает персональные данные Пользователя только в случае их заполнения и/или отправки Пользователем самостоятельно через специальные формы, расположенные на сайте. Заполняя соответствующие формы и/или отправляя свои персональные данные Оператору, Пользователь выражает свое согласие с данной Политикой.</p>
+            <p class="text-lg">4.2. Оператор обрабатывает обезличенные данные о Пользователе в случае, если это разрешено в настройках браузера Пользователя (включено сохранение файлов «cookie» и использование технологии JavaScript).</p>
+          </div>
+          
+          <div>
+            <h3 class="text-2xl mb-4 font-bold">5. Порядок сбора, хранения, передачи и других видов обработки персональных данных</h3>
+            <p class="text-lg">5.1. Оператор обеспечивает сохранность персональных данных и принимает все возможные меры, исключающие доступ к персональным данным неуполномоченных лиц.</p>
+            <p class="text-lg">5.2. Персональные данные Пользователя никогда, ни при каких условиях не будут переданы третьим лицам, за исключением случаев, связанных с исполнением действующего законодательства.</p>
+            <p class="text-lg">5.3. В случае выявления неточностей в персональных данных, Пользователь может актуализировать их самостоятельно, путем направления Оператору уведомление на адрес электронной почты Оператора info@artel.ru с пометкой «Актуализация персональных данных».</p>
+          </div>
+          
+          <div>
+            <h3 class="text-2xl mb-4 font-bold">6. Заключительные положения</h3>
+            <p class="text-lg">6.1. Пользователь может получить любые разъяснения по интересующим вопросам, касающимся обработки его персональных данных, обратившись к Оператору с помощью электронной почта info@artel.ru.</p>
+            <p class="text-lg">6.2. В данном документе будут отражены любые изменения политики обработки персональных данных Оператором. Политика действует бессрочно до замены ее новой версией.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Шапка -->
+    <body class="bg-black text-white font-sans">
+    <div class="max-w-screen-2xl mx-auto">
+        <!-- Header -->
+        <header class="flex justify-between items-center px-4 md:px-12 lg:px-24 bg-black shadow-lg relative z-50 inter">
+            <a href="/index.html"><img src="assets/Logo.png" alt="Логотип" class="w-48 h-28 object-cover hover-scale"></a>
+            
+            <nav class="hidden md:flex gap-8">
+                <div class="dropdown">
+                    <button class="font-bold text-lg hover:text-gray-300 transition focus:outline-none">ПОРТФОЛИО</button>
+                    <div class="dropdown-content">
+                        <a href="/Portfolio-video.html" class="font-bold text-lg hover:text-gray-300 transition text-center">ВИДЕО</a>
+                        <a href="/Portfolio-photo.html" class="font-bold text-lg hover:text-gray-300 transition text-center">ФОТО</a>
+                    </div>
+                </div>
+                <a href="/Uslugi.html" class="font-bold text-lg hover:text-gray-300 transition">УСЛУГИ</a>
+                <a href="/Blog-news.html" class="font-bold text-lg hover:text-gray-300 transition">БЛОГ</a>
+                <a href="/Kurs-info.html" class="font-bold text-lg hover:text-gray-300 transition">КУРС</a>
+            </nav>
+            
+            <div class="hidden md:flex items-center">
+                <span class="font-normal text-xl">+7 980 678 20 93</span>
+                <div class="flex ml-7 gap-4">
+                    <a href="https://t.me/zarokmanager" class="text-white hover:text-blue-400 transition">
+                        <i class="fab fa-telegram text-5xl"></i>
+                    </a>
+                    <a href="https://wa.me/79806782093?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%F0%9F%91%8B%20%D0%AF%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7..." class="text-white hover:text-green-400 transition">
+                        <i class="fab fa-whatsapp text-5xl"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <button class="md:hidden text-white">
+                <i class="fas fa-bars text-3xl"></i>
+            </button>
+        </header>
+
+    <!-- Герой-секция с шоуриллом на фоне -->
+    <section class="hero-video-container full-width relative z-10">
+      <!-- YouTube видео фон -->
+      <div class="youtube-background">
+        <div id="youtube-background-player"></div>
+      </div>
+      <div class="overlay"></div>
+      
+      <!-- Контент поверх видео -->
+      <div class="hero-content">
+        <div class="flex flex-col justify-between h-full">
+          <div class="photo-video-text animate-fade-in delay-100 flex space-x-1 inter">
+            <p class="text-xl mb-2 font-bold whitespace-nowrap"><span>ФОТО / ВИДЕО ПРОИЗВОДСТВО</span></p>
+            <p class="text-xl mb-2 whitespace-nowrap"><span>ОТ ИДЕИ ДО РЕАЛИЗАЦИИ</span></p>
+          </div>
+          
+          <div class="hero-main-content">
+            <div class="hero-text-content">
+              <div class="hero-text-block animate-fade-in delay-100">
+                <h1 class="leading-none text-[140px] py-14">ПРОДАКШН<br>ПОЛНОГО ЦИКЛА</h1>
+              </div>
+              
+              <div class="hero-text-block animate-fade-in delay-200">
+                <div class="flex flex-wrap gap-8">
+                  <div class="flex flex space-x-1 inter">
+                    <p class="text-lg font-bold">МОСКВА /</p>
+                    <p class="text-lg">САНКТ-ПЕТЕРБУРГ</p>
+                  </div>
+                  <div class="flex flex space-x-1 inter">
+                    <p class="text-lg"><span>КОММЕРЦИЯ / КЛИПЫ</span></p>
+                    <p class="text-lg font-bold">/ ОБУЧЕНИЕ</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="showreel-block hero-last-block animate-fade-in delay-300">
+                <div class="flex items-center gap-4 hover-scale cursor-pointer" onclick="openLocalVideoModal()">
+                  <i class="fas fa-play text-3xl image-opacity"></i>
+                  <div>
+                    <p class="text-lg font-bold inter">СМОТРЕТЬ ШОУРИЛЛ</p>
+                    <p class="text-lg inter">ARTEL 2025</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="call-button-container animate-slide-right delay-200">
+              <div class="call-button inter" onclick="openCallPopup()">
+                <div>ЗАКАЗАТЬ ЗВОНОК</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Остальной контент страницы -->
+    <div class="bg-black">
+      <!-- Бегущая строка -->
+        <div class="bg-black marquee-section">
+          <div class="animate-marquee text-white text-6xl py-10">
+            РАБОТЫ С ВИДЕО / РАБОТЫ С ВИДЕО / РАБОТЫ С ВИДЕО / РАБОТЫ С ВИДЕО / РАБОТЫ С ВИДЕО / РАБОТЫ С ВИДЕО / 
+            РАБОТЫ С ВИДЕО / РАБОТЫ С ВИДЕО / РАБОТЫ С ВИДЕО / РАБОТЫ С ВИДЕО / РАБОТЫ С ВИДЕО / РАБОТЫ С ВИДЕО /
+            РАБОТЫ С ВИДЕО / РАБОТЫ С ВИДЕО / РАБОТЫ С ВИДЕО / РАБОТЫ С ВИДЕО / РАБОТЫ С ВИДЕО / РАБОТЫ С ВИДЕО /
+            РАБОТЫ С ВИДЕО / РАБОТЫ С ВИДЕО / РАБОТЫ С ВИДЕО / РАБОТЫ С ВИДЕО / РАБОТЫ С ВИДЕО / РАБОТЫ С ВИДЕО /
+          </div>
+        </div>
+
+
+      <!-- Основной контент с ограничением по ширине -->
+      <div class="content-container">
+        <!-- Примеры работ -->
+        <section class="w-full bg-black py-20">
+          <!-- Работа 1 -->
+          <div class="work-item animate-fade-in delay-300">
+            <div class="work-title">
+              <h2 class="text-6xl lg:text-6xl md:text-4xl sm:text-3xl xs:text-2xl">ЦЕЛУЙ МЕНЯ</h2>
+            </div>
+            
+            <div class="work-image video-thumbnail" onclick="openVideoModal('LK6LFY0rslU')">
+              <img src="/assets/Index/Celuy_menia.png" alt="ЦЕЛУЙ МЕНЯ" class="w-full image-opacity">
+              <div class="play-button">
+                <i class="fas fa-play-circle"></i>
+              </div>
+            </div>
+            
+            <div class="work-details inter">
+              <div class="work-detail">
+                <p class="mb-2 text-left">Клиент:</p>
+                <p class="text-2xl text-left font-bold">Talia</p>
+              </div>
+              <div class="work-detail">
+                <p class="mb-2 text-left">Услуга:</p>
+                <p class="text-2xl text-left font-bold">Съемка клипа</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Разделитель -->
+          <div class="w-full h-px bg-white mb-20"></div>
+          
+          <!-- Работа 2 -->
+          <div class="work-item animate-fade-in delay-400">
+            <div class="work-title">
+              <h2 class="text-6xl lg:text-6xl md:text-4xl sm:text-3xl xs:text-2xl">ТОЖЕ КАВЕР</h2>
+            </div>
+            
+            <div class="work-image video-thumbnail" onclick="openVideoModal('ANDrfkNBNwg')">
+              <img src="/assets/Index/Toze_kaver.png" alt="ТОЖЕ КАВЕР" class="w-full image-opacity">
+              <div class="play-button">
+                <i class="fas fa-play-circle"></i>
+              </div>
+            </div>
+            
+            <div class="work-details inter">
+              <div class="work-detail">
+                <p class="mb-2 text-left">Клиент:</p>
+                <p class="text-2xl text-left font-bold">Dasha Volosevich</p>
+              </div>
+              <div class="work-detail">
+                <p class="mb-2 text-left">Услуга:</p>
+                <p class="text-2xl text-left font-bold">Съемка шоу</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Разделитель -->
+          <div class="w-full h-px bg-white mb-20"></div>
+          
+          <!-- Работа 3 -->
+          <div class="work-item animate-fade-in delay-500">
+            <div class="work-title">
+              <h2 class="text-6xl lg:text-6xl md:text-4xl sm:text-3xl xs:text-2xl">ПЕСНЯ<br>О ЛЮБВИ</h2>
+            </div>
+            
+            <div class="work-image video-thumbnail" onclick="openVideoModal('NZ3IHzmyh54')">
+              <img src="/assets/Index/Pesnya o lubvi.png" alt="ПЕСНЯ О ЛЮБВИ" class="w-full image-opacity">
+              <div class="play-button">
+                <i class="fas fa-play-circle"></i>
+              </div>
+            </div>
+            
+            <div class="work-details inter">
+              <div class="work-detail">
+                <p class="mb-2 text-left">Клиент:</p>
+                <p class="text-2xl text-left font-bold">Youaresobbad</p>
+              </div>
+              <div class="work-detail">
+                <p class="mb-2 text-left">Услуга:</p>
+                <p class="text-2xl text-left font-bold">Съемка клипа</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Кнопка -->
+          <div class="flex justify-center items-center">
+            <a href="/Portfolio-video.html" class=" bg-white text-black px-40 py-4 text-lg hover:bg-gray-200 transition-colors duration-300 animate-fade-in delay-600 inter">
+              СМОТРЕТЬ БОЛЬШЕ
+            </a>
+          </div>
+        </section>
+
+        <!-- Преимущества -->
+        <section class="advantages-bg py-32" style="background-image: url('/assets/Index/Nashi_preimusestva.png')">
+          <div class="max-w-6xl mx-auto advantages-content">
+            <h2 class="text-9xl text-center mb-20 animate-fade-in">Наши преимущества</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+              <!-- Преимущество 1 -->
+              <div class="animate-slide-left delay-300">
+                <div class="flex items-start gap-8">
+                  <p class="text-[140px]">01</p>
+                  <div>
+                    <h3 class="text-6xl mb-4">Команда</h3>
+                    <p class="text-lg inter">За дело берутся настоящие профессионалы с опытом создания видеоконтента более 8 лет.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Преимущество 4 -->
+              <div class="animate-slide-right delay-400">
+                <div class="flex items-start gap-8">
+                  <p class="text-[140px]">04</p>
+                  <div>
+                    <h3 class="text-6xl mb-4">Сжатые сроки</h3>
+                    <p class="text-lg inter">Не боимся экстремальных дедлайнов! За счёт отточенного процесса и сплоченной команды, время полного цикла создания видео составляет 7-14 дней.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Преимущество 2 -->
+              <div class="animate-slide-left delay-500">
+                <div class="flex items-start gap-8">
+                  <p class="text-[140px]">02</p>
+                  <div>
+                    <h3 class="text-6xl mb-4">Быстрые правки</h3>
+                    <p class="text-lg inter">Вносим правки в 2 этапа и в течении 2х дней после финальной сдачи, если захотелось что-то изменить.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Преимущество 5 -->
+              <div class="animate-slide-right delay-600">
+                <div class="flex items-start gap-8">
+                  <p class="text-[140px]">05</p>
+                  <div>
+                    <h3 class="text-6xl mb-4">Качество в деталях</h3>
+                    <p class="text-lg inter">Новейшее оборудование, которое позволяет снимать видео уровня современного кинематографа и создавать видеоролики</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Преимущество 3 -->
+              <div class="animate-slide-left delay-700">
+                <div class="flex items-start gap-8">
+                  <p class="text-[140px]">03</p>
+                  <div>
+                    <h3 class="text-6xl mb-4">Полный цикл</h3>
+                    <p class="text-lg inter">От разработки концепта, написания сценария до съёмки видео и постобработки. Поддерживаем связь с клиентом на каждом этапе производства видео.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Преимущество 6 -->
+              <div class="animate-slide-right delay-800">
+                <div class="flex items-start gap-8">
+                  <p class="text-[140px]">06</p>
+                  <div>
+                    <h3 class="text-6xl mb-4">Без шаблона</h3>
+                    <p class="text-lg inter">Выявляем потребности, цели, ожидания, чтобы максимально точно подобрать соответствующее решение и создать видео, которое попадет в сердце аудитории.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Команда -->
+        <section class="w-full bg-black py-32">
+          <h2 class="text-9xl text-center mb-20 animate-fade-in">Наша команда</h2>
+          
+          <div class="flex flex-col items-center">
+            <!-- Первый ряд -->
+            <div class="flex flex-wrap justify-center gap-12 mb-16 animate-fade-in delay-300">
+              <div class="team-member w-64 hover-scale">
+                <img src="/assets/Index/Alex.jpeg" alt="Алексей" class="w-64 h-64 rounded-full mb-6 image-opacity">
+                <div class="team-name">
+                  <h3 class="text-6xl mb-2">Алексей</h3>
+                  <p class="text-base inter">Креативный директор</p>
+                </div>
+              </div>
+              
+              <div class="team-member w-64 hover-scale">
+                <img src="/assets/Index/Roma.jpeg" alt="Роман" class="w-64 h-64 rounded-full mb-6 image-opacity">
+                <div class="team-name">
+                  <h3 class="text-6xl mb-2">Роман</h3>
+                  <p class="text-base inter">Режиссер. Стаж: 15 лет</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Второй ряд -->
+            <div class="flex flex-wrap justify-center gap-12 animate-fade-in delay-400">
+              <div class="team-member w-64 hover-scale">
+                <img src="/assets/Index/Lera.jpeg" alt="Лера" class="w-64 h-64 rounded-full mb-6 image-opacity">
+                <div class="team-name">
+                  <h3 class="text-6xl mb-2">Лера</h3>
+                  <p class="text-base inter">Продюсер</p>
+                </div>
+              </div>
+              
+              <div class="team-member w-64 hover-scale">
+                <img src="/assets/Index/Pavel.jpeg" alt="Павел" class="w-64 h-64 rounded-full mb-6 image-opacity">
+                <div class="team-name">
+                  <h3 class="text-6xl mb-2">Павел</h3>
+                  <p class="text-base inter">Звукорежиссер. Стаж: 8 лет</p>
+                </div>
+              </div>
+              
+              <div class="team-member w-64 hover-scale">
+                <img src="/assets/Index/Stepan.jpeg" alt="Степан" class="w-64 h-64 rounded-full mb-6 image-opacity">
+                <div class="team-name">
+                  <h3 class="text-6xl mb-2">Степан</h3>
+                  <p class="text-base inter">Оператор. Стаж: 10 лет</p>
+                </div>
+              </div>
+              
+              <div class="team-member w-64 hover-scale">
+                <img src="/assets/Index/Olesia.jpeg" alt="Олеся" class="w-64 h-64 rounded-full mb-6 image-opacity">
+                <div class="team-name">
+                  <h3 class="text-6xl mb-2">Олеся</h3>
+                  <p class="text-base inter">Режиссер монтажа. Стаж: 8 лет</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Услуги -->
+        <section class="w-full bg-black py-20">
+          <div class="max-w-4xl mx-auto">
+            <h2 class="text-9xl text-left mb-20 animate-fade-in">Услуги</h2>
+            <!-- Услуга 1 -->
+            <div class="border-b border-white pb-8 mb-8 animate-fade-in delay-300 cursor-pointer" onclick="openCallPopup()">
+              <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                <div class="mb-6 md:mb-0">
+                  <h3 class="text-6xl mb-4">Видеопродакшн</h3>
+                  <p class="text-lg inter">Видеосъемка проектов любой сложности.<br>От идеи и сценария до готового монтажа</p>
+                  </div>
+                <p class="text-6xl">от 50.000 р</p>
+              </div>
+            </div>
+            
+            <!-- Услуга 2 -->
+            <div class="border-b border-white pb-8 mb-8 animate-fade-in delay-400 cursor-pointer" onclick="openCallPopup()">
+              <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                <div class="mb-6 md:mb-0">
+                  <h3 class="text-6xl mb-4">Фотосъемка</h3>
+                  <p class="text-lg inter">Фотосъемка коммерческих проектов: <br>кампании, промо, каталоги, предметка</p>
+                </div>
+                <p class="text-6xl">от 20.000 р</p>
+              </div>
+            </div>
+            
+            <!-- Услуга 3 -->
+            <div class="border-b border-white pb-8 mb-8 animate-fade-in delay-500 cursor-pointer" onclick="openCallPopup()">
+              <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                <div class="mb-6 md:mb-0">
+                  <h3 class="text-6xl mb-4">Съемка Reels</h3>
+                  <p class="text-lg inter">Разработка контент плана, сценариев,<br>и съемка успешных видео-reels</p>
+                </div>
+                <p class="text-6xl">от 15.000 р</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Контакты -->
+        <section class="w-full bg-black py-32">
+          <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between mb-20 animate-fade-in">
+              <h2 class="text-6xl mb-12 md:mb-0">Контакты</h2>
+              
+              <div class="md:w-1/3">
+                <h3 class="text-6xl text-right">Оставь заявку</h3>
+                <p class="text-lg text-right inter">Расскажите о себе и том чем мы можем вам помочь, мы свяжемся с вами, чтобы обсудить подробности и познакомиться</p>
+              </div>
+            </div>
+            
+            <div class="flex flex-col md:flex-row gap-16 animate-fade-in delay-200">
+              <div class="md:w-1/2">
+                <div class="mb-12">
+                <h3 class="text-6xl mb-6">INFO@ARTEL.RU</h3>
+                <p class="text-6xl">+7 (980) 678 20 93</p>
+              </div>
+              
+              <div class="flex gap-8">
+                <a href="https://t.me/pagezarok" class="text-9xl hover:text-blue-300 transition-colors duration-300"><i class="fab fa-telegram"></i></a>
+                <a href="https://wa.me/79806782093?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%F0%9F%91%8B%20%D0%AF%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7..." class="text-9xl hover:text-green-300 transition-colors duration-300"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://vk.com/zarok485prod" class="text-9xl hover:text-blue-300 transition-colors duration-300"><i class="fab fa-vk"></i></a>
+              </div>
+            </div>
+            
+            <div class="md:w-1/2">
+              <form class="space-y-8 inter">
+                <div class="border-animate">
+                  <label class="block text-lg mb-2">Имя</label>
+                  <input type="text" class="w-full bg-transparent border-b border-white py-2 focus:outline-none">
+                </div>
+                
+                <div class="border-animate">
+                  <label class="block text-lg mb-2">Номер телефона</label>
+                  <input type="tel" class="w-full bg-transparent border-b border-white py-2 focus:outline-none" placeholder="+7 (999) 999-99-99">
+                </div>
+                
+                <div class="border-animate">
+                  <label class="block text-lg mb-2">Ваша задача</label>
+                  <input type="text" class="w-full bg-transparent border-b border-white py-2 focus:outline-none">
+                </div>
+                
+                <div class="flex flex-col items-end mt-12">
+                  <button type="submit" class="border-2 border-white px-12 py-3 text-lg hover:bg-white hover:text-black transition-colors duration-300 mb-4">
+                    Отправить
+                  </button>
+                  <p class="text-sm text-right">
+                    Нажимая кнопку "Отправить", вы соглашаетесь<br>
+                    с <a href="#" class="underline" onclick="openPrivacyPopup()">Политикой конфиденциальности</a>
+                  </p>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- Футер -->
+        <footer class="py-16 px-4 md:px-12 lg:px-24 animate-fade-in animate-delay-3">    
+                <div class="flex flex-col md:flex-row inter">
+                    <div class="md:w-2/5 mb-12 md:mb-0">
+                        <h3 class="font-bold text-lg mb-4">О нас</h3>
+                        <p class="text-lg">
+                            Artel production – фото и видео<br>продакшн полного цикла.<br>Работаем в Москве, Санкт-<br>Петербурге и по всему миру.
+                        </p>
+                    </div>
+                    
+                    <div class="md:w-2/5 mb-12 md:mb-0 md:px-8">
+                        <h3 class="font-bold text-lg mb-4">Быстрые ссылки</h3>
+                        <div class="flex flex-col gap-2">
+                            <a href="/index.html" class="text-lg hover:text-gray-300 transition">Главная</a>
+                            <a href="#" class="text-lg hover:text-gray-300 transition" onclick="openPrivacyPopup()">Политика конфиденциальности</a>
+                            <a href="/Portfolio-video.html" class="text-lg hover:text-gray-300 transition">Видео работы</a>
+                            <a href="/Portfolio-photo.html" class="text-lg hover:text-gray-300 transition">Фото работы</a>
+                            <a href="/Uslugi.html" class="text-lg hover:text-gray-300 transition">Услуги</a>
+                            <a href="/Blog-news.html" class="text-lg hover:text-gray-300 transition">Блог</a>
+                            <a href="/Kurs-info.html" class="text-lg hover:text-gray-300 transition">Курс</a>
+                        </div>
+                    </div>
+                    
+                    <div class="md:w-1/5">
+                        <h3 class="font-bold text-lg mb-4">Контакты</h3>
+                        <div class="mb-6">
+                            <div class="flex items-center">
+                                <i class="fas fa-envelope mr-2"></i>
+                                <span class="text-lg">info@artel.ru</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <a href="https://t.me/pagezarok" class="text-white hover:text-blue-400 transition">
+                                <i class="fab fa-telegram text-2xl"></i>
+                            </a>
+                            <a href="https://wa.me/79806782093?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%F0%9F%91%8B%20%D0%AF%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7..." class="text-white hover:text-green-400 transition">
+                                <i class="fab fa-whatsapp text-2xl"></i>
+                            </a>
+                            <a href="https://vk.com/zarok485prod" class="text-white hover:text-green-400 transition">
+                                <i class="fab fa-vk text-2xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+      </div>
+    </div>
+
+    <script>
+      // Локальное видео фона
+      document.addEventListener('DOMContentLoaded', function() {
+        const video = document.createElement('video');
+        video.id = 'background-video';
+        video.autoplay = true;
+        video.muted = true;
+        video.loop = true;
+        video.playsinline = true;
+        video.style.width = '100%';
+        video.style.height = '100%';
+        video.style.objectFit = 'cover';
+        video.style.position = 'absolute';
+        video.style.top = '50%';
+        video.style.left = '50%';
+        video.style.transform = 'translate(-50%, -50%)';
+        video.style.opacity = '0.7';
+
+        const source = document.createElement('source');
+        source.src = '/assets/Index/Showreel.mp4';
+        source.type = 'video/mp4';
+
+        video.appendChild(source);
+        document.querySelector('.youtube-background').appendChild(video);
+        
+        const animatedElements = document.querySelectorAll('.animate-fade-in, .animate-slide-left, .animate-slide-right');
+        
+        animatedElements.forEach((el, index) => {
+          el.style.animationDelay = `${index * 0.1}s`;
+        });
+        
+        // Мобильное меню
+        const mobileMenuButton = document.querySelector('button.md\\:hidden');
+        if (mobileMenuButton) {
+          mobileMenuButton.addEventListener('click', function() {
+            const nav = document.querySelector('nav');
+            if (nav) {
+              nav.classList.toggle('hidden');
+              nav.classList.toggle('flex');
+              nav.classList.toggle('flex-col');
+              nav.classList.toggle('absolute');
+              nav.classList.toggle('top-24');
+              nav.classList.toggle('left-0');
+              nav.classList.toggle('right-0');
+              nav.classList.toggle('bg-black');
+              nav.classList.toggle('p-8');
+              nav.classList.toggle('z-50');
+            }
+          });
+        }
+        
+        // Плавный скролл для якорных ссылок
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+              window.scrollTo({
+                top: targetElement.offsetTop - 100,
+                behavior: 'smooth'
+              });
+            }
+          });
+        });
+      });
+      
+      // Анимация при скролле
+      const observerOptions = {
+        threshold: 0.1
+      };
+      
+      const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          entries[0].target.classList.add('animate-fade-in');
+          observer.unobserve(entries[0].target);
+        }
+      }, observerOptions);
+      
+      document.querySelectorAll('[data-animate]').forEach(el => {
+        observer.observe(el);
+      });
+      
+      // Функция для открытия модального окна с локальным видео
+      function openLocalVideoModal() {
+        const modal = document.getElementById('videoModal');
+        const modalContent = document.querySelector('.modal-content');
+        const closeBtn = document.querySelector('.close');
+        
+        modalContent.innerHTML = `
+          <div class="video-container">
+            <video controls autoplay class="w-full h-full" onerror="handleVideoError(this)">
+              <source src="/assets/Index/Showreel.mp4" type="video/mp4">
+              Ваш браузер не поддерживает видео тег.
+            </video>
+          </div>
+        `;
+        
+        modal.style.display = 'block';
+        
+        // Закрытие модального окна
+        closeBtn.onclick = function() {
+          modal.style.display = 'none';
+          modalContent.innerHTML = '';
+        }
+        
+        // Закрытие при клике вне окна
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = 'none';
+            modalContent.innerHTML = '';
+          }
+        }
+      }
+      
+      function handleVideoError(videoElement) {
+        console.error('Ошибка загрузки видео:', videoElement.error);
+        alert('Не удалось загрузить видео. Пожалуйста, проверьте путь к файлу и права доступа.');
+      }
+      
+      // Функция для открытия модального окна с YouTube видео
+      function openVideoModal(youtubeId) {
+        const modal = document.getElementById('videoModal');
+        const modalContent = document.querySelector('.modal-content');
+        const closeBtn = document.querySelector('.close');
+        
+        // Создаем iframe для YouTube
+        modalContent.innerHTML = `
+          <div class="video-container">
+            <iframe id="youtubeVideo" src="https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=0" frameborder="0" allowfullscreen></iframe>
+          </div>
+        `;
+        
+        modal.style.display = 'block';
+        
+        // Закрытие модального окна
+        closeBtn.onclick = function() {
+          modal.style.display = 'none';
+          modalContent.innerHTML = '';
+        }
+        
+        // Закрытие при клике вне окна
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = 'none';
+            modalContent.innerHTML = '';
+          }
+        }
+      }
+      
+      // Функция для открытия попапа заказа звонка
+      function openCallPopup() {
+        const popup = document.getElementById('callPopup');
+        const closeBtn = document.querySelector('.close-popup');
+        
+        popup.style.display = 'flex';
+        
+        // Закрытие попапа
+        closeBtn.onclick = function() {
+          popup.style.display = 'none';
+        }
+        
+        // Закрытие при клике вне попапа
+        window.onclick = function(event) {
+          if (event.target == popup) {
+            popup.style.display = 'none';
+          }
+        }
+      }
+      
+      // Функция для открытия попапа политики конфиденциальности
+      function openPrivacyPopup() {
+        const popup = document.getElementById('privacyPopup');
+        popup.style.display = 'block';
+        
+        // Блокируем скролл страницы
+        document.body.style.overflow = 'hidden';
+        
+        // Добавляем обработчик клика вне попапа
+        popup.addEventListener('click', function(e) {
+          if (e.target === popup) {
+            closePrivacyPopup();
+          }
+        });
+        
+        // Добавляем обработчик клавиши ESC
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') {
+            closePrivacyPopup();
+          }
+        });
+      }
+      
+      // Функция для закрытия попапа политики конфиденциальности
+      function closePrivacyPopup() {
+        const popup = document.getElementById('privacyPopup');
+        popup.style.display = 'none';
+        
+        // Разблокируем скролл страницы
+        document.body.style.overflow = 'auto';
+        
+        // Удаляем обработчики событий
+        popup.removeEventListener('click', function(e) {
+          if (e.target === popup) {
+            closePrivacyPopup();
+          }
+        });
+        
+        document.removeEventListener('keydown', function(e) {
+          if (e.key === 'Escape') {
+            closePrivacyPopup();
+          }
+        });
+      }
+      
+      // Глобальная функция для YouTube API
+      window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
+    </script>
+  </div>
+</body>
+</html>

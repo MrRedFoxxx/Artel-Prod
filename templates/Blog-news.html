@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artel Prod. - Блог/Новости</title>
+    <link rel="icon" href="/assets/Icon.png" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+        @font-face {
+        font-family: 'Alternate-Gothic-No1';
+        src: 
+        url('assets/Fonts/alternategothicno1.woff') format('woff');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap; /* Чтобы текст не "прыгал" при загрузке */
+        }
+
+        .inter {
+        font-family: "Inter", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+        }
+        
+        body {
+        font-family: 'Inter', sans-serif;
+        font-weight: 400;
+        background-color: #000;
+        color: white;
+        overflow-x: hidden;
+        }
+
+        .main {
+            max-width: 1400px;
+            margin: auto;
+        }
+
+        .gothic-font {
+            font-family: 'Alternate-Gothic-No1', sans-serif;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        .animate-slide-up {
+            animation: slideUp 0.6s ease-out forwards;
+        }
+        
+        .delay-100 {
+            animation-delay: 0.1s;
+        }
+        
+        .delay-200 {
+            animation-delay: 0.2s;
+        }
+        
+        .delay-300 {
+            animation-delay: 0.3s;
+        }
+        
+        .delay-400 {
+            animation-delay: 0.4s;
+        }
+        
+        .bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.15;
+            z-index: -1;
+        }
+        
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #000;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 100;
+            padding: 12px 0;
+            left: 0;
+            top: 100%;
+        }
+        
+        .dropdown-content a {
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-content a:hover {
+            color: #ccc;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .article-image-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            width: 408px;
+            height: 230px;
+        }
+        
+        .article-author {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            font-weight: 500;
+            color: white;
+        }
+        
+        .article-title {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            line-height: 2rem;
+            font-weight: 400;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .read-more-arrow {
+            display: inline-block;
+            width: 40px;
+            height: 24px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 48 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M36 12H8M36 12l-8-8M36 12l-8 8'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: center;
+            margin-right: 8px;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+        
+        .modal-content {
+            background-color: #111;
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            position: relative;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            color: white;
+            cursor: pointer;
+            background: none;
+            border: none;
+            z-index: 10;
+            background: #000000b0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .article-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+        }
+        
+        .nav-arrow {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+        
+        .nav-arrow:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-5px);
+        }
+        
+        .nav-arrow.next:hover {
+            transform: translateX(5px);
+        }
+        
+        .arrow-left {
+            width: 40px;
+            height: 24px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 48 24' stroke='%23c6c9cf'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M12 12h28M12 12l8-8M12 12l8 8'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            margin-right: 10px;
+        }
+        
+        .arrow-right {
+            width: 40px;
+            height: 24px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 48 24' stroke='%23c6c9cf'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M36 12H8M36 12l-8-8M36 12l-8 8'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            margin-left: 10px;
+        }
+        
+        .nav-title {
+            color: #ccd0d5;
+            font-weight: 500;
+            max-width: 200px;
+        }
+        
+        /* Text alignment styles */
+        .text-justify {
+            text-align: justify;
+            text-justify: inter-word;
+        }
+        
+        .prose {
+            text-align: justify;
+            text-justify: inter-word;
+        }
+        
+        .text-gray-300.mb-6 {
+            text-align: justify;
+            text-justify: inter-word;
+        }
+        
+        @media (max-width: 1024px) {
+            .hero-content {
+                flex-direction: column;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+            
+            .navigation {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+            
+            .blog-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .article-image-container {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 408/230;
+            }
+            
+            .modal-content {
+                padding: 1rem;
+            }
+            
+            .modal-image {
+                height: 250px;
+            }
+            
+            .nav-title {
+                max-width: 150px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            
+            .footer-section {
+                width: 100%;
+            }
+            
+            .article-title {
+                font-size: 1.25rem;
+                line-height: 1.75rem;
+            }
+            
+            .modal-content {
+                margin: 1rem auto;
+                padding: 1rem;
+            }
+            
+            .article-navigation {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            .nav-arrow {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .nav-arrow.prev {
+                order: 2;
+            }
+            
+            .nav-arrow.next {
+                order: 1;
+            }
+        }
+    </style>
+</head>
+<body class="bg-black text-white font-['Inter'] max-w-[1400px] mx-auto relative overflow-x-hidden">
+    
+    <!-- Header -->
+        <header class="flex justify-between items-center px-4 md:px-12 lg:px-24 bg-black shadow-lg relative z-50">
+            <a href="/index.html"><img src="assets/Logo.png" alt="Логотип" class="w-48 h-28 object-cover hover-scale"></a>
+            
+            <nav class="hidden md:flex gap-8">
+                <div class="dropdown">
+                    <button class="font-bold text-lg hover:text-gray-300 transition focus:outline-none">ПОРТФОЛИО</button>
+                    <div class="dropdown-content">
+                        <a href="/Portfolio-video.html" class="font-bold text-lg hover:text-gray-300 transition text-center">ВИДЕО</a>
+                        <a href="/Portfolio-photo.html" class="font-bold text-lg hover:text-gray-300 transition text-center">ФОТО</a>
+                    </div>
+                </div>
+                <a href="/Uslugi.html" class="font-bold text-lg hover:text-gray-300 transition">УСЛУГИ</a>
+                <span class="font-bold text-lg text-gray-300">БЛОГ</span>
+                <a href="/Kurs-info.html" class="font-bold text-lg hover:text-gray-300 transition">КУРС</a>
+                
+            </nav>
+            
+            <div class="hidden md:flex items-center">
+                <span class="font-normal text-xl">+7 980 678 20 93</span>
+                <div class="flex ml-7 gap-4">
+                    <a href="https://t.me/zarokmanager" class="text-white hover:text-blue-400 transition">
+                        <i class="fab fa-telegram text-5xl"></i>
+                    </a>
+                    <a href="https://wa.me/79806782093?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%F0%9F%91%8B%20%D0%AF%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7..." class="text-white hover:text-green-400 transition">
+                        <i class="fab fa-whatsapp text-5xl"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <button class="md:hidden text-white">
+                <i class="fas fa-bars text-3xl"></i>
+            </button>
+        </header>
+    
+    <!-- Main Content -->
+    <main class="px-4 md:px-8 lg:px-12 py-12 animate-fade-in delay-300">
+        <h1 class="text-6xl mb-12 animate-slide-up delay-200 gothic-font 6xl">БЛОГ / НОВОСТИ</h1>
+        
+        <div class="blog-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0.5">
+            <!-- Article 1 -->
+            <article class="card-hover animate-slide-up delay-300" onclick="openModal('modal1')">
+                <div class="bg-gradient-to-b from-black/70 to-black/90 p-6 h-full">
+                    <div class="article-image-container mb-6">
+                        <img src="assets/Blog/001.png" alt="Article" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <span class="article-author">Антон Киселев</span>
+                        <h2 class="article-title gothic-font 3xl">Виды клипов, их особенности,<br>преимущества и отличия</h2>
+                    </div>
+                    <p class="text-gray-300 mb-6 text-justify">Клипы являются важной составляющей современной музыкальной индустрии, помогая артистам визуализировать свои композиции и устанавливать...</p>
+                    <a href="#" class="read-more-link flex items-center gap-2" onclick="event.stopPropagation(); openModal('modal1')">
+                        <span class="read-more-arrow"></span>
+                        <span>ЧИТАТЬ ДАЛЕЕ</span>
+                    </a>
+                </div>
+            </article>
+            
+            <!-- Article 2 -->
+            <article class="card-hover animate-slide-up delay-400" onclick="openModal('modal2')">
+                <div class="bg-gradient-to-b from-black/70 to-black/90 p-6 h-full">
+                    <div class="article-image-container mb-6">
+                        <img src="assets/Blog/002.png" alt="Article" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <span class="article-author">Антон Киселев</span>
+                        <h2 class="article-title gothic-font 3xl">Секреты съемки крутого<br>интервью</h2>
+                    </div>
+                    <p class="text-gray-300 mb-6 text-justify">Интервью – это мощный инструмент передачи информации и создания эмоциональной связи с аудиторией. Один из наиболее известных интервьюеров...</p>
+                    <a href="#" class="read-more-link flex items-center gap-2" onclick="event.stopPropagation(); openModal('modal2')">
+                        <span class="read-more-arrow"></span>
+                        <span>ЧИТАТЬ ДАЛЕЕ</span>
+                    </a>
+                </div>
+            </article>
+            
+            <!-- Article 3 -->
+            <article class="card-hover animate-slide-up delay-500" onclick="openModal('modal3')">
+                <div class="bg-gradient-to-b from-black/70 to-black/90 p-6 h-full">
+                    <div class="article-image-container mb-6">
+                        <img src="assets/Blog/003.png" alt="Article" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <span class="article-author">Антон Киселев</span>
+                        <h2 class="article-title gothic-font 3xl">Что такое бриф в продакшн и<br>для чего он нужен?</h2>
+                    </div>
+                    <p class="text-gray-300 mb-6 text-justify">Бриф в продакшн — это документ, который содержит всю необходимую информацию о проекте, который вы собираетесь создать. Он обычно составляется...</p>
+                    <a href="#" class="read-more-link flex items-center gap-2" onclick="event.stopPropagation(); openModal('modal3')">
+                        <span class="read-more-arrow"></span>
+                        <span>ЧИТАТЬ ДАЛЕЕ</span>
+                    </a>
+                </div>
+            </article>
+            
+            <!-- Article 4 -->
+            <article class="card-hover animate-slide-up delay-300" onclick="openModal('modal4')">
+                <div class="bg-gradient-to-b from-black/70 to-black/90 p-6 h-full">
+                    <div class="article-image-container mb-6">
+                        <img src="assets/Blog/004.png" alt="Article" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <span class="article-author">Антон Киселев</span>
+                        <h2 class="article-title gothic-font 3xl">Революция в рекламе:<br>искусственный интеллект</h2>
+                    </div>
+                    <p class="text-gray-300 mb-6 text-justify">В современном мире реклама играет важную роль в продвижении товаров и услуг. С появлением искусственного интеллекта (ИИ) у нас появилась...</p>
+                    <a href="#" class="read-more-link flex items-center gap-2" onclick="event.stopPropagation(); openModal('modal4')">
+                        <span class="read-more-arrow"></span>
+                        <span>ЧИТАТЬ ДАЛЕЕ</span>
+                    </a>
+                </div>
+            </article>
+            
+            <!-- Article 5 -->
+            <article class="card-hover animate-slide-up delay-400" onclick="openModal('modal5')">
+                <div class="bg-gradient-to-b from-black/70 to-black/90 p-6 h-full">
+                    <div class="article-image-container mb-6">
+                        <img src="assets/Blog/005.png" alt="Article" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <span class="article-author">Антон Киселев</span>
+                        <h2 class="article-title gothic-font 3xl">Что такое вирусное видео,<br>для чего и как его снимать</h2>
+                    </div>
+                    <p class="text-gray-300 mb-6 text-justify">Создание вирусных видеороликов – это целое искусство. Вирусным видео называется ролик, который активно распространяется пользователями в сети. Активность...</p>
+                    <a href="#" class="read-more-link flex items-center gap-2" onclick="event.stopPropagation(); openModal('modal5')">
+                        <span class="read-more-arrow"></span>
+                        <span>ЧИТАТЬ ДАЛЕЕ</span>
+                    </a>
+                </div>
+            </article>
+            
+            <!-- Article 6 -->
+            <article class="card-hover animate-slide-up delay-500" onclick="openModal('modal6')">
+                <div class="bg-gradient-to-b from-black/70 to-black/90 p-6 h-full">
+                    <div class="article-image-container mb-6">
+                        <img src="assets/Blog/006.png" alt="Article" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <span class="article-author">Антон Киселев</span>
+                        <h2 class="article-title gothic-font 3xl">Как выбрать лучшую студию<br>для съемки рекламы?</h2>
+                    </div>
+                    <p class="text-gray-300 mb-6 text-justify">В современном мире видеореклама стала одним из самых эффективных способов привлечения внимания к вашему бизнесу. Чтобы создать крутой рекламный...</p>
+                    <a href="#" class="read-more-link flex items-center gap-2" onclick="event.stopPropagation(); openModal('modal6')">
+                        <span class="read-more-arrow"></span>
+                        <span>ЧИТАТЬ ДАЛЕЕ</span>
+                    </a>
+                </div>
+            </article>
+        </div>
+    </main>
+    
+    <!-- Футер -->
+        <footer class="py-16 px-4 md:px-12 lg:px-24 animate-fade-in animate-delay-3">    
+                <div class="flex flex-col md:flex-row">
+                    <div class="md:w-2/5 mb-12 md:mb-0">
+                        <h3 class="font-bold text-lg mb-4">О нас</h3>
+                        <p class="text-lg">
+                            Artel production – фото и видео<br>продакшн полного цикла.<br>Работаем в Москве, Санкт-<br>Петербурге и по всему миру.
+                        </p>
+                    </div>
+                    
+                    <div class="md:w-2/5 mb-12 md:mb-0 md:px-8">
+                        <h3 class="font-bold text-lg mb-4">Быстрые ссылки</h3>
+                        <div class="flex flex-col gap-2">
+                            <a href="/index.html" class="text-lg hover:text-gray-300 transition">Главная</a>
+                            <a href="#" class="text-lg hover:text-gray-300 transition" onclick="openPrivacyPopup()">Политика конфиденциальности</a>
+                            <a href="/Portfolio-video.html" class="text-lg hover:text-gray-300 transition">Видео работы</a>
+                            <a href="/Portfolio-photo.html" class="text-lg hover:text-gray-300 transition">Фото работы</a>
+                            <a href="/Uslugi.html" class="text-lg hover:text-gray-300 transition">Услуги</a>
+                            <a href="/Blog-news.html" class="text-lg hover:text-gray-300 transition">Блог</a>
+                            <a href="/Kurs-info.html" class="text-lg hover:text-gray-300 transition">Курс</a>
+                        </div>
+                    </div>
+                    
+                    <div class="md:w-1/5">
+                        <h3 class="font-bold text-lg mb-4">Контакты</h3>
+                        <div class="mb-6">
+                            <div class="flex items-center">
+                                <i class="fas fa-envelope mr-2"></i>
+                                <span class="text-lg">info@artel.ru</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <a href="https://t.me/pagezarok" class="text-white hover:text-blue-400 transition">
+                                <i class="fab fa-telegram text-2xl"></i>
+                            </a>
+                            <a href="https://wa.me/79806782093?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%F0%9F%91%8B%20%D0%AF%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7..." class="text-white hover:text-green-400 transition">
+                                <i class="fab fa-whatsapp text-2xl"></i>
+                            </a>
+                            <a href="https://vk.com/zarok485prod" class="text-white hover:text-green-400 transition">
+                                <i class="fab fa-vk text-2xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    
+    <!-- Modal Windows -->
+    <!-- Modal 1 -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('modal1')">&times;</button>
+            <img src="assets/Blog/001.png" alt="Article" class="modal-image">
+            <div class="flex items-center mb-4">
+                <span class="bg-black px-3 py-1 rounded-md font-medium">Антон Киселев</span>
+                <span class="text-gray-400 ml-4">12 мая 2023</span>
+            </div>
+            <h2 class="text-3xl font-bold mb-6">Виды клипов, их особенности, преимущества и отличия</h2>
+            <div class="prose text-gray-300">
+                <p>Клипы являются важной составляющей современной музыкальной индустрии, помогая артистам визуализировать свои композиции и устанавливать более глубокую связь с аудиторией. Существует несколько основных видов музыкальных клипов, каждый из которых имеет свои особенности и преимущества.</p>
+                
+                <h3 class="text-xl font-bold mt-6 mb-3">1. Концертные клипы</h3>
+                <p>Концертные клипы снимаются во время живых выступлений артиста. Они передают энергию живого шоу и позволяют зрителям почувствовать атмосферу концерта. Преимущества:</p>
+                <ul class="list-disc pl-6 space-y-2 mt-2">
+                    <li>Аутентичность и живая энергия</li>
+                    <li>Возможность показать взаимодействие артиста с публикой</li>
+                    <li>Относительно низкая стоимость производства</li>
+                </ul>
+                
+                <h3 class="text-xl font-bold mt-6 mb-3">2. Сюжетные клипы</h3>
+                <p>Сюжетные клипы представляют собой мини-фильмы с продуманным сценарием и актерской игрой. Они могут как прямо, так и косвенно отражать содержание песни. Особенности:</p>
+                <ul class="list-disc pl-6 space-y-2 mt-2">
+                    <li>Глубокая визуализация смысла песни</li>
+                    <li>Возможность привлечь внимание не только музыкальных фанатов</li>
+                    <li>Требуют значительных ресурсов для производства</li>
+                </ul>
+                
+                <h3 class="text-xl font-bold mt-6 mb-3">3. Концептуальные клипы</h3>
+                <p>Концептуальные клипы основаны на визуальных метафорах и абстрактных образах. Они часто используют нестандартные приемы съемки и монтажа. Преимущества:</p>
+                <ul class="list-disc pl-6 space-y-2 mt-2">
+                    <li>Высокий художественный уровень</li>
+                    <li>Возможность для творческого самовыражения</li>
+                    <li>Запоминающиеся визуальные образы</li>
+                </ul>
+                
+                <p class="mt-6">Выбор типа клипа зависит от целей артиста, бюджета и концепции песни. В современной индустрии часто комбинируют элементы разных типов клипов для создания уникального визуального продукта.</p>
+            </div>
+            
+            <div class="article-navigation">
+                <div class="nav-arrow prev" onclick="closeModal('modal1'); setTimeout(() => openModal('modal6'), 300)">
+                    <div class="flex items-center">
+                        <span class="arrow-left"></span>
+                        <span class="nav-title">Как выбрать лучшую студию для съемки рекламы?</span>
+                    </div>
+                </div>
+                
+                <div class="nav-arrow next" onclick="closeModal('modal1'); setTimeout(() => openModal('modal2'), 300)">
+                    <div class="flex items-center">
+                        <span class="nav-title">Секреты съемки крутого интервью</span>
+                        <span class="arrow-right"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal 2 -->
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('modal2')">&times;</button>
+            <img src="assets/Blog/002.png" alt="Article" class="modal-image">
+            <div class="flex items-center mb-4">
+                <span class="bg-black px-3 py-1 rounded-md font-medium">Антон Киселев</span>
+                <span class="text-gray-400 ml-4">28 апреля 2023</span>
+            </div>
+            <h2 class="text-3xl font-bold mb-6">Секреты съемки крутого интервью</h2>
+            <div class="prose text-gray-300">
+                <p>Интервью – это мощный инструмент передачи информации и создания эмоциональной связи с аудиторией. Один из наиболее известных интервьюеров современности, Ларри Кинг, говорил: "Я не эксперт ни в чем, кроме умения задавать вопросы". Вот несколько профессиональных секретов, которые помогут вам снять действительно крутое интервью.</p>
+                
+                <h3 class="text-xl font-bold mt-6 mb-3">1. Подготовка – ключ к успеху</h3>
+                <p>Перед съемкой тщательно изучите тему и человека, которого будете интервьюировать. Подготовьте список вопросов, но будьте готовы отклониться от него, если разговор пойдет в интересном направлении.</p>
+                
+                <h3 class="text-xl font-bold mt-6 mb-3">2. Создайте комфортную атмосферу</h3>
+                <p>Большинство людей нервничают перед камерой. Ваша задача – помочь им расслабиться. Начните с неформальной беседы, предложите воду, убедитесь, что в помещении комфортная температура.</p>
+                
+                <h3 class="text-xl font-bold mt-6 mb-3">3. Технические аспекты</h3>
+                <ul class="list-disc pl-6 space-y-2 mt-2">
+                    <li>Используйте минимум две камеры для разных ракурсов</li>
+                    <li>Правильно выставьте свет – лицо интервьюируемого должно быть хорошо освещено</li>
+                    <li>Используйте качественный микрофон (петличку или направленный микрофон)</li>
+                    <li>Обратите внимание на фон – он должен быть нейтральным, но не скучным</li>
+                </ul>
+                
+                <h3 class="text-xl font-bold mt-6 mb-3">4. Искусство задавать вопросы</h3>
+                <p>Задавайте открытые вопросы, которые требуют развернутого ответа. Избегайте вопросов, на которые можно ответить просто "да" или "нет". Слушайте ответы внимательно и задавайте уточняющие вопросы.</p>
+                
+                <p class="mt-6">Помните, что хорошее интервью – это не допрос, а содержательная беседа. Ваша цель – помочь интервьюируемому раскрыться и поделиться действительно ценными мыслями и историями.</p>
+            </div>
+            
+            <div class="article-navigation">
+                <div class="nav-arrow prev" onclick="closeModal('modal2'); setTimeout(() => openModal('modal1'), 300)">
+                    <div class="flex items-center">
+                        <span class="arrow-left"></span>
+                        <span class="nav-title">Виды клипов, их особенности, преимущества и отличия</span>
+                    </div>
+                </div>
+                
+                <div class="nav-arrow next" onclick="closeModal('modal2'); setTimeout(() => openModal('modal3'), 300)">
+                    <div class="flex items-center">
+                        <span class="nav-title">Что такое бриф в продакшн и для чего он нужен?</span>
+                        <span class="arrow-right"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal 3 -->
+    <div id="modal3" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('modal3')">&times;</button>
+            <img src="assets/Blog/003.png" alt="Article" class="modal-image">
+            <div class="flex items-center mb-4">
+                <span class="bg-black px-3 py-1 rounded-md font-medium">Антон Киселев</span>
+                <span class="text-gray-400 ml-4">15 марта 2023</span>
+            </div>
+            <h2 class="text-3xl font-bold mb-6">Что такое бриф в продакшн и для чего он нужен?</h2>
+            <div class="prose text-gray-300">
+                <p>Бриф в продакшн — это документ, который содержит всю необходимую информацию о проекте, который вы собираетесь создать. Он обычно составляется на этапе обсуждения проекта между заказчиком и исполнителем и служит основа для дальнейшей работы.</p>
+                
+                <h3 class="text-xl font-bold mt-6 mb-3">Основные разделы брифа</h3>
+                <p>Хороший бриф должен содержать следующие разделы:</p>
+                <ul class="list-disc pl-6 space-y-2 mt-2">
+                    <li><strong>Общая информация о проекте:</strong> название, тип контента (реклама, клип, корпоративный фильм и т.д.), сроки реализации, бюджет</li>
+                    <li><strong>Цели и задачи:</strong> что должно быть достигнуто в результате создания проекта</li>
+                    <li><strong>Целевая аудитория:</strong> описание людей, для которых создается контент</li>
+                    <li><strong>Ключевые сообщения:</strong> основные идеи, которые должны донести до зрителя</li>
+                    <li><strong>Творческая концепция:</strong> стиль, настроение, визуальные образы</li>
+                    <li><strong>Технические требования:</strong> формат, длительность, специфические пожелания</li>
+                </ul>
+                
+                <h3 class="text-xl font-bold mt-6 mb-3">Зачем нужен бриф?</h3>
+                <p>Бриф выполняет несколько важных функций:</p>
+                <ol class="list-decimal pl-6 space-y-2 mt-2">
+                    <li>Помогает заказчику четко сформулировать свои ожидания</li>
+                    <li>Дает исполнителю полное понимание задачи</li>
+                    <li>Служит точкой отсчета при оценке результатов работы</li>
+                    <li>Позволяет избежать недопонимания и конфликтов на поздних этапах</li>
+                    <li>Оптимизирует процесс производства, сокращая количество правок</li>
+                </ol>
+                
+                <p class="mt-6">Хорошо составленный бриф — это уже половина успеха проекта. Он экономит время и ресурсы, делая процесс производства более прозрачным и предсказуемым для всех участников.</p>
+            </div>
+            
+            <div class="article-navigation">
+                <div class="nav-arrow prev" onclick="closeModal('modal3'); setTimeout(() => openModal('modal2'), 300)">
+                    <div class="flex items-center">
+                        <span class="arrow-left"></span>
+                        <span class="nav-title">Секреты съемки крутого интервью</span>
+                    </div>
+                </div>
+                
+                <div class="nav-arrow next" onclick="closeModal('modal3'); setTimeout(() => openModal('modal4'), 300)">
+                    <div class="flex items-center">
+                        <span class="nav-title">Революция в рекламе: искусственный интеллект</span>
+                        <span class="arrow-right"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal 4 -->
+    <div id="modal4" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('modal4')">&times;</button>
+            <img src="assets/Blog/004.png" alt="Article" class="modal-image">
+            <div class="flex items-center mb-4">
+                <span class="bg-black px-3 py-1 rounded-md font-medium">Антон Киселев</span>
+                <span class="text-gray-400 ml-4">2 февраля 2023</span>
+            </div>
+            <h2 class="text-3xl font-bold mb-6">Революция в рекламе: искусственный интеллект</h2>
+            <div class="prose text-gray-300">
+                <p>В современном мире реклама играет важную роль в продвижении товаров и услуг. С появлением искусственного интеллекта (ИИ) у нас появилась возможность создавать более персонализированные, эффективные и креативные рекламные кампании. ИИ меняет правила игры в рекламной индустрии, и те компании, которые смогут адаптироваться к этим изменениям, получат значительное конкурентное преимущество.</p>
+                
+                <h3 class="text-xl font-bold mt-6 mb-3">Как ИИ используется в рекламе?</h3>
+                <p>Современные технологии искусственного интеллекта находят применение во всех аспектов рекламного производства:</p>
+                <ul class="list-disc pl-6 space-y-2 mt-2">
+                    <li><strong>Анализ данных:</strong> ИИ может обрабатывать огромные массивы данных о поведение потребителей, выявляя закономерности и предпочтения</li>
+                    <li><strong>Прогнозирование:</strong> алгоритмы предсказывают, какие рекламные сообщения будут наиболее эффективны для конкретной аудитории</li>
+                    <li><strong>Персонализация:</strong> создание уникального рекламного контента для каждого пользователя на основе его интересов и поведения</li>
+                    <li><strong>Генерация контента:</strong> от написания рекламных текстов до создания изображений и видео</li>
+                    <li><strong>Оптимизация кампаний:</strong> автоматическая корректировка рекламных стратегий в реальном времени</li>
+                </ul>
+                
+                <h3 class="text-xl font-bold mt-6 mb-3">Примеры успешного применения ИИ</h3>
+                <p>Многие крупные бренды уже активно используют ИИ в своих рекламных кампаниях:</p>
+                <ol class="list-decimal pl-6 space-y-2 mt-2">
+                    <li>Nike использует ИИ для создания персонализированных дизайнов кроссовок</li>
+                    <li>Coca-Cola экспериментирует с генеративным ИИ для создания уникальных рекламных постеров</li>
+                    <li>Sephora внедрила чат-бота, который дает индивидуальные рекомендации по косметике</li>
+                </ol>
+                
+                <p class="mt-6">Искусственный интеллект не заменяет креативность человека, а становится мощным инструментом в руках профессионалов. Будущее рекламы – в гармоничном сочетании человеческого творчества и возможностей ИИ.</p>
+            </div>
+            
+            <div class="article-navigation">
+                <div class="nav-arrow prev" onclick="closeModal('modal4'); setTimeout(() => openModal('modal3'), 300)">
+                    <div class="flex items-center">
+                        <span class="arrow-left"></span>
+                        <span class="nav-title">Что такое бриф в продакшн и для чего он нужен?</span>
+                    </div>
+                </div>
+                
+                <div class="nav-arrow next" onclick="closeModal('modal4'); setTimeout(() => openModal('modal5'), 300)">
+                    <div class="flex items-center">
+                        <span class="nav-title">Что такое вирусное видео, для чего и как его снимать</span>
+                        <span class="arrow-right"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal 5 -->
+    <div id="modal5" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('modal5')">&times;</button>
+            <img src="assets/Blog/005.png" alt="Article" class="modal-image">
+            <div class="flex items-center mb-4">
+                <span class="bg-black px-3 py-1 rounded-md font-medium">Антон Киселев</span>
+                <span class="text-gray-400 ml-4">20 января 2023</span>
+            </div>
+            <h2 class="text-3xl font-bold mb-6">Что такое вирусное видео, для чего и как его снимать</h2>
+            <div class="prose text-gray-300">
+                <p>Создание вирусных видеороликов – это целое искусство. Вирусным видео называется ролик, который активно распространяется пользователями в сети. Активность распространения обычно значительно превышает охват, который можно получить с помощью платного продвижения. Вирусные видео могут быть мощным инструментом маркетинга, PR или просто способом поделиться креативной идеей с миром.</p>
+                
+                <h3 class="text-xl font-bold mt-6 mb-3">Характеристики вирусного видео</h3>
+                <p>Хотя невозможно точно предсказать, станет ли видео вирусным, есть несколько общих черт, которые характерны для большинства популярных роликов:</p>
+                <ul class="list-disc pl-6 space-y-2 mt-2">
+                    <li><strong>Эмоциональность:</strong> видео вызывает сильные эмоции – смех, удивление, восторг, даже возмущение</li>
+                    <li><strong>Краткость:</strong> большинство вирусных роликов длятся от 15 секунд до 2 минут</li>
+                    <li><strong>Простота:</strong> идея должна быть понятна без слов и сложных объяснений</li>
+                    <li><strong>Неожиданность:</strong> элемент неожиданности или нестандартный поворот в сюжете</li>
+                    <li><strong>Актуальность:</strong> отсылки к текущим событиям или популярные темы</li>
+                </ul>
+                
+                <h3 class="text-xl font-bold mt-6 mb-3">Как создать вирусное видео: пошаговая инструкция</h3>
+                <ol class="list-decimal pl-6 space-y-2 mt-2">
+                    <li><strong>Определите цель:</strong> что вы хотите достичь с помощью видео (увеличить продажи, привлечь внимание к бренду, просто развлечь аудиторию)</li>
+                    <li><strong>Изучите свою аудиторию:</strong> что им интересно, какие видео они уже активно распространяют</li>
+                    <li><strong>Придумайте креативную идея:</strong> она должна быть оригинальной, но в то же время понятной</li>
+                    <li><strong>Сделайте акцент на первых секундах:</strong> именно они решают, продолжит ли зритель просмотр</li>
+                    <li><strong>Снимите качественно:</strong> даже самый креативный контент не станет вирусным, если он снят на дрожащую камеру с плохим звуком</li>
+                    <li><strong>Оптимизируйте для мобильных устройств:</strong> большинство просмотров происходит со смартфонов</li>
+                    <li><strong>Запустите в правильное время:</strong> учитывайте время активности вашей целевой аудитории</li>
+                </ol>
+                
+                <p class="mt-6">Помните, что не существует гарантированного рецепта вирусного видео. Даже крупные студии с большим опытом не могут точно предсказать, какой контент "выстрелит". Главное – создавать качественный, искренний и эмоциональный контент, который действительно нравится людям.</p>
+            </div>
+            
+            <div class="article-navigation">
+                <div class="nav-arrow prev" onclick="closeModal('modal5'); setTimeout(() => openModal('modal4'), 300)">
+                    <div class="flex items-center">
+                        <span class="arrow-left"></span>
+                        <span class="nav-title">Революция в рекламе: искусственный интеллект</span>
+                    </div>
+                </div>
+                
+                <div class="nav-arrow next" onclick="closeModal('modal5'); setTimeout(() => openModal('modal6'), 300)">
+                    <div class="flex items-center">
+                        <span class="nav-title">Как выбрать лучшую студию для съемки рекламы?</span>
+                        <span class="arrow-right"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal 6 -->
+    <div id="modal6" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('modal6')">&times;</button>
+            <img src="assets/Blog/006.png" alt="Article" class="modal-image">
+            <div class="flex items-center mb-4">
+                <span class="bg-black px-3 py-1 rounded-md font-medium">Антон Киселев</span>
+                <span class="text-gray-400 ml-4">5 декабря 2022</span>
+            </div>
+            <h2 class="text-3xl font-bold mb-6">Как выбрать лучшую студию для съемки рекламы?</h2>
+            <div class="prose text-gray-300">
+                <p>В современном мире видеореклама стала одним из самых эффективных способов привлечения внимания к вашему бизнесу. Чтобы создать крутой рекламный ролик, который действительно будет работать, важно выбрать правильную студию. Вот подробное руководство, как это сделать.</p>
+                
+                <h3 class="text-xl font-bold mt-6 mb-3">1. Определите свои потребности</h3>
+                <p>Прежде чем искать студию, четко сформулируйте, что вам нужно:</p>
+                <ul class="list-disc pl-6 space-y-2 mt-2">
+                    <li>Тип рекламы (ТВ-ролик, digital-реклама, продуктовая интеграция и т.д.)</li>
+                    <li>Бюджет проекта</li>
+                    <li>Сроки реализации</li>
+                    <li>Креативные пожелания (стиль, настроение, ключевые сообщения)</li>
+                </ul>
+                
+                <h3 class="text-xl font-bold mt-6 mb-3">2. Изучите портфолио</h3>
+                <p>Просмотрите работы потенциальных подрядчиков. Обратите внимание на:</p>
+                <ul class="list-disc pl-6 space-y-2 mt-2">
+                    <li>Качество съемки и монтажа</li>
+                    <li>Разнообразие стилей (или наоборот, специализацию в нужном вам стиле)</li>
+                    <li>Работы в вашей нише (если это важно)</li>
+                    <li>Креативность и оригинальность идей</li>
+                </ul>
+                
+                <h3 class="text-xl font-bold mt-6 mb-3">3. Проверьте техническое оснащение</h3>
+                <p>Убедитесь, что студия располагает необходимым оборудованием:</p>
+                <ul class="list-disc pl-6 space-y-2 mt-2">
+                    <li>Профессиональные камеры (минимум 4K)</li>
+                    <li>Световое оборудование</li>
+                    <li>Звукозаписывающая аппаратура</li>
+                    <li>Собственный монтажный цех</li>
+                    <li>Дополнительные услуги (анимация, цветокоррекция, звуковой дизайн)</li>
+                </ul>
+                
+                <h3 class="text-xl font-bold mt-6 mb-3">4. Оцените команду</h3>
+                <p>Пообщайтесь с людьми, которые будут работать над вашим проектом:</p>
+                <ul class="list-disc pl-6 space-y-2 mt-2">
+                    <li>Режиссер – его видение и подход к работе</li>
+                    <li>Оператор – опыт и технические навыки</li>
+                    <li>Продюсер – способность организовать процесс и уложиться в сроки и бюджет</li>
+                    <li>Креативная команда – способность генерировать свежие идеи</li>
+                </ul>
+                
+                <h3 class="text-xl font-bold mt-6 mb-3">5. Учитывайте отзывы и репутацию</h3>
+                <p>Поищите отзывы предыдущих клиентов, узнайте, с какими брендами студия уже работала. Хороший признак – долгосрочные отношения с клиентами.</p>
+                
+                <p class="mt-6">Выбор студии – это не просто поиск подрядчика, а выбор партнера, который поможет вам реализовать ваши идеи. Не стоит руководствоваться только ценой – дешевый вариант может в итоге оказаться дорогим из-за низкого качества или необходимости переделок.</p>
+            </div>
+            
+            <div class="article-navigation">
+                <div class="nav-arrow prev" onclick="closeModal('modal6'); setTimeout(() => openModal('modal5'), 300)">
+                    <div class="flex items-center">
+                        <span class="arrow-left"></span>
+                        <span class="nav-title">Что такое вирусное видео, для чего и как его снимать</span>
+                    </div>
+                </div>
+                
+                <div class="nav-arrow next" onclick="closeModal('modal6'); setTimeout(() => openModal('modal1'), 300)">
+                    <div class="flex items-center">
+                        <span class="nav-title">Виды клипов, их особенности, преимущества и отличия</span>
+                        <span class="arrow-right"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Modal functions
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal when clicking outside of content
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        }
+        
+        // Intersection Observer for scroll animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const observerOptions = {
+                threshold: 0.1
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-fade-in');
+                    }
+                });
+            }, observerOptions);
+            
+            const animatedElements = document.querySelectorAll('.animate-on-scroll');
+            animatedElements.forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>

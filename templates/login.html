@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход в админ-панель</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-white flex items-center justify-center h-screen">
+    <div class="bg-gray-800 p-8 rounded-lg w-96">
+        <h1 class="text-2xl font-bold mb-6">Вход в админ-панель</h1>
+        <form id="loginForm" class="space-y-4">
+            <div>
+                <label class="block mb-1">Логин</label>
+                <input type="text" id="username" class="w-full bg-gray-700 p-2 rounded">
+            </div>
+            <div>
+                <label class="block mb-1">Пароль</label>
+                <input type="password" id="password" class="w-full bg-gray-700 p-2 rounded">
+            </div>
+            <button type="submit" class="w-full bg-white text-black py-2 rounded font-semibold">
+                Войти
+            </button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                const response = await fetch('/token', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Неверные учетные данные');
+                }
+                
+                const data = await response.json();
+                localStorage.setItem('token', data.access_token);
+                window.location.href = '/admin.html';
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+    </script>
+</body>
+</html>

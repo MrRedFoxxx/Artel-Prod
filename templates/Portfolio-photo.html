@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artel Prod. - Кампейны/Промо/Каталоги</title>
+    <link rel="icon" href="/assets/Icon.png" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+        @font-face {
+        font-family: 'Alternate-Gothic-No1';
+        src: 
+        url('assets/Fonts/alternategothicno1.woff') format('woff');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap; /* Чтобы текст не "прыгал" при загрузке */
+        }
+
+        .inter {
+        font-family: "Inter", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+        }
+        
+        body {
+        font-family: 'Alternate-Gothic-No1', arial;
+        font-weight: 400;
+        background-color: #000;
+        color: white;
+        overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .hero-title {
+            font-family: 'Alternate-Gothic-No1';
+            font-size: 4rem;
+            line-height: 2.8125rem;
+        }
+        
+        .dynamic-heading {
+            font-family: 'Alternate-Gothic-No1';
+            font-size: 2rem;
+            font-weight: 400;
+        }
+        
+        .campaign-card {
+            height: 20.3125rem;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .campaign-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease;
+            z-index: 0;
+        }
+
+        .campaign-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+        }
+        
+        .campaign-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+            opacity: 1;
+        }
+        
+        .campaign-card:hover::after {
+            background-color: rgba(255, 255, 255, 0);
+        }
+
+        .campaign-card:hover::before {
+            background-color: rgba(0, 0, 0, 0);
+        }
+        
+        .card-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 1.5rem;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: opacity 0.3s ease;
+        }
+        
+        .campaign-card:hover .card-content {
+            opacity: 0;
+        }
+        
+        .card-top {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .card-author {
+            font-family: 'Inter';
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+        
+        .card-title {
+            font-family: 'Alternate-Gothic-No1';
+            font-size: 1.8rem;
+            font-weight: 400;
+            line-height: 1.2;
+            margin: 0;
+            word-break: break-word;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-box-orient: vertical;
+        }
+        
+        .card-bottom {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .card-description {
+            font-family: 'Neue Machina', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 400;
+            text-transform: uppercase;
+        }
+        
+        .nav-link {
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .primary-button {
+            transition: all 0.3s ease;
+        }
+        
+        .primary-button:hover {
+            background-color: #e5e5e5;
+            transform: translateY(-2px);
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            overflow: auto;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal-content {
+            position: relative;
+            margin: 5% auto;
+            width: 80%;
+            max-width: 1200px;
+            animation: modalFadeIn 0.5s forwards;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            z-index: 1001;
+        }
+        
+        .close-modal:hover {
+            transform: rotate(90deg);
+        }
+        
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            z-index: 1001;
+            background: rgba(0, 0, 0, 0.5);
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+        
+        .gallery-nav:hover {
+            background: rgba(0, 0, 0, 0.8);
+            opacity: 1;
+        }
+        
+        .prev {
+            left: 30px;
+        }
+        
+        .next {
+            right: 30px;
+        }
+        
+        .gallery-counter {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 18px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px 15px;
+            border-radius: 20px;
+            z-index: 1001;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .social-icon {
+            font-size: 1.5rem;
+            margin: 0 0.5rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            transform: scale(1.2);
+            color: #ccc;
+        }
+        
+        .email-icon {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+            color: white;
+        }
+        
+        .campaign-catalog-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0;
+        }
+        
+        .campaign-column {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .gallery-container {
+            position: relative;
+            width: 100%;
+            height: 70vh;
+            overflow: hidden;
+        }
+        
+        .gallery-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .gallery-image.active {
+            opacity: 1;
+        }
+        
+        .gallery-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 10px;
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #000;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 100;
+            padding: 12px 0;
+            left: 0;
+            top: 100%;
+        }
+        
+        .dropdown-content a {
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-content a:hover {
+            color: #ccc;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .gallery-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+        
+        .gallery-dot:hover {
+            background: white;
+        }
+        
+        @media (max-width: 1536px) {
+            .hero-title {
+                font-size: 3.5rem;
+            }
+        }
+        
+        @media (max-width: 1280px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .dynamic-heading {
+                font-size: 1.75rem;
+            }
+            
+            .campaign-catalog-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        @media (max-width: 1024px) {
+            .hero-title {
+                font-size: 2.5rem;
+                line-height: 2.2rem;
+            }
+            
+            .campaign-catalog-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .modal-content {
+                width: 90%;
+                margin: 10% auto;
+            }
+            
+            .card-title {
+                font-size: 28px;
+            }
+            
+            .gallery-nav {
+                width: 50px;
+                height: 50px;
+                font-size: 30px;
+            }
+            
+            .gallery-container {
+                height: 60vh;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .dynamic-heading {
+                font-size: 1.5rem;
+            }
+            
+            .footer-container {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            
+            .footer-section {
+                width: 100%;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .contact-info {
+                margin-top: 1rem;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 15% auto;
+            }
+            
+            .campaign-catalog-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .card-title {
+                font-size: 24px;
+            }
+            
+            .gallery-nav {
+                width: 40px;
+                height: 40px;
+                font-size: 24px;
+            }
+            
+            .gallery-container {
+                height: 50vh;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .campaign-catalog-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .campaign-card {
+                height: 18rem;
+            }
+            
+            .card-title {
+                font-size: 20px;
+            }
+            
+            .gallery-nav {
+                width: 35px;
+                height: 35px;
+                font-size: 20px;
+            }
+            
+            .gallery-counter {
+                font-size: 14px;
+                padding: 3px 10px;
+            }
+            
+            .gallery-container {
+                height: 40vh;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="container">
+        <!-- Header -->
+        <header class="flex justify-between items-center px-4 md:px-12 lg:px-24 bg-black shadow-lg relative z-50 inter">
+            <a href="/index.html"><img src="assets/Logo.png" alt="Логотип" class="w-48 h-28 object-cover hover-scale"></a>
+            
+            <nav class="hidden md:flex gap-8">
+                <div class="dropdown">
+                    <button class="font-bold text-lg hover:text-gray-300 transition focus:outline-none">ПОРТФОЛИО</button>
+                    <div class="dropdown-content">
+                        <a href="/Portfolio-video.html" class="font-bold text-lg hover:text-gray-300 transition text-center">ВИДЕО</a>
+                        <a class="font-bold text-lg text-gray text-center">ФОТО</a>
+                    </div>
+                </div>
+                <a href="/Uslugi.html" class="font-bold text-lg hover:text-gray-300 transition">УСЛУГИ</a>
+                <a href="/Blog-news.html" class="font-bold text-lg hover:text-gray-300 transition">БЛОГ</a>
+                <a href="/Kurs-info.html" class="font-bold text-lg hover:text-gray-300 transition">КУРС</a>
+            </nav>
+            
+            <div class="hidden md:flex items-center">
+                <span class="font-normal text-xl">+7 980 678 20 93</span>
+                <div class="flex ml-7 gap-4">
+                    <a href="https://t.me/zarokmanager" class="text-white hover:text-blue-400 transition">
+                        <i class="fab fa-telegram text-5xl"></i>
+                    </a>
+                    <a href="https://wa.me/79806782093?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%F0%9F%91%8B%20%D0%AF%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7..." class="text-white hover:text-green-400 transition">
+                        <i class="fab fa-whatsapp text-5xl"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <button class="md:hidden text-white">
+                <i class="fas fa-bars text-3xl"></i>
+            </button>
+        </header>
+
+        <!-- Main Content -->
+        <main class="w-full px-4 lg:px-32 xl:px-48 py-12 animate__animated animate__fadeIn animate__delay-1s">
+            <h1 class="6xl hero-title mb-12 animate__animated animate__fadeIn">КАМПЕЙНЫ / ПРОМО / КАТАЛОГИ</h1>
+            
+            <!-- Campaign Grid -->
+            <div class="campaign-catalog-container">
+                <!-- Column 1 -->
+                <div class="campaign-column">
+                    <div class="campaign-card" data-project="bruler-virtuose" style="background-image: url('assets/Portfolio_photo/VIRTUOSE-DE-LA-VILLE-BRULER/000.png');">
+                        <div class="card-content">
+                            <div class="card-top">
+                                <p class="card-author inter 2xl">Bruler</p>
+                                <p class="card-title 3xl">Virtuose de la ville</p>
+                            </div>
+                            <div class="card-bottom">
+                                <p class="card-description inter 2xl">Кампейн</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="campaign-card" data-project="glory-season-base" style="background-image: url('assets/Portfolio_photo/Base-glory/000.png');">
+                        <div class="card-content">
+                            <div class="card-top">
+                                <p class="card-author inter 2xl">Glory Season</p>
+                                <p class="card-title 3xl">Base Glory</p>
+                            </div>
+                            <div class="card-bottom">
+                                <p class="card-description inter 2xl">Кампейн</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="campaign-card" data-project="bruler-summer" style="background-image: url('assets/Portfolio_photo/Summer-drop/000.png');">
+                        <div class="card-content">
+                            <div class="card-top">
+                                <p class="card-author inter 2xl">Bruler</p>
+                                <p class="card-title 3xl">Summer drop</p>
+                            </div>
+                            <div class="card-bottom">
+                                <p class="card-description inter 2xl">Кампейн</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Column 2 -->
+                <div class="campaign-column">
+                    <div class="campaign-card" data-project="bruler-virtuose-collection" style="background-image: url('assets/Portfolio_photo/VIRTUOSE-COLLECTION/000.png');">
+                        <div class="card-content">
+                            <div class="card-top">
+                                <p class="card-author inter 2xl">Bruler</p>
+                                <p class="card-title 3xl">Virtuose collection</p>
+                            </div>
+                            <div class="card-bottom">
+                                <p class="card-description inter 2xl">Каталог</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="campaign-card" data-project="lana-petersburg" style="background-image: url('assets/Portfolio_photo/Piter/000.png');">
+                        <div class="card-content">
+                            <div class="card-top">
+                                <p class="card-author inter 2xl">Lana</p>
+                                <p class="card-title 3xl">St. Petersburg</p>
+                            </div>
+                            <div class="card-bottom">
+                                <p class="card-description inter 2xl">Кампейн</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="campaign-card" data-project="egor-nats" style="background-image: url('assets/Portfolio_photo/Ochen-skuchau/000.png');">
+                        <div class="card-content">
+                            <div class="card-top">
+                                <p class="card-author inter 2xl">Egor Nats</p>
+                                <p class="card-title 3xl">Очень скучаю</p>
+                            </div>
+                            <div class="card-bottom">
+                                <p class="card-description inter 2xl">Промо к релизу</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Column 3 -->
+                <div class="campaign-column">
+                    <div class="campaign-card" data-project="mnu-massage" style="background-image: url('assets/Portfolio_photo/BEFORE-AND-AFTER/000.png');">
+                        <div class="card-content">
+                            <div class="card-top">
+                                <p class="card-author inter 2xl">Mnu massage</p>
+                                <p class="card-title 3xl">Before and after</p>
+                            </div>
+                            <div class="card-bottom">
+                                <p class="card-description inter 2xl">Камепейн</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="campaign-card" data-project="bruler-winter" style="background-image: url('assets/Portfolio_photo/Winter-collection/000.png');">
+                        <div class="card-content">
+                            <div class="card-top">
+                                <p class="card-author inter 2xl">Bruler</p>
+                                <p class="card-title 3xl">Winter collection</p>
+                            </div>
+                            <div class="card-bottom">
+                                <p class="card-description inter 2xl">Каталог</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="campaign-card" data-project="youaresobad" style="background-image: url('assets/Portfolio_photo/Soundtrack/000.png');">
+                        <div class="card-content">
+                            <div class="card-top">
+                                <p class="card-author inter 2xl">Youaresobad</p>
+                                <p class="card-title 3xl">Саундрек</p>
+                            </div>
+                            <div class="card-bottom">
+                                <p class="card-description inter 2xl">Промо к релизу</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Column 4 -->
+                <div class="campaign-column">
+                    <div class="campaign-card" data-project="bruler-liberte" style="background-image: url('assets/Portfolio_photo/LIBERTE-COLLECTION/000.png');">
+                        <div class="card-content">
+                            <div class="card-top">
+                                <p class="card-author inter 2xl">Bruler</p>
+                                <p class="card-title 3xl">Liberte collection</p>
+                            </div>
+                            <div class="card-bottom">
+                                <p class="card-description inter 2xl">Каталог</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="campaign-card" data-project="bruler-esprit" style="background-image: url('assets/Portfolio_photo/Esprit-capsul/000.png');">
+                        <div class="card-content">
+                            <div class="card-top">
+                                <p class="card-author inter 2xl">Bruler</p>
+                                <p class="card-title 3xl">Esprit capsule</p>
+                            </div>
+                            <div class="card-bottom">
+                                <p class="card-description inter 2xl">Кампейн</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="campaign-card" data-project="white-punk" style="background-image: url('assets/Portfolio_photo/MTII/000.png');">
+                        <div class="card-content">
+                            <div class="card-top">
+                                <p class="card-author inter 2xl">White Punk</p>
+                                <p class="card-title 3xl">MTII</p>
+                            </div>
+                            <div class="card-bottom">
+                                <p class="card-description inter 2xl">Промо к релизу</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Column 5 -->
+                <div class="campaign-column">
+                    <div class="campaign-card" data-project="bruler-arkhangelskoe" style="background-image: url('assets/Portfolio_photo/Arhangelskoe/000.png');">
+                        <div class="card-content">
+                            <div class="card-top">
+                                <p class="card-author inter 2xl">Bruler</p>
+                                <p class="card-title 3xl">Arkhangelskoe</p>
+                            </div>
+                            <div class="card-bottom">
+                                <p class="card-description inter 2xl">Кампейн</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="campaign-card" data-project="glory-season-sport" style="background-image: url('assets/Portfolio_photo/Sport/000.png');">
+                        <div class="card-content">
+                            <div class="card-top">
+                                <p class="card-author inter 2xl">Glory season</p>
+                                <p class="card-title 3xl">Sport</p>
+                            </div>
+                            <div class="card-bottom">
+                                <p class="card-description inter 2xl">Кампейн</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="campaign-card" data-project="bruler-sadovye" style="background-image: url('assets/Portfolio_photo/Sadovye/000.png');">
+                        <div class="card-content">
+                            <div class="card-top">
+                                <p class="card-author inter 2xl">Bruler</p>
+                                <p class="card-title 3xl">Sadovye</p>
+                            </div>
+                            <div class="card-bottom">
+                                <p class="card-description inter 2xl">Кампейн</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="primary-button w-full mt-8 py-4 bg-white text-black text-lg font-medium animate__animated animate__fadeIn animate__delay-2s inter 2xl">
+                СМОТРЕТЬ ЕЩЕ
+            </button>
+        </main>
+
+        <!-- Футер -->
+        <footer class="py-16 px-4 md:px-12 lg:px-24 animate-fade-in animate-delay-3">    
+                <div class="flex flex-col md:flex-row inter">
+                    <div class="md:w-2/5 mb-12 md:mb-0">
+                        <h3 class="font-bold text-lg mb-4">О нас</h3>
+                        <p class="text-lg">
+                            Artel production – фото и видео<br>продакшн полного цикла.<br>Работаем в Москве, Санкт-<br>Петербурге и по всему миру.
+                        </p>
+                    </div>
+                    
+                    <div class="md:w-2/5 mb-12 md:mb-0 md:px-8">
+                        <h3 class="font-bold text-lg mb-4">Быстрые ссылки</h3>
+                        <div class="flex flex-col gap-2">
+                            <a href="/index.html" class="text-lg hover:text-gray-300 transition">Главная</a>
+                            <a href="#" class="text-lg hover:text-gray-300 transition" onclick="openPrivacyPopup()">Политика конфиденциальности</a>
+                            <a href="/Portfolio-video.html" class="text-lg hover:text-gray-300 transition">Видео работы</a>
+                            <a href="/Portfolio-photo.html" class="text-lg hover:text-gray-300 transition">Фото работы</a>
+                            <a href="/Uslugi.html" class="text-lg hover:text-gray-300 transition">Услуги</a>
+                            <a href="/Blog-news.html" class="text-lg hover:text-gray-300 transition">Блог</a>
+                            <a href="/Kurs-info.html" class="text-lg hover:text-gray-300 transition">Курс</a>
+                        </div>
+                    </div>
+                    
+                    <div class="md:w-1/5">
+                        <h3 class="font-bold text-lg mb-4">Контакты</h3>
+                        <div class="mb-6">
+                            <div class="flex items-center">
+                                <i class="fas fa-envelope mr-2"></i>
+                                <span class="text-lg">info@artel.ru</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <a href="https://t.me/pagezarok" class="text-white hover:text-blue-400 transition">
+                                <i class="fab fa-telegram text-2xl"></i>
+                            </a>
+                            <a href="https://wa.me/79806782093?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%F0%9F%91%8B%20%D0%AF%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7..." class="text-white hover:text-green-400 transition">
+                                <i class="fab fa-whatsapp text-2xl"></i>
+                            </a>
+                            <a href="https://vk.com/zarok485prod" class="text-white hover:text-green-400 transition">
+                                <i class="fab fa-vk text-2xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Modal -->
+        <div id="imageModal" class="modal">
+            <span class="close-modal">&times;</span>
+            <div class="gallery-nav prev"><i class="fas fa-chevron-left"></i></div>
+            <div class="gallery-nav next"><i class="fas fa-chevron-right"></i></div>
+            <div class="gallery-counter">1/1</div>
+            
+            <div class="modal-content">
+                <!-- Gallery container will be inserted here by JavaScript -->
+                <div class="text-white mt-4 p-4">
+                    <h3 id="modalTitle" class="text-2xl font-bold"></h3>
+                    <p id="modalSubtitle" class="text-xl mt-2"></p>
+                    <p id="modalDescription" class="text-lg mt-4"></p>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Project gallery data with different number of images
+            const projects = {
+                'bruler-virtuose': {
+                    title: 'Bruler',
+                    subtitle: 'Virtuose de la ville',
+                    description: 'Кампейн',
+                    images: [
+                        'assets/Portfolio_photo/VIRTUOSE-DE-LA-VILLE-BRULER/001.webp',
+                        'assets/Portfolio_photo/VIRTUOSE-DE-LA-VILLE-BRULER/002.webp',
+                        'assets/Portfolio_photo/VIRTUOSE-DE-LA-VILLE-BRULER/003.webp',
+                        'assets/Portfolio_photo/VIRTUOSE-DE-LA-VILLE-BRULER/004.webp',
+                        'assets/Portfolio_photo/VIRTUOSE-DE-LA-VILLE-BRULER/005.webp',
+                        'assets/Portfolio_photo/VIRTUOSE-DE-LA-VILLE-BRULER/006.webp'
+                    ]
+                },
+                'glory-season-base': {
+                    title: 'Glory Season',
+                    subtitle: 'Base Glory',
+                    description: 'Кампейн',
+                    images: [
+                        'assets/Portfolio_photo/Base-glory/001.webp',
+                        'assets/Portfolio_photo/Base-glory/002.webp',
+                        'assets/Portfolio_photo/Base-glory/003.webp',
+                        'assets/Portfolio_photo/Base-glory/004.webp',
+                        'assets/Portfolio_photo/Base-glory/005.webp',
+                        'assets/Portfolio_photo/Base-glory/006.webp',
+                        'assets/Portfolio_photo/Base-glory/007.webp',
+                        'assets/Portfolio_photo/Base-glory/008.webp',
+                        'assets/Portfolio_photo/Base-glory/009.webp',
+                        'assets/Portfolio_photo/Base-glory/010.webp',
+                        'assets/Portfolio_photo/Base-glory/011.webp',
+                        'assets/Portfolio_photo/Base-glory/012.webp',
+                        'assets/Portfolio_photo/Base-glory/013.webp'
+                    ]
+                },
+                'bruler-summer': {
+                    title: 'Bruler',
+                    subtitle: 'Summer drop',
+                    description: 'Кампейн',
+                    images: [
+                        'assets/Portfolio_photo/Summer-drop/001.webp',
+                        'assets/Portfolio_photo/Summer-drop/002.webp',
+                        'assets/Portfolio_photo/Summer-drop/003.webp',
+                        'assets/Portfolio_photo/Summer-drop/004.webp',
+                        'assets/Portfolio_photo/Summer-drop/005.webp',
+                        'assets/Portfolio_photo/Summer-drop/006.webp',
+                        'assets/Portfolio_photo/Summer-drop/007.webp',
+                        'assets/Portfolio_photo/Summer-drop/008.webp',
+                        'assets/Portfolio_photo/Summer-drop/009.webp',
+                        'assets/Portfolio_photo/Summer-drop/010.webp',
+                        'assets/Portfolio_photo/Summer-drop/011.webp',
+                        'assets/Portfolio_photo/Summer-drop/012.webp',
+                        'assets/Portfolio_photo/Summer-drop/013.webp'
+                    ]
+                },
+                'bruler-virtuose-collection': {
+                    title: 'Bruler',
+                    subtitle: 'Virtuose collection',
+                    description: 'Каталог',
+                    images: [
+                        'assets/Portfolio_photo/VIRTUOSE-COLLECTION/001.webp',
+                        'assets/Portfolio_photo/VIRTUOSE-COLLECTION/002.webp',
+                        'assets/Portfolio_photo/VIRTUOSE-COLLECTION/003.webp',
+                        'assets/Portfolio_photo/VIRTUOSE-COLLECTION/004.webp',
+                        'assets/Portfolio_photo/VIRTUOSE-COLLECTION/005.webp',
+                        'assets/Portfolio_photo/VIRTUOSE-COLLECTION/006.webp',
+                        'assets/Portfolio_photo/VIRTUOSE-COLLECTION/007.webp',
+                        'assets/Portfolio_photo/VIRTUOSE-COLLECTION/008.webp',
+                        'assets/Portfolio_photo/VIRTUOSE-COLLECTION/009.webp',
+                        'assets/Portfolio_photo/VIRTUOSE-COLLECTION/010.webp'
+                    ]
+                },
+                'lana-petersburg': {
+                    title: 'Lana',
+                    subtitle: 'St. Petersburg',
+                    description: 'Кампейн',
+                    images: [
+                        'assets/Portfolio_photo/Piter/001.webp',
+                        'assets/Portfolio_photo/Piter/002.webp',
+                        'assets/Portfolio_photo/Piter/003.webp'
+                    ]
+                },
+                'egor-nats': {
+                    title: 'Egor Nats',
+                    subtitle: 'Очень скучаю',
+                    description: 'Промо к релизу',
+                    images: [
+                        'assets/Portfolio_photo/Ochen-skuchau/001.webp',
+                        'assets/Portfolio_photo/Ochen-skuchau/002.webp',
+                        'assets/Portfolio_photo/Ochen-skuchau/003.webp',
+                        'assets/Portfolio_photo/Ochen-skuchau/004.webp',
+                        'assets/Portfolio_photo/Ochen-skuchau/005.webp',
+                        'assets/Portfolio_photo/Ochen-skuchau/006.webp'
+                    ]
+                },
+                'mnu-massage': {
+                    title: 'Mnu massage',
+                    subtitle: 'Before and after',
+                    description: 'Камепейн',
+                    images: [
+                        'assets/Portfolio_photo/BEFORE-AND-AFTER/001.webp',
+                        'assets/Portfolio_photo/BEFORE-AND-AFTER/002.webp',
+                        'assets/Portfolio_photo/BEFORE-AND-AFTER/003.webp',
+                        'assets/Portfolio_photo/BEFORE-AND-AFTER/004.webp',
+                        'assets/Portfolio_photo/BEFORE-AND-AFTER/005.webp',
+                        'assets/Portfolio_photo/BEFORE-AND-AFTER/006.webp',
+                        'assets/Portfolio_photo/BEFORE-AND-AFTER/007.webp',
+                        'assets/Portfolio_photo/BEFORE-AND-AFTER/008.webp'
+                    ]
+                },
+                'bruler-winter': {
+                    title: 'Bruler',
+                    subtitle: 'Winter collection',
+                    description: 'Каталог',
+                    images: [
+                        'assets/Portfolio_photo/Winter-collection/001.webp',
+                        'assets/Portfolio_photo/Winter-collection/002.webp',
+                        'assets/Portfolio_photo/Winter-collection/003.webp',
+                        'assets/Portfolio_photo/Winter-collection/004.webp',
+                        'assets/Portfolio_photo/Winter-collection/005.webp',
+                        'assets/Portfolio_photo/Winter-collection/006.webp',
+                        'assets/Portfolio_photo/Winter-collection/007.webp',
+                        'assets/Portfolio_photo/Winter-collection/008.webp',
+                        'assets/Portfolio_photo/Winter-collection/009.webp'
+                    ]
+                },
+                'youaresobad': {
+                    title: 'Youaresobad',
+                    subtitle: 'Саундрек',
+                    description: 'Промо к релизу',
+                    images: [
+                        'assets/Portfolio_photo/Soundtrack/001.webp',
+                        'assets/Portfolio_photo/Soundtrack/002.webp',
+                        'assets/Portfolio_photo/Soundtrack/003.webp',
+                        'assets/Portfolio_photo/Soundtrack/004.webp',
+                        'assets/Portfolio_photo/Soundtrack/005.webp'
+                    ]
+                },
+                'bruler-liberte': {
+                    title: 'Bruler',
+                    subtitle: 'Liberte collection',
+                    description: 'Каталог',
+                    images: [
+                        'assets/Portfolio_photo/LIBERTE-COLLECTION/001.webp',
+                        'assets/Portfolio_photo/LIBERTE-COLLECTION/002.webp',
+                        'assets/Portfolio_photo/LIBERTE-COLLECTION/003.webp',
+                        'assets/Portfolio_photo/LIBERTE-COLLECTION/004.webp',
+                        'assets/Portfolio_photo/LIBERTE-COLLECTION/005.webp',
+                        'assets/Portfolio_photo/LIBERTE-COLLECTION/006.webp',
+                        'assets/Portfolio_photo/LIBERTE-COLLECTION/007.webp',
+                        'assets/Portfolio_photo/LIBERTE-COLLECTION/008.webp',
+                        'assets/Portfolio_photo/LIBERTE-COLLECTION/009.webp'
+                    ]
+                },
+                'bruler-esprit': {
+                    title: 'Bruler',
+                    subtitle: 'Esprit capsule',
+                    description: 'Кампейн',
+                    images: [
+                        'assets/Portfolio_photo/Esprit-capsul/001.webp',
+                        'assets/Portfolio_photo/Esprit-capsul/002.webp',
+                        'assets/Portfolio_photo/Esprit-capsul/003.webp',
+                        'assets/Portfolio_photo/Esprit-capsul/004.webp',
+                        'assets/Portfolio_photo/Esprit-capsul/005.webp',
+                        'assets/Portfolio_photo/Esprit-capsul/006.webp',
+                        'assets/Portfolio_photo/Esprit-capsul/007.webp',
+                        'assets/Portfolio_photo/Esprit-capsul/008.webp',
+                        'assets/Portfolio_photo/Esprit-capsul/009.webp',
+                        'assets/Portfolio_photo/Esprit-capsul/010.webp',
+                        'assets/Portfolio_photo/Esprit-capsul/011.webp',
+                        'assets/Portfolio_photo/Esprit-capsul/012.webp',
+                        'assets/Portfolio_photo/Esprit-capsul/013.webp',
+                        'assets/Portfolio_photo/Esprit-capsul/014.webp',
+                        'assets/Portfolio_photo/Esprit-capsul/015.webp',
+                        'assets/Portfolio_photo/Esprit-capsul/016.webp'
+                    ]
+                },
+                'white-punk': {
+                    title: 'White Punk',
+                    subtitle: 'MTII',
+                    description: 'Промо к релизу',
+                    images: [
+                        'assets/Portfolio_photo/MTII/001.webp',
+                        'assets/Portfolio_photo/MTII/002.webp',
+                        'assets/Portfolio_photo/MTII/003.webp',
+                        'assets/Portfolio_photo/MTII/004.webp',
+                        'assets/Portfolio_photo/MTII/005.webp',
+                        'assets/Portfolio_photo/MTII/006.webp',
+                        'assets/Portfolio_photo/MTII/007.webp',
+                        'assets/Portfolio_photo/MTII/008.webp'
+                    ]
+                },
+                'bruler-arkhangelskoe': {
+                    title: 'Bruler',
+                    subtitle: 'Arkhangelskoe',
+                    description: 'Кампейн',
+                    images: [
+                        'assets/Portfolio_photo/Arhangelskoe/001.webp',
+                        'assets/Portfolio_photo/Arhangelskoe/002.webp',
+                        'assets/Portfolio_photo/Arhangelskoe/003.webp',
+                        'assets/Portfolio_photo/Arhangelskoe/004.webp',
+                        'assets/Portfolio_photo/Arhangelskoe/005.webp',
+                        'assets/Portfolio_photo/Arhangelskoe/006.webp',
+                        'assets/Portfolio_photo/Arhangelskoe/007.webp',
+                        'assets/Portfolio_photo/Arhangelskoe/008.webp',
+                        'assets/Portfolio_photo/Arhangelskoe/009.webp',
+                        'assets/Portfolio_photo/Arhangelskoe/010.webp',
+                        'assets/Portfolio_photo/Arhangelskoe/011.webp'
+                    ]
+                },
+                'glory-season-sport': {
+                    title: 'Glory season',
+                    subtitle: 'Sport',
+                    description: 'Кампейн',
+                    images: [
+                        'assets/Portfolio_photo/Sport/001.webp',
+                        'assets/Portfolio_photo/Sport/002.webp',
+                        'assets/Portfolio_photo/Sport/003.webp',
+                        'assets/Portfolio_photo/Sport/004.webp',
+                        'assets/Portfolio_photo/Sport/005.webp',
+                        'assets/Portfolio_photo/Sport/006.webp',
+                        'assets/Portfolio_photo/Sport/007.webp',
+                        'assets/Portfolio_photo/Sport/008.webp',
+                        'assets/Portfolio_photo/Sport/009.webp',
+                        'assets/Portfolio_photo/Sport/010.webp',
+                        'assets/Portfolio_photo/Sport/011.webp',
+                        'assets/Portfolio_photo/Sport/012.webp',
+                        'assets/Portfolio_photo/Sport/013.webp',
+                        'assets/Portfolio_photo/Sport/014.webp',
+                        'assets/Portfolio_photo/Sport/015.webp',
+                        'assets/Portfolio_photo/Sport/016.webp',
+                        'assets/Portfolio_photo/Sport/017.webp',
+                        'assets/Portfolio_photo/Sport/018.webp',
+                        'assets/Portfolio_photo/Sport/019.webp',
+                        'assets/Portfolio_photo/Sport/020.webp',
+                        'assets/Portfolio_photo/Sport/021.webp',
+                        'assets/Portfolio_photo/Sport/022.webp'
+
+                    ]
+                },
+                'bruler-sadovye': {
+                    title: 'Bruler',
+                    subtitle: 'Sadovye',
+                    description: 'Кампейн',
+                    images: [
+                        'assets/Portfolio_photo/Sadovye/001.webp',
+                        'assets/Portfolio_photo/Sadovye/002.webp',
+                        'assets/Portfolio_photo/Sadovye/003.webp',
+                        'assets/Portfolio_photo/Sadovye/004.webp',
+                        'assets/Portfolio_photo/Sadovye/005.webp',
+                        'assets/Portfolio_photo/Sadovye/006.webp',
+                        'assets/Portfolio_photo/Sadovye/007.webp',
+                        'assets/Portfolio_photo/Sadovye/008.webp',
+                        'assets/Portfolio_photo/Sadovye/009.webp',
+                        'assets/Portfolio_photo/Sadovye/010.webp',
+                        'assets/Portfolio_photo/Sadovye/011.webp',
+                        'assets/Portfolio_photo/Sadovye/012.webp',
+                        'assets/Portfolio_photo/Sadovye/013.webp'
+                    ]
+                }
+            };
+
+            document.addEventListener('DOMContentLoaded', function() {
+                // Плавный скролл для якорных ссылок
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        document.querySelector(this.getAttribute('href')).scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    });
+                });
+                
+                // Modal functionality
+                const modal = document.getElementById('imageModal');
+                const modalTitle = document.getElementById('modalTitle');
+                const modalSubtitle = document.getElementById('modalSubtitle');
+                const modalDescription = document.getElementById('modalDescription');
+                const closeBtn = document.querySelector('.close-modal');
+                const prevBtn = document.querySelector('.prev');
+                const nextBtn = document.querySelector('.next');
+                const counter = document.querySelector('.gallery-counter');
+                const modalContent = document.querySelector('.modal-content');
+                
+                let currentProject = null;
+                let currentIndex = 0;
+                let dotsContainer = null;
+                
+                // Add click event to all campaign cards
+                document.querySelectorAll('.campaign-card').forEach(card => {
+                    card.addEventListener('click', function() {
+                        const projectId = this.getAttribute('data-project');
+                        currentProject = projects[projectId];
+                        currentIndex = 0;
+                        
+                        // Set modal content
+                        modalTitle.textContent = currentProject.title;
+                        modalSubtitle.textContent = currentProject.subtitle;
+                        modalDescription.textContent = currentProject.description;
+                        
+                        // Create gallery container
+                        const galleryContainer = createGalleryContainer(currentProject.images);
+                        
+                        // Insert gallery before the text content
+                        modalContent.insertBefore(galleryContainer, modalContent.firstChild);
+                        
+                        // Create dots navigation
+                        dotsContainer = createDotsNavigation(currentProject.images.length);
+                        modalContent.insertBefore(dotsContainer, modalContent.children[1]);
+                        
+                        // Show first image
+                        showImage(0);
+                        
+                        // Show modal with animation
+                        modal.style.display = 'block';
+                        setTimeout(() => {
+                            modal.style.opacity = '1';
+                        }, 10);
+                    });
+                });
+                
+                // Create gallery container with images
+                function createGalleryContainer(images) {
+                    const galleryContainer = document.createElement('div');
+                    galleryContainer.className = 'gallery-container relative';
+                    
+                    images.forEach((image, index) => {
+                        const img = document.createElement('img');
+                        img.src = image;
+                        img.alt = `${currentProject.title} - ${currentProject.subtitle} - ${index + 1}`;
+                        img.className = 'gallery-image';
+                        galleryContainer.appendChild(img);
+                    });
+                    
+                    return galleryContainer;
+                }
+                
+                // Create dots navigation
+                function createDotsNavigation(count) {
+                    const dotsContainer = document.createElement('div');
+                    dotsContainer.className = 'gallery-dots';
+                    
+                    for (let i = 0; i < count; i++) {
+                        const dot = document.createElement('div');
+                        dot.className = 'gallery-dot';
+                        dot.dataset.index = i;
+                        dot.addEventListener('click', function() {
+                            showImage(parseInt(this.dataset.index));
+                        });
+                        dotsContainer.appendChild(dot);
+                    }
+                    
+                    return dotsContainer;
+                }
+                
+                // Show specific image
+                function showImage(index) {
+                    const images = document.querySelectorAll('.gallery-image');
+                    const dots = document.querySelectorAll('.gallery-dot');
+                    
+                    // Hide all images
+                    images.forEach(img => img.classList.remove('active'));
+                    
+                    // Show selected image
+                    images[index].classList.add('active');
+                    
+                    // Update active dot
+                    if (dots) {
+                        dots.forEach(dot => dot.classList.remove('active'));
+                        dots[index].classList.add('active');
+                    }
+                    
+                    currentIndex = index;
+                    updateCounter();
+                }
+                
+                // Update counter
+                function updateCounter() {
+                    if (currentProject) {
+                        counter.textContent = `${currentIndex + 1}/${currentProject.images.length}`;
+                    }
+                }
+                
+                // Navigation
+                prevBtn.addEventListener('click', function() {
+                    if (!currentProject) return;
+                    
+                    const newIndex = (currentIndex - 1 + currentProject.images.length) % currentProject.images.length;
+                    showImage(newIndex);
+                });
+                
+                nextBtn.addEventListener('click', function() {
+                    if (!currentProject) return;
+                    
+                    const newIndex = (currentIndex + 1) % currentProject.images.length;
+                    showImage(newIndex);
+                });
+                
+                // Keyboard navigation
+                document.addEventListener('keydown', function(e) {
+                    if (!currentProject || modal.style.display !== 'block') return;
+                    
+                    if (e.key === 'ArrowLeft') {
+                        const newIndex = (currentIndex - 1 + currentProject.images.length) % currentProject.images.length;
+                        showImage(newIndex);
+                    } else if (e.key === 'ArrowRight') {
+                        const newIndex = (currentIndex + 1) % currentProject.images.length;
+                        showImage(newIndex);
+                    } else if (e.key === 'Escape') {
+                        closeModal();
+                    }
+                });
+                
+                // Close modal
+                closeBtn.addEventListener('click', function() {
+                    closeModal();
+                });
+                
+                // Close when clicking outside modal content
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        closeModal();
+                    }
+                });
+                
+                function closeModal() {
+                    modal.style.opacity = '0';
+                    setTimeout(() => {
+                        modal.style.display = 'none';
+                        // Remove gallery elements
+                        const galleryContainer = document.querySelector('.gallery-container');
+                        if (galleryContainer) {
+                            galleryContainer.remove();
+                        }
+                        if (dotsContainer) {
+                            dotsContainer.remove();
+                            dotsContainer = null;
+                        }
+                        currentProject = null;
+                    }, 300);
+                }
+            });
+        </script>
+    </div>
+</body>
+</html>
