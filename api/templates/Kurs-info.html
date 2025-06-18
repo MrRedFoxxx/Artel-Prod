@@ -298,6 +298,60 @@
             cursor: pointer;
         }
         
+        /* OAuth кнопки */
+        .oauth-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .oauth-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .yandex-btn {
+            background-color: #FF0000;
+            color: white;
+        }
+        
+        .yandex-btn:hover {
+            background-color: #CC0000;
+        }
+        
+        .divider {
+            position: relative;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .divider::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: #444;
+        }
+        
+        .divider span {
+            background-color: #111;
+            padding: 0 15px;
+            color: #aaa;
+            font-size: 14px;
+        }
+        
         /* Стили для черно-белой фотографии */
         .author-image-container {
             position: relative;
@@ -858,9 +912,6 @@
                             <a href="https://wa.me/79806782093?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%F0%9F%91%8B%20%D0%AF%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7..." class="text-white hover:text-green-400 transition">
                                 <i class="fab fa-whatsapp text-2xl"></i>
                             </a>
-                            <a href="https://vk.com/zarok485prod" class="text-white hover:text-green-400 transition">
-                                <i class="fab fa-vk text-2xl"></i>
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -886,6 +937,19 @@
         <div class="modal-content">
             <span class="close-modal" id="closeLoginModal">&times;</span>
             <h2 class="form-title">Вход в систему</h2>
+            
+            <!-- OAuth кнопки -->
+            <div class="oauth-buttons mb-6">
+                <button id="yandexLoginBtn" class="oauth-btn yandex-btn">
+                    <i class="fas fa-yandex"></i>
+                    Войти через Яндекс
+                </button>
+            </div>
+            
+            <div class="divider mb-6">
+                <span>или</span>
+            </div>
+            
             <form id="loginForm">
                 <input type="text" id="loginUsername" class="form-input" required placeholder="Логин" >
                 <input type="password"  id="loginPassword" required placeholder="Пароль" class="form-input">
@@ -902,6 +966,19 @@
         <div class="modal-content">
             <span class="close-modal" id="closeRegisterModal">&times;</span>
             <h2 class="form-title">Регистрация</h2>
+            
+            <!-- OAuth кнопки -->
+            <div class="oauth-buttons mb-6">
+                <button id="yandexRegisterBtn" class="oauth-btn yandex-btn">
+                    <i class="fas fa-yandex"></i>
+                    Зарегистрироваться через Яндекс
+                </button>
+            </div>
+            
+            <div class="divider mb-6">
+                <span>или</span>
+            </div>
+            
             <form id="registerForm">
                 <input type="text" class="form-input" id="regFirstName" required placeholder="Имя">
                 <input type="text" class="form-input" id="regLastName" required placeholder="Фамилия">
@@ -1180,6 +1257,46 @@
                 alert('Сервер не отвечает. Попробуйте позже.');
             }
         });
+
+            // OAuth обработчики
+            document.getElementById('yandexLoginBtn').addEventListener('click', async function() {
+                try {
+                    const response = await fetch('http://89.169.4.94:8000/auth/yandex/url');
+                    const data = await response.json();
+                    window.location.href = data.auth_url;
+                } catch (error) {
+                    console.error('Ошибка получения Yandex URL:', error);
+                    alert('Ошибка при авторизации через Яндекс');
+                }
+            });
+
+            document.getElementById('yandexRegisterBtn').addEventListener('click', async function() {
+                try {
+                    const response = await fetch('http://89.169.4.94:8000/auth/yandex/url');
+                    const data = await response.json();
+                    window.location.href = data.auth_url;
+                } catch (error) {
+                    console.error('Ошибка получения Yandex URL:', error);
+                    alert('Ошибка при регистрации через Яндекс');
+                }
+            });
+
+            // Проверяем URL на наличие токена после OAuth авторизации
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+            const userId = urlParams.get('user_id');
+            
+            if (token && userId) {
+                // Сохраняем токен и ID пользователя
+                localStorage.setItem('access_token', token);
+                localStorage.setItem('user_id', userId);
+                
+                // Очищаем URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+                
+                // Перенаправляем на страницу курса
+                window.location.href = 'Kurs.html';
+            }
         });
 
         // Инициализация при загрузке страницы

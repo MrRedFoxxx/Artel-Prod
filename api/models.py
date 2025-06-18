@@ -10,9 +10,13 @@ class User(Base):
     first_name = Column(String)
     last_name = Column(String)
     username = Column(String, unique=True, index=True)
-    hashed_password = Column(String)
+    hashed_password = Column(String, nullable=True)  # Может быть null для OAuth пользователей
     is_admin = Column(Integer, default=0)  # 0 = False, 1 = True
     date_reg = Column(String)  # Храним как строку в формате DD.MM.YYYY
+    # OAuth поля
+    oauth_provider = Column(String, nullable=True)  # 'vk' или 'yandex'
+    oauth_id = Column(String, nullable=True)  # ID пользователя в OAuth сервисе
+    oauth_email = Column(String, nullable=True)  # Email из OAuth
     progress = relationship("UserProgress", back_populates="user")
 
 class UserProgress(Base):

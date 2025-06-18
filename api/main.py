@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException, status, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 from jose import JWTError, jwt
@@ -11,6 +11,8 @@ from typing import Optional
 from pydantic import BaseModel
 import models
 from database import engine, SessionLocal, get_db
+from oauth_config import get_yandex_auth_url
+from oauth_handlers import handle_yandex_oauth
 import logging
 import re
 import os
@@ -80,6 +82,15 @@ class Token(BaseModel):
     token_type: str
     user_id: int
 
+class OAuthResponse(BaseModel):
+    auth_url: str
+
+class OAuthCallbackResponse(BaseModel):
+    access_token: str
+    token_type: str
+    user_id: int
+    redirect_url: str
+
 # --- Вспомогательные функции ---
 def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
@@ -96,7 +107,14 @@ def get_db():
 
 def authenticate_user(db: Session, username: str, password: str):
     user = db.query(models.User).filter(models.User.username == username).first()
-    if not user or not verify_password(password, user.hashed_password):
+    if not user:
+        return False
+    
+    # Проверяем, является ли пользователь OAuth пользователем
+    if user.oauth_provider:
+        return False  # OAuth пользователи не могут входить по паролю
+    
+    if not verify_password(password, user.hashed_password):
         return False
     return user
 
@@ -142,7 +160,8 @@ async def get_current_admin(current_user: models.User = Depends(get_current_user
 @app.post("/register/", response_model=Token)
 def register_user(user: UserCreate, db: Session = Depends(get_db)):
     # Проверяем, не занят ли логин
-    if db.query(models.User).filter(models.User.username == user.username).first():
+    existing_user = db.query(models.User).filter(models.User.username == user.username).first()
+    if existing_user:
         raise HTTPException(status_code=400, detail="Логин уже занят")
     
     # Создаем пользователя
@@ -152,7 +171,8 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
         last_name=user.last_name,
         username=user.username,
         hashed_password=hashed_password,
-        is_admin=0  # Явно указываем, что это не админ
+        is_admin=0,  # Явно указываем, что это не админ
+        date_reg=datetime.now().strftime("%d.%m.%Y")
     )
     db.add(db_user)
     db.commit()
@@ -519,6 +539,34 @@ async def get_videos():
         raise HTTPException(status_code=500, detail="Internal server error")
     finally:
         db.close()
+
+# --- OAuth роуты ---
+@app.get("/auth/yandex/url", response_model=OAuthResponse)
+async def get_yandex_auth_url():
+    """Получает URL для авторизации через Яндекс"""
+    return {"auth_url": get_yandex_auth_url()}
+
+@app.get("/auth/yandex/callback")
+async def yandex_oauth_callback(code: str, db: Session = Depends(get_db)):
+    """Обрабатывает callback от Яндекс"""
+    try:
+        user = await handle_yandex_oauth(code, db)
+        if not user:
+            raise HTTPException(status_code=400, detail="Ошибка авторизации через Яндекс")
+        
+        # Создаем токен
+        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token = create_access_token(
+            data={"sub": user.username}, expires_delta=access_token_expires
+        )
+        
+        # Перенаправляем на фронтенд с токеном
+        redirect_url = f"/Kurs.html?token={access_token}&user_id={user.id}"
+        return RedirectResponse(url=redirect_url)
+        
+    except Exception as e:
+        logger.error(f"Yandex OAuth callback error: {str(e)}")
+        raise HTTPException(status_code=500, detail="Ошибка авторизации")
 
 app.mount("/", StaticFiles(directory=TEMPLATES_DIR, html=True), name="static")
 # Запуск сервера
