@@ -1,4 +1,0 @@
-# OAuth настройки для Яндекс
-YANDEX_CLIENT_ID=your_yandex_client_id_here
-YANDEX_CLIENT_SECRET=your_yandex_client_secret_here
-YANDEX_REDIRECT_URI=http://localhost:8000/auth/yandex/callback 
