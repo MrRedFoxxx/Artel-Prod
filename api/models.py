@@ -34,3 +34,29 @@ class Video(Base):
     thumbnail_url = Column(String, nullable=False)
     order = Column(Integer, default=0)  # для сортировки видео
     created_at = Column(DateTime, default=datetime.utcnow)
+
+class PhotoAlbum(Base):
+    __tablename__ = "photo_albums"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String, nullable=False)  # Название альбома
+    artist = Column(String, nullable=False)  # Автор/Бренд
+    type = Column(String, nullable=False)  # Тип (Кампейн, Каталог, Промо к релизу)
+    preview_url = Column(String, nullable=False)  # URL превью изображения
+    order = Column(Integer, default=0)  # Для сортировки альбомов
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    # Связь с изображениями
+    images = relationship("AlbumImage", back_populates="album", cascade="all, delete-orphan")
+
+class AlbumImage(Base):
+    __tablename__ = "album_images"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    album_id = Column(Integer, ForeignKey("photo_albums.id"), nullable=False)
+    url = Column(String, nullable=False)  # URL изображения
+    order = Column(Integer, default=0)  # Порядок изображения в альбоме
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    # Связь с альбомом
+    album = relationship("PhotoAlbum", back_populates="images")

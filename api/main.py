@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, status, Request
+from fastapi import FastAPI, Depends, HTTPException, status, Request, UploadFile, File
 from fastapi.staticfiles import StaticFiles
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
@@ -7,13 +7,15 @@ from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel
 import models
+import schemas
 from database import engine, SessionLocal, get_db
 import logging
 import re
 import os
+import shutil
 from sqlalchemy import func
 
 # Настройка логирования
@@ -519,6 +521,248 @@ async def get_videos():
         raise HTTPException(status_code=500, detail="Internal server error")
     finally:
         db.close()
+
+# --- API для фотоальбомов ---
+@app.get("/photo-albums/", response_model=List[schemas.PhotoAlbumList])
+async def get_photo_albums(
+    limit: int = 10, 
+    offset: int = 0, 
+    db: Session = Depends(get_db)
+):
+    """Получение списка фотоальбомов с пагинацией"""
+    try:
+        albums = db.query(models.PhotoAlbum).order_by(models.PhotoAlbum.order).offset(offset).limit(limit).all()
+        return albums
+    except Exception as e:
+        logger.error(f"Ошибка при получении фотоальбомов: {str(e)}")
+        raise HTTPException(status_code=500, detail="Ошибка при получении фотоальбомов")
+
+@app.get("/photo-albums/count/")
+async def get_photo_albums_count(db: Session = Depends(get_db)):
+    """Получение общего количества фотоальбомов"""
+    try:
+        count = db.query(models.PhotoAlbum).count()
+        return {"total": count}
+    except Exception as e:
+        logger.error(f"Ошибка при получении количества альбомов: {str(e)}")
+        raise HTTPException(status_code=500, detail="Ошибка при получении количества альбомов")
+
+@app.get("/photo-albums/{album_id}", response_model=schemas.PhotoAlbum)
+async def get_photo_album(album_id: int, db: Session = Depends(get_db)):
+    """Получение конкретного фотоальбома с изображениями"""
+    try:
+        album = db.query(models.PhotoAlbum).filter(models.PhotoAlbum.id == album_id).first()
+        if not album:
+            raise HTTPException(status_code=404, detail="Фотоальбом не найден")
+        return album
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Ошибка при получении фотоальбома: {str(e)}")
+        raise HTTPException(status_code=500, detail="Ошибка при получении фотоальбома")
+
+@app.post("/photo-albums/", response_model=schemas.PhotoAlbum)
+async def create_photo_album(
+    album: schemas.PhotoAlbumCreate,
+    current_user: models.User = Depends(get_current_admin),
+    db: Session = Depends(get_db)
+):
+    """Создание нового фотоальбома (только для администраторов)"""
+    try:
+        db_album = models.PhotoAlbum(
+            title=album.title,
+            artist=album.artist,
+            type=album.type,
+            preview_url=album.preview_url,
+            order=album.order
+        )
+        db.add(db_album)
+        db.commit()
+        db.refresh(db_album)
+        
+        # Добавляем изображения
+        for i, image_url in enumerate(album.image_urls):
+            db_image = models.AlbumImage(
+                album_id=db_album.id,
+                url=image_url,
+                order=i
+            )
+            db.add(db_image)
+        
+        db.commit()
+        db.refresh(db_album)
+        return db_album
+    except Exception as e:
+        logger.error(f"Ошибка при создании фотоальбома: {str(e)}")
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Ошибка при создании фотоальбома")
+
+@app.put("/photo-albums/{album_id}", response_model=schemas.PhotoAlbum)
+async def update_photo_album(
+    album_id: int,
+    album: schemas.PhotoAlbumCreate,
+    current_user: models.User = Depends(get_current_admin),
+    db: Session = Depends(get_db)
+):
+    """Обновление фотоальбома (только для администраторов)"""
+    try:
+        db_album = db.query(models.PhotoAlbum).filter(models.PhotoAlbum.id == album_id).first()
+        if not db_album:
+            raise HTTPException(status_code=404, detail="Фотоальбом не найден")
+        
+        # Обновляем данные альбома
+        db_album.title = album.title
+        db_album.artist = album.artist
+        db_album.type = album.type
+        db_album.preview_url = album.preview_url
+        db_album.order = album.order
+        
+        # Удаляем старые изображения
+        db.query(models.AlbumImage).filter(models.AlbumImage.album_id == album_id).delete()
+        
+        # Добавляем новые изображения
+        for i, image_url in enumerate(album.image_urls):
+            db_image = models.AlbumImage(
+                album_id=album_id,
+                url=image_url,
+                order=i
+            )
+            db.add(db_image)
+        
+        db.commit()
+        db.refresh(db_album)
+        return db_album
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Ошибка при обновлении фотоальбома: {str(e)}")
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Ошибка при обновлении фотоальбома")
+
+@app.delete("/photo-albums/{album_id}")
+async def delete_photo_album(
+    album_id: int,
+    current_user: models.User = Depends(get_current_admin),
+    db: Session = Depends(get_db)
+):
+    """Удаление фотоальбома (только для администраторов)"""
+    try:
+        db_album = db.query(models.PhotoAlbum).filter(models.PhotoAlbum.id == album_id).first()
+        if not db_album:
+            raise HTTPException(status_code=404, detail="Фотоальбом не найден")
+        
+        db.delete(db_album)
+        db.commit()
+        return {"message": "Фотоальбом успешно удален"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Ошибка при удалении фотоальбома: {str(e)}")
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Ошибка при удалении фотоальбома")
+
+# --- Эндпоинты для загрузки файлов ---
+@app.post("/upload-preview/")
+async def upload_preview(
+    file: UploadFile = File(...),
+    current_user: models.User = Depends(get_current_admin)
+):
+    """Загрузка превью изображения для фотоальбома"""
+    try:
+        # Проверяем тип файла
+        if not file.content_type.startswith('image/'):
+            raise HTTPException(status_code=400, detail="Файл должен быть изображением")
+        
+        # Создаем папку для загрузок, если её нет
+        upload_dir = os.path.join(BASE_DIR, "static", "uploads", "previews")
+        os.makedirs(upload_dir, exist_ok=True)
+        
+        # Генерируем уникальное имя файла
+        file_extension = os.path.splitext(file.filename)[1]
+        unique_filename = f"preview_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{current_user.id}{file_extension}"
+        file_path = os.path.join(upload_dir, unique_filename)
+        
+        # Сохраняем файл
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+        
+        # Возвращаем URL для доступа к файлу
+        file_url = f"/static/uploads/previews/{unique_filename}"
+        
+        return {"url": file_url, "filename": unique_filename}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Ошибка при загрузке превью: {str(e)}")
+        raise HTTPException(status_code=500, detail="Ошибка при загрузке файла")
+
+@app.post("/upload-image/")
+async def upload_image(
+    file: UploadFile = File(...),
+    current_user: models.User = Depends(get_current_admin)
+):
+    """Загрузка изображения для фотоальбома"""
+    try:
+        # Проверяем тип файла
+        if not file.content_type.startswith('image/'):
+            raise HTTPException(status_code=400, detail="Файл должен быть изображением")
+        
+        # Создаем папку для загрузок, если её нет
+        upload_dir = os.path.join(BASE_DIR, "static", "uploads", "images")
+        os.makedirs(upload_dir, exist_ok=True)
+        
+        # Генерируем уникальное имя файла
+        file_extension = os.path.splitext(file.filename)[1]
+        unique_filename = f"image_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{current_user.id}{file_extension}"
+        file_path = os.path.join(upload_dir, unique_filename)
+        
+        # Сохраняем файл
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+        
+        # Возвращаем URL для доступа к файлу
+        file_url = f"/static/uploads/images/{unique_filename}"
+        
+        return {"url": file_url, "filename": unique_filename}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Ошибка при загрузке изображения: {str(e)}")
+        raise HTTPException(status_code=500, detail="Ошибка при загрузке файла")
+
+@app.post("/upload-thumbnail/")
+async def upload_thumbnail(
+    file: UploadFile = File(...),
+    current_user: models.User = Depends(get_current_admin)
+):
+    """Загрузка превью для видео"""
+    try:
+        # Проверяем тип файла
+        if not file.content_type.startswith('image/'):
+            raise HTTPException(status_code=400, detail="Файл должен быть изображением")
+        
+        # Создаем папку для загрузок, если её нет
+        upload_dir = os.path.join(BASE_DIR, "static", "uploads", "thumbnails")
+        os.makedirs(upload_dir, exist_ok=True)
+        
+        # Генерируем уникальное имя файла
+        file_extension = os.path.splitext(file.filename)[1]
+        unique_filename = f"thumbnail_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{current_user.id}{file_extension}"
+        file_path = os.path.join(upload_dir, unique_filename)
+        
+        # Сохраняем файл
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+        
+        # Возвращаем URL для доступа к файлу
+        file_url = f"/static/uploads/thumbnails/{unique_filename}"
+        
+        return {"url": file_url, "filename": unique_filename}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Ошибка при загрузке превью: {str(e)}")
+        raise HTTPException(status_code=500, detail="Ошибка при загрузке файла")
 
 app.mount("/", StaticFiles(directory=TEMPLATES_DIR, html=True), name="static")
 # Запуск сервера

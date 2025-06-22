@@ -219,6 +219,7 @@
             <div class="admin-tabs">
                 <div class="admin-tab active" data-tab="users">Пользователи</div>
                 <div class="admin-tab" data-tab="videos">Видео</div>
+                <div class="admin-tab" data-tab="photo-albums">Фотоальбомы</div>
                 <div class="admin-tab" data-tab="stats">Статистика</div>
             </div>
             
@@ -308,6 +309,53 @@
                                 </tr>
                             </thead>
                             <tbody id="videosTableBody">
+                                <!-- Данные будут добавлены через JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Таблица фотоальбомов -->
+            <div class="tab-content" id="photo-albums-tab">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-semibold">Управление фотоальбомами</h2>
+                    <button class="admin-btn btn-primary" onclick="openPhotoAlbumModal()">
+                        <i class="fas fa-plus mr-2"></i> Добавить альбом
+                    </button>
+                </div>
+                
+                <div class="admin-card">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="relative w-64">
+                            <input type="text" id="albumSearch" placeholder="Поиск альбомов..." class="admin-form-input">
+                            <i class="fas fa-search absolute right-3 top-3 text-gray-400"></i>
+                        </div>
+                        <div>
+                            <select id="albumTypeFilter" class="admin-form-input w-auto">
+                                <option value="">Все типы</option>
+                                <option value="Кампейн">Кампейн</option>
+                                <option value="Каталог">Каталог</option>
+                                <option value="Промо к релизу">Промо к релизу</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Превью</th>
+                                    <th>Артист</th>
+                                    <th>Название</th>
+                                    <th>Тип</th>
+                                    <th>Изображений</th>
+                                    <th>Порядок</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody id="photoAlbumsTableBody">
                                 <!-- Данные будут добавлены через JavaScript -->
                             </tbody>
                         </table>
@@ -503,6 +551,7 @@
                     // Загрузка данных при открытии вкладки
                     if (tabId === 'users') loadUsers();
                     if (tabId === 'videos') loadVideos();
+                    if (tabId === 'photo-albums') loadPhotoAlbums();
                     if (tabId === 'stats') loadStats();
                 });
             });
@@ -1322,6 +1371,485 @@
                     }
                 }
             }
+
+            // ========== УПРАВЛЕНИЕ ФОТОАЛЬБОМАМИ ==========
+            let photoAlbums = [];
+            let currentAlbumId = null;
+            let currentPreviewFile = null;
+            let currentAlbumImages = [];
+
+            // Загрузка фотоальбомов при открытии вкладки
+            async function loadPhotoAlbums() {
+                try {
+                    const response = await fetch('/photo-albums/');
+                    if (!response.ok) {
+                        throw new Error('Ошибка загрузки фотоальбомов');
+                    }
+                    
+                    const data = await response.json();
+                    photoAlbums = data;
+                    renderPhotoAlbumsTable(photoAlbums);
+                } catch (error) {
+                    console.error('Ошибка:', error);
+                    alert('Ошибка при загрузке фотоальбомов');
+                }
+            }
+
+            // Отрисовка таблицы фотоальбомов
+            function renderPhotoAlbumsTable(albumsToRender) {
+                const tbody = document.getElementById('photoAlbumsTableBody');
+                tbody.innerHTML = '';
+                
+                if (albumsToRender.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="8" class="text-center py-4">Нет данных о фотоальбомах</td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                albumsToRender.forEach(album => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${album.id}</td>
+                        <td>
+                            <img src="${album.preview_url}" alt="${album.title}" 
+                                 class="w-20 h-12 object-cover rounded cursor-pointer"
+                                 onclick="openPhotoAlbumModal(${album.id})">
+                        </td>
+                        <td>${album.artist}</td>
+                        <td>${album.title}</td>
+                        <td>${album.type}</td>
+                        <td>${album.images ? album.images.length : 0}</td>
+                        <td>${album.order}</td>
+                        <td>
+                            <div class="flex gap-2">
+                                <button class="admin-btn btn-primary" onclick="editPhotoAlbum(${album.id})">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="admin-btn btn-danger" onclick="deletePhotoAlbum(${album.id})">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+
+            // Открытие модального окна для добавления/редактирования
+            function openPhotoAlbumModal(albumId = null) {
+                currentAlbumId = albumId;
+                const modal = document.getElementById('photoAlbumModal');
+                const form = document.getElementById('photoAlbumForm');
+                const title = document.querySelector('#photoAlbumModal h3');
+                
+                // Сброс формы
+                form.reset();
+                removePreviewImage();
+                removeAlbumImages();
+                
+                if (albumId) {
+                    // Редактирование существующего альбома
+                    const album = photoAlbums.find(a => a.id === albumId);
+                    if (album) {
+                        document.getElementById('albumArtist').value = album.artist;
+                        document.getElementById('albumTitle').value = album.title;
+                        document.getElementById('albumType').value = album.type;
+                        document.getElementById('albumOrder').value = album.order;
+                        title.textContent = 'Редактировать фотоальбом';
+                        
+                        // Показываем существующее превью
+                        if (album.preview_url) {
+                            const previewImg = document.querySelector('#previewImagePreview img');
+                            previewImg.src = album.preview_url;
+                            document.getElementById('previewImagePreview').classList.remove('hidden');
+                        }
+                        
+                        // Показываем существующие изображения
+                        if (album.images && album.images.length > 0) {
+                            const imagesPreview = document.getElementById('imagesPreview');
+                            imagesPreview.innerHTML = '';
+                            album.images.forEach(image => {
+                                const imgDiv = document.createElement('div');
+                                imgDiv.className = 'relative';
+                                imgDiv.innerHTML = `
+                                    <img src="${image.url}" alt="Изображение" class="w-full h-24 object-cover rounded">
+                                    <button type="button" onclick="removeAlbumImage('${image.url}')" 
+                                            class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                `;
+                                imagesPreview.appendChild(imgDiv);
+                            });
+                            imagesPreview.classList.remove('hidden');
+                        }
+                    }
+                } else {
+                    title.textContent = 'Добавить фотоальбом';
+                }
+                
+                modal.classList.remove('hidden');
+            }
+
+            // Обработка отправки формы фотоальбома
+            document.getElementById('photoAlbumForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const submitBtn = e.target.querySelector('button[type="submit"]');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Сохранение...';
+
+                try {
+                    let previewUrl = '';
+                    
+                    // Если есть новый файл превью, загружаем его
+                    if (currentPreviewFile) {
+                        const formData = new FormData();
+                        formData.append('file', currentPreviewFile);
+                        
+                        const uploadResponse = await fetch('/upload-preview/', {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                            },
+                            body: formData
+                        });
+                        
+                        if (!uploadResponse.ok) {
+                            throw new Error('Ошибка загрузки превью');
+                        }
+                        
+                        const uploadResult = await uploadResponse.json();
+                        previewUrl = uploadResult.url;
+                    }
+
+                    // Загружаем новые изображения альбома
+                    const imageUrls = [];
+                    for (const file of currentAlbumImages) {
+                        const formData = new FormData();
+                        formData.append('file', file);
+                        
+                        const uploadResponse = await fetch('/upload-image/', {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                            },
+                            body: formData
+                        });
+                        
+                        if (!uploadResponse.ok) {
+                            throw new Error('Ошибка загрузки изображения');
+                        }
+                        
+                        const uploadResult = await uploadResponse.json();
+                        imageUrls.push(uploadResult.url);
+                    }
+
+                    const albumData = {
+                        artist: document.getElementById('albumArtist').value,
+                        title: document.getElementById('albumTitle').value,
+                        type: document.getElementById('albumType').value,
+                        preview_url: previewUrl,
+                        image_urls: imageUrls,
+                        order: parseInt(document.getElementById('albumOrder').value)
+                    };
+
+                    const url = currentAlbumId ? `/photo-albums/${currentAlbumId}` : '/photo-albums/';
+                    const method = currentAlbumId ? 'PUT' : 'POST';
+                    
+                    const response = await fetch(url, {
+                        method: method,
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        },
+                        body: JSON.stringify(albumData)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Ошибка сохранения фотоальбома');
+                    }
+
+                    alert(`Фотоальбом успешно ${currentAlbumId ? 'обновлен' : 'добавлен'}`);
+                    closePhotoAlbumModal();
+                    loadPhotoAlbums();
+                } catch (error) {
+                    console.error('Ошибка:', error);
+                    alert(error.message);
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = currentAlbumId ? 'Сохранить' : 'Добавить';
+                }
+            });
+
+            function closePhotoAlbumModal() {
+                const modal = document.getElementById('photoAlbumModal');
+                modal.classList.add('hidden');
+                currentAlbumId = null;
+                removePreviewImage();
+                removeAlbumImages();
+            }
+
+            // Удаление фотоальбома
+            async function deletePhotoAlbum(albumId) {
+                if (!confirm('Вы уверены, что хотите удалить этот фотоальбом?')) {
+                    return;
+                }
+                
+                try {
+                    const response = await fetch(`/photo-albums/${albumId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        }
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('Ошибка удаления фотоальбома');
+                    }
+                    
+                    alert('Фотоальбом успешно удален');
+                    loadPhotoAlbums();
+                } catch (error) {
+                    console.error('Ошибка:', error);
+                    alert('Ошибка при удалении фотоальбома');
+                }
+            }
+
+            // Редактирование фотоальбома
+            function editPhotoAlbum(albumId) {
+                openPhotoAlbumModal(albumId);
+            }
+
+            // Поиск и фильтрация фотоальбомов
+            document.getElementById('albumSearch').addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const typeFilter = document.getElementById('albumTypeFilter').value;
+                
+                const filteredAlbums = photoAlbums.filter(album => {
+                    const matchesSearch = album.title.toLowerCase().includes(searchTerm) ||
+                                        album.artist.toLowerCase().includes(searchTerm);
+                    const matchesType = !typeFilter || album.type === typeFilter;
+                    return matchesSearch && matchesType;
+                });
+                
+                renderPhotoAlbumsTable(filteredAlbums);
+            });
+
+            document.getElementById('albumTypeFilter').addEventListener('change', function(e) {
+                const searchTerm = document.getElementById('albumSearch').value.toLowerCase();
+                const typeFilter = e.target.value;
+                
+                const filteredAlbums = photoAlbums.filter(album => {
+                    const matchesSearch = album.title.toLowerCase().includes(searchTerm) ||
+                                        album.artist.toLowerCase().includes(searchTerm);
+                    const matchesType = !typeFilter || album.type === typeFilter;
+                    return matchesSearch && matchesType;
+                });
+                
+                renderPhotoAlbumsTable(filteredAlbums);
+            });
+
+            // Функции для работы с превью изображением
+            function removePreviewImage() {
+                currentPreviewFile = null;
+                document.getElementById('previewImagePreview').classList.add('hidden');
+                document.getElementById('previewInput').value = '';
+            }
+
+            function removeAlbumImages() {
+                currentAlbumImages = [];
+                document.getElementById('imagesPreview').classList.add('hidden');
+                document.getElementById('imagesPreview').innerHTML = '';
+                document.getElementById('imagesInput').value = '';
+            }
+
+            function removeAlbumImage(imageUrl) {
+                // Удаляем изображение из превью
+                const imagesPreview = document.getElementById('imagesPreview');
+                const imageDivs = imagesPreview.querySelectorAll('div');
+                imageDivs.forEach(div => {
+                    const img = div.querySelector('img');
+                    if (img.src.includes(imageUrl)) {
+                        div.remove();
+                    }
+                });
+                
+                // Если нет изображений, скрываем контейнер
+                if (imagesPreview.children.length === 0) {
+                    imagesPreview.classList.add('hidden');
+                }
+            }
+
+            // Обработка drag and drop для превью
+            const previewDropZone = document.getElementById('previewDropZone');
+            const previewInput = document.getElementById('previewInput');
+            const previewImagePreview = document.getElementById('previewImagePreview');
+
+            // Предотвращаем стандартное поведение браузера
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                previewDropZone.addEventListener(eventName, preventDefaults, false);
+            });
+
+            // Добавляем визуальные эффекты при перетаскивании
+            ['dragenter', 'dragover'].forEach(eventName => {
+                previewDropZone.addEventListener(eventName, () => {
+                    previewDropZone.classList.add('border-blue-500');
+                }, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                previewDropZone.addEventListener(eventName, () => {
+                    previewDropZone.classList.remove('border-blue-500');
+                }, false);
+            });
+
+            // Обработка загрузки файла превью
+            previewDropZone.addEventListener('drop', handlePreviewDrop, false);
+            previewInput.addEventListener('change', handlePreviewFileSelect, false);
+
+            function handlePreviewDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                handlePreviewFiles(files);
+            }
+
+            function handlePreviewFileSelect(e) {
+                const files = e.target.files;
+                handlePreviewFiles(files);
+            }
+
+            function handlePreviewFiles(files) {
+                if (files.length > 0) {
+                    const file = files[0];
+                    if (file.type.match('image.*')) {
+                        currentPreviewFile = file;
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            previewImagePreview.querySelector('img').src = e.target.result;
+                            previewImagePreview.classList.remove('hidden');
+                        }
+                        reader.readAsDataURL(file);
+                    } else {
+                        alert('Пожалуйста, загрузите изображение в формате JPG или PNG');
+                    }
+                }
+            }
+
+            // Обработка drag and drop для изображений альбома
+            const imagesDropZone = document.getElementById('imagesDropZone');
+            const imagesInput = document.getElementById('imagesInput');
+            const imagesPreview = document.getElementById('imagesPreview');
+
+            // Предотвращаем стандартное поведение браузера
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                imagesDropZone.addEventListener(eventName, preventDefaults, false);
+            });
+
+            // Добавляем визуальные эффекты при перетаскивании
+            ['dragenter', 'dragover'].forEach(eventName => {
+                imagesDropZone.addEventListener(eventName, () => {
+                    imagesDropZone.classList.add('border-blue-500');
+                }, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                imagesDropZone.addEventListener(eventName, () => {
+                    imagesDropZone.classList.remove('border-blue-500');
+                }, false);
+            });
+
+            // Обработка загрузки файлов изображений
+            imagesDropZone.addEventListener('drop', handleImagesDrop, false);
+            imagesInput.addEventListener('change', handleImagesFileSelect, false);
+
+            function handleImagesDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                handleImagesFiles(files);
+            }
+
+            function handleImagesFileSelect(e) {
+                const files = e.target.files;
+                handleImagesFiles(files);
+            }
+
+            function handleImagesFiles(files) {
+                Array.from(files).forEach(file => {
+                    if (file.type.match('image.*')) {
+                        currentAlbumImages.push(file);
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const imgDiv = document.createElement('div');
+                            imgDiv.className = 'relative';
+                            imgDiv.innerHTML = `
+                                <img src="${e.target.result}" alt="Изображение" class="w-full h-24 object-cover rounded">
+                                <button type="button" onclick="removeAlbumImageFromPreview(this)" 
+                                        class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            `;
+                            imagesPreview.appendChild(imgDiv);
+                            imagesPreview.classList.remove('hidden');
+                        }
+                        reader.readAsDataURL(file);
+                    } else {
+                        alert('Пожалуйста, загрузите изображения в формате JPG, PNG или WEBP');
+                    }
+                });
+            }
+
+            // Удаление изображения из превью при добавлении
+            function removeAlbumImageFromPreview(button) {
+                const imgDiv = button.parentElement;
+                const img = imgDiv.querySelector('img');
+                const index = currentAlbumImages.findIndex(file => {
+                    // Находим индекс файла по src изображения
+                    return true; // Упрощенная логика
+                });
+                
+                if (index > -1) {
+                    currentAlbumImages.splice(index, 1);
+                }
+                
+                imgDiv.remove();
+                
+                // Если нет изображений, скрываем контейнер
+                if (imagesPreview.children.length === 0) {
+                    imagesPreview.classList.add('hidden');
+                }
+            }
+
+            // Делаем функции глобально доступными
+            window.editPhotoAlbum = function(albumId) {
+                editPhotoAlbum(albumId);
+            };
+
+            window.deletePhotoAlbum = function(albumId) {
+                deletePhotoAlbum(albumId);
+            };
+
+            window.openPhotoAlbumModal = function(albumId = null) {
+                openPhotoAlbumModal(albumId);
+            };
+
+            window.closePhotoAlbumModal = function() {
+                closePhotoAlbumModal();
+            };
+
+            window.removePreviewImage = function() {
+                removePreviewImage();
+            };
+
+            window.removeAlbumImage = function(imageUrl) {
+                removeAlbumImage(imageUrl);
+            };
+
+            window.removeAlbumImageFromPreview = function(button) {
+                removeAlbumImageFromPreview(button);
+            };
         });
     </script>
     <!-- Модальное окно добавления пользователя -->
@@ -1426,6 +1954,86 @@
             
             <div class="flex justify-end space-x-3 pt-4">
                 <button type="button" onclick="closeVideoModal()" class="admin-btn border border-gray-600">Отмена</button>
+                <button type="submit" class="admin-btn btn-primary">Сохранить</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Модальное окно добавления/редактирования фотоальбома -->
+<div id="photoAlbumModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-gray-800 rounded-lg p-6 w-full max-w-2xl max-h-screen overflow-y-auto">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-semibold">Добавить фотоальбом</h3>
+            <button onclick="closePhotoAlbumModal()" class="text-gray-400 hover:text-white">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <form id="photoAlbumForm" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-gray-400 mb-2">Артист</label>
+                    <input type="text" id="albumArtist" class="admin-form-input" required>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-400 mb-2">Название альбома</label>
+                    <input type="text" id="albumTitle" class="admin-form-input" required>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-gray-400 mb-2">Тип</label>
+                    <select id="albumType" class="admin-form-input" required>
+                        <option value="Кампейн">Кампейн</option>
+                        <option value="Каталог">Каталог</option>
+                        <option value="Промо к релизу">Промо к релизу</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-400 mb-2">Порядок</label>
+                    <input type="number" id="albumOrder" class="admin-form-input" required min="1">
+                </div>
+            </div>
+            
+            <div>
+                <label class="block text-gray-400 mb-2">Превью изображение</label>
+                <div id="previewDropZone" class="border-2 border-dashed border-gray-600 rounded-lg p-4 text-center cursor-pointer hover:border-gray-500 transition-colors">
+                    <div class="space-y-2">
+                        <i class="fas fa-cloud-upload-alt text-3xl text-gray-400"></i>
+                        <p class="text-gray-400">Перетащите превью изображение сюда или кликните для выбора</p>
+                        <p class="text-sm text-gray-500">Поддерживаются форматы: JPG, PNG</p>
+                    </div>
+                    <input type="file" id="previewInput" class="hidden" accept="image/jpeg,image/png">
+                </div>
+                <div id="previewImagePreview" class="mt-2 hidden">
+                    <img src="" alt="Превью" class="max-h-32 rounded">
+                    <button type="button" onclick="removePreviewImage()" class="mt-2 text-red-500 hover:text-red-400">
+                        <i class="fas fa-times"></i> Удалить
+                    </button>
+                </div>
+            </div>
+            
+            <div>
+                <label class="block text-gray-400 mb-2">Изображения альбома</label>
+                <div id="imagesDropZone" class="border-2 border-dashed border-gray-600 rounded-lg p-4 text-center cursor-pointer hover:border-gray-500 transition-colors">
+                    <div class="space-y-2">
+                        <i class="fas fa-images text-3xl text-gray-400"></i>
+                        <p class="text-gray-400">Перетащите изображения альбома сюда или кликните для выбора</p>
+                        <p class="text-sm text-gray-500">Поддерживаются форматы: JPG, PNG, WEBP</p>
+                    </div>
+                    <input type="file" id="imagesInput" class="hidden" accept="image/jpeg,image/png,image/webp" multiple>
+                </div>
+                <div id="imagesPreview" class="mt-2 grid grid-cols-2 md:grid-cols-4 gap-2 hidden">
+                    <!-- Превью изображений будет добавлено здесь -->
+                </div>
+            </div>
+            
+            <div class="flex justify-end space-x-3 pt-4">
+                <button type="button" onclick="closePhotoAlbumModal()" class="admin-btn border border-gray-600">Отмена</button>
                 <button type="submit" class="admin-btn btn-primary">Сохранить</button>
             </div>
         </form>
