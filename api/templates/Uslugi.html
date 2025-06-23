@@ -103,11 +103,28 @@
             display: flex;
             align-items: center;
             margin-bottom: 0.5rem;
+            line-height: 1.2;
         }
         .feature-icon {
             margin-right: 0.75rem;
             min-width: 20px;
             text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+        }
+        .feature-icon i {
+            font-size: 1rem;
+            line-height: 1;
+        }
+        .feature-item p {
+            margin: 0;
+            line-height: 1.2;
+            display: flex;
+            align-items: center;
         }
         .dark-text {
             opacity: 0.5;
@@ -187,6 +204,95 @@
             background: rgba(0, 0, 0, 0.7);
             padding: 1.5rem;
             border-radius: 0.5rem;
+        }
+        
+        /* Стили для слайдера бюджетов */
+        .budget-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .budget-slider::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .budget-slide {
+            flex: 0 0 100%;
+            scroll-snap-align: center;
+            padding: 0 1rem;
+        }
+        
+        .budget-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 2rem 0;
+        }
+        
+        .budget-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .budget-indicator.active {
+            background: white;
+        }
+        
+        /* Скрываем слайдер на десктопе */
+        @media (min-width: 768px) {
+            .budget-slider {
+                display: none;
+            }
+            .budget-indicators {
+                display: none;
+            }
+        }
+        
+        /* Показываем обычную сетку на десктопе */
+        @media (min-width: 768px) {
+            .service-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1.5rem;
+            }
+            .features-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1.5rem;
+                margin-top: 2rem;
+            }
+            .feature-column {
+                display: block !important;
+            }
+        }
+        
+        /* Скрываем обычную сетку на мобильных */
+        @media (max-width: 767px) {
+            .service-grid {
+                display: none;
+            }
+            .features-grid {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                margin-top: 2rem;
+            }
+            .feature-column {
+                background: rgba(0, 0, 0, 0.7);
+                padding: 1.5rem;
+                border-radius: 0.5rem;
+            }
+            .feature-column:not(:nth-child(2)) {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -271,11 +377,55 @@
             <div class="content-wrapper pt-16 pb-20">
                 <h1 class="gothic-font text-6xl mb-12">ВИДЕОСЪЕМКА</h1>
                 
+                <!-- Слайдер для мобильных -->
+                <div class="budget-slider">
+                    <!-- Низкий бюджет -->
+                    <div class="budget-slide">
+                        <div class="service-card">
+                            <h3 class="font-bold text-lg mb-2">Низкий бюджет</h3>
+                            <p class="gothic-font text-6xl mb-4">от 50 000 р</p>
+                            <button class="w-full bg-gray-300 text-black py-3 px-4 font-medium hover:bg-gray-400 transition">
+                                ЗАКАЗАТЬ
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Средний бюджет -->
+                    <div class="budget-slide">
+                        <div class="service-card">
+                            <h3 class="font-bold text-lg mb-2">Средний бюджет</h3>
+                            <p class="gothic-font text-6xl mb-4">от 100 000 р</p>
+                            <button class="w-full bg-gray-300 text-black py-3 px-4 font-medium hover:bg-gray-400 transition">
+                                ЗАКАЗАТЬ
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Высокий бюджет -->
+                    <div class="budget-slide">
+                        <div class="service-card">
+                            <h3 class="font-bold text-lg mb-2">Высокий бюджет</h3>
+                            <p class="gothic-font text-6xl mb-4">от 300 000 р</p>
+                            <button class="w-full bg-red-700 text-white py-3 px-4 font-medium hover:bg-red-800 transition">
+                                ЗАКАЗАТЬ
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Индикаторы для слайдера -->
+                <div class="budget-indicators">
+                    <div class="budget-indicator" data-slide="0"></div>
+                    <div class="budget-indicator active" data-slide="1"></div>
+                    <div class="budget-indicator" data-slide="2"></div>
+                </div>
+                
+                <!-- Обычная сетка для десктопа -->
                 <div class="service-grid">
                     <!-- Low Budget -->
                     <div class="service-card">
                         <h3 class="font-bold text-lg mb-2">Низкий бюджет</h3>
-                        <p class="gothic-font text-6xl mb-4">от 50 000 р</p>
+                        <p class="gothic-font text-6xl mb-4">от 20 000 р</p>
                         <button class="w-full bg-gray-300 text-black py-3 px-4 font-medium hover:bg-gray-400 transition">
                             ЗАКАЗАТЬ
                         </button>
@@ -293,14 +443,14 @@
                     <!-- High Budget -->
                     <div class="service-card">
                         <h3 class="font-bold text-lg mb-2">Высокий бюджет</h3>
-                        <p class="gothic-font text-6xl mb-4">от 300 000 р</p>
+                        <p class="gothic-font text-6xl mb-4">от 200 000 р</p>
                         <button class="w-full bg-red-700 text-white py-3 px-4 font-medium hover:bg-red-800 transition">
                             ЗАКАЗАТЬ
                         </button>
                     </div>
                 </div>
                 
-                <!-- Features Grid -->
+                <!-- Блоки с галочками для мобильных -->
                 <div class="features-grid">
                     <!-- Low Budget Features -->
                     <div class="feature-column">
@@ -423,8 +573,8 @@
                             <p class="italic opacity-75">Саунддизайн</p>
                         </div>
                         <div class="feature-item">
-                            <i class="fas fa-check text-green-500 text-xl feature-icon"></i>
-                            <p class="italic opacity-75">2D графика</p>
+                            <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
+                            <p class="italic opacity-50">2D графика</p>
                         </div>
                         <div class="feature-item">
                             <i class="fas fa-times text-red-500 text-xl feature-icon"></i>
@@ -505,6 +655,50 @@
             <div class="content-wrapper pt-16 pb-20">
                 <h1 class="gothic-font text-6xl mb-12">СЪЕМКА REELS</h1>
                 
+                <!-- Слайдер для мобильных -->
+                <div class="budget-slider">
+                    <!-- Низкий бюджет -->
+                    <div class="budget-slide">
+                        <div class="service-card">
+                            <h3 class="font-bold text-lg mb-2">Низкий бюджет</h3>
+                            <p class="gothic-font text-6xl mb-4">от 15 000 р</p>
+                            <button class="w-full bg-gray-300 text-black py-3 px-4 font-medium hover:bg-gray-400 transition">
+                                ЗАКАЗАТЬ
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Средний бюджет -->
+                    <div class="budget-slide">
+                        <div class="service-card">
+                            <h3 class="font-bold text-lg mb-2">Средний бюджет</h3>
+                            <p class="gothic-font text-6xl mb-4">от 50 000 р</p>
+                            <button class="w-full bg-gray-300 text-black py-3 px-4 font-medium hover:bg-gray-400 transition">
+                                ЗАКАЗАТЬ
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Высокий бюджет -->
+                    <div class="budget-slide">
+                        <div class="service-card">
+                            <h3 class="font-bold text-lg mb-2">Высокий бюджет</h3>
+                            <p class="gothic-font text-6xl mb-4">от 150 000 р</p>
+                            <button class="w-full bg-red-700 text-white py-3 px-4 font-medium hover:bg-red-800 transition">
+                                ЗАКАЗАТЬ
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Индикаторы для слайдера -->
+                <div class="budget-indicators">
+                    <div class="budget-indicator" data-slide="0"></div>
+                    <div class="budget-indicator active" data-slide="1"></div>
+                    <div class="budget-indicator" data-slide="2"></div>
+                </div>
+                
+                <!-- Обычная сетка для десктопа -->
                 <div class="service-grid">
                     <!-- Low Budget -->
                     <div class="service-card">
@@ -534,7 +728,7 @@
                     </div>
                 </div>
                 
-                <!-- Features Grid -->
+                <!-- Блоки с галочками для мобильных -->
                 <div class="features-grid">
                     <!-- Low Budget Features -->
                     <div class="feature-column">
@@ -728,6 +922,50 @@
             <div class="content-wrapper pt-16 pb-20">
                 <h1 class="gothic-font text-6xl mb-12 uppercase">ФОТОСЪЕМКА</h1>
                 
+                <!-- Слайдер для мобильных -->
+                <div class="budget-slider">
+                    <!-- Низкий бюджет -->
+                    <div class="budget-slide">
+                        <div class="service-card">
+                            <h3 class="font-bold text-lg mb-2">Низкий бюджет</h3>
+                            <p class="gothic-font text-6xl mb-4">от 20 000 р</p>
+                            <button class="w-full bg-gray-300 text-black py-3 px-4 font-medium hover:bg-gray-400 transition">
+                                ЗАКАЗАТЬ
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Средний бюджет -->
+                    <div class="budget-slide">
+                        <div class="service-card">
+                            <h3 class="font-bold text-lg mb-2">Средний бюджет</h3>
+                            <p class="gothic-font text-6xl mb-4">от 100 000 р</p>
+                            <button class="w-full bg-gray-300 text-black py-3 px-4 font-medium hover:bg-gray-400 transition">
+                                ЗАКАЗАТЬ
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Высокий бюджет -->
+                    <div class="budget-slide">
+                        <div class="service-card">
+                            <h3 class="font-bold text-lg mb-2">Высокий бюджет</h3>
+                            <p class="gothic-font text-6xl mb-4">от 200 000 р</p>
+                            <button class="w-full bg-red-700 text-white py-3 px-4 font-medium hover:bg-red-800 transition">
+                                ЗАКАЗАТЬ
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Индикаторы для слайдера -->
+                <div class="budget-indicators">
+                    <div class="budget-indicator" data-slide="0"></div>
+                    <div class="budget-indicator active" data-slide="1"></div>
+                    <div class="budget-indicator" data-slide="2"></div>
+                </div>
+                
+                <!-- Обычная сетка для десктопа -->
                 <div class="service-grid">
                     <!-- Low Budget -->
                     <div class="service-card">
@@ -737,7 +975,6 @@
                             ЗАКАЗАТЬ
                         </button>
                     </div>
-                    
                     <!-- Medium Budget -->
                     <div class="service-card">
                         <h3 class="font-bold text-lg mb-2">Средний бюджет</h3>
@@ -746,7 +983,6 @@
                             ЗАКАЗАТЬ
                         </button>
                     </div>
-                    
                     <!-- High Budget -->
                     <div class="service-card">
                         <h3 class="font-bold text-lg mb-2">Высокий бюджет</h3>
@@ -756,8 +992,8 @@
                         </button>
                     </div>
                 </div>
-                
-                <!-- Features Grid -->
+
+                <!-- Блоки с галочками для мобильных -->
                 <div class="features-grid">
                     <!-- Low Budget Features -->
                     <div class="feature-column">
@@ -957,6 +1193,8 @@
             </div>
         </section>
 
+        
+
         <!-- Work Stages Section -->
         <section class="py-20 px-4 lg:px-32 xl:px-44">
             <div class="container mx-auto">
@@ -1145,6 +1383,66 @@
                         mobileMenu.classList.add('translate-x-full');
                     }
                 });
+                
+                // Управление слайдером бюджетов
+                const budgetSliders = document.querySelectorAll('.budget-slider');
+                const budgetIndicators = document.querySelectorAll('.budget-indicators');
+                
+                budgetSliders.forEach((slider, sliderIndex) => {
+                    const indicators = budgetIndicators[sliderIndex];
+                    if (!indicators) return;
+                    
+                    const indicatorDots = indicators.querySelectorAll('.budget-indicator');
+                    const slides = slider.querySelectorAll('.budget-slide');
+                    const featuresGrid = slider.closest('section').querySelector('.features-grid');
+                    const featureColumns = featuresGrid ? featuresGrid.querySelectorAll('.feature-column') : [];
+                    
+                    // Показываем средний бюджет по умолчанию (индекс 1)
+                    slider.scrollLeft = slides[1].offsetLeft;
+                    showFeaturesForBudget(1, featureColumns);
+                    
+                    // Обработчики для индикаторов
+                    indicatorDots.forEach((indicator, index) => {
+                        indicator.addEventListener('click', () => {
+                            // Убираем активный класс у всех индикаторов
+                            indicatorDots.forEach(dot => dot.classList.remove('active'));
+                            // Добавляем активный класс к текущему индикатору
+                            indicator.classList.add('active');
+                            // Прокручиваем к нужному слайду
+                            slider.scrollLeft = slides[index].offsetLeft;
+                            // Показываем соответствующие блоки с галочками
+                            showFeaturesForBudget(index, featureColumns);
+                        });
+                    });
+                    
+                    // Обновление индикаторов при прокрутке
+                    slider.addEventListener('scroll', () => {
+                        const slideWidth = slides[0].offsetWidth;
+                        const currentSlide = Math.round(slider.scrollLeft / slideWidth);
+                        
+                        indicatorDots.forEach((dot, index) => {
+                            dot.classList.toggle('active', index === currentSlide);
+                        });
+                        
+                        // Показываем соответствующие блоки с галочками
+                        showFeaturesForBudget(currentSlide, featureColumns);
+                    });
+                });
+                
+                // Функция для показа блоков с галочками в зависимости от бюджета
+                function showFeaturesForBudget(budgetIndex, featureColumns) {
+                    if (featureColumns.length === 0) return;
+                    
+                    // Скрываем все колонки
+                    featureColumns.forEach(column => {
+                        column.style.display = 'none';
+                    });
+                    
+                    // Показываем только колонку для выбранного бюджета
+                    if (featureColumns[budgetIndex]) {
+                        featureColumns[budgetIndex].style.display = 'block';
+                    }
+                }
             });
         </script>
     </div>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+сё<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
@@ -187,7 +187,7 @@
     .modal {
       display: none;
       position: fixed;
-      z-index: 1000;
+      z-index: 9999;
       left: 0;
       top: 0;
       width: 100%;
@@ -214,7 +214,7 @@
       font-size: 40px;
       font-weight: bold;
       cursor: pointer;
-      z-index: 1001;
+      z-index: 10001;
     }
     
     /* Видео контейнер */
@@ -247,7 +247,9 @@
     .hero-content {
       position: relative;
       z-index: 2;
-      height: 100vh;
+      height: auto !important;
+      justify-content: flex-start !important;
+      padding-top: 6rem;
       display: flex;
       flex-direction: column;
       max-width: 1400px;
@@ -319,7 +321,7 @@
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.8);
-      z-index: 1000;
+      z-index: 9999;
       justify-content: center;
       align-items: center;
     }
@@ -350,7 +352,7 @@
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.9);
-      z-index: 1000;
+      z-index: 9999;
       overflow-y: auto;
       padding: 40px 0;
     }
@@ -489,6 +491,10 @@
       text-align: center;
     }
 
+    .work-detail p {
+      text-align: center !important;
+    }
+
     .photo-video-text {
       margin-top: 14rem;
       text-align: left;
@@ -510,12 +516,12 @@
 
     .hero-text-content {
       flex: 1;
-      margin-top: -66rem;
+      margin-top: -40rem;
     }
 
     .call-button-container {
       align-self: flex-start;
-      margin-top: -55rem;
+      margin-top: -30rem;
     }
   
   /* Адаптивные стили */
@@ -535,11 +541,11 @@
       }
       
       .hero-text-content {
-        margin-top: -50rem;
+        margin-top: -30rem;
       }
       
       .call-button-container {
-        margin-top: -40rem;
+        margin-top: -20rem;
       }
       
       /* Обеспечиваем правильные шрифты для элементов с классом inter */
@@ -671,6 +677,13 @@
       
       .work-details {
         justify-content: center;
+        flex-direction: row;
+        gap: 2rem;
+      }
+      
+      .work-detail {
+        flex: 1;
+        text-align: center;
       }
       
       .work-item h2 {
@@ -734,159 +747,74 @@
     }
     
     @media (max-width: 768px) {
-      .hero-text-content h1 {
-        font-size: 60px;
-        line-height: 1.1;
-        font-family: 'Alternate-Gothic-No1', arial;
+      /* Ограничение ширины страницы */
+      body {
+        max-width: 100vw;
+        overflow-x: hidden;
       }
       
-      .photo-video-text {
-        margin-top: 4rem;
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-      
-      .hero-main-content {
-        margin-top: 15rem;
-        flex-direction: column;
-        gap: 2rem;
-      }
-      
-      .hero-text-content {
-        margin-top: 0;
-      }
-      
-      .call-button-container {
-        margin-top: 0;
-        align-self: center;
-      }
-      
-      .work-item {
-        flex-direction: column;
-        gap: 2rem;
-        text-align: center;
-      }
-      
-      .work-details {
-        justify-content: center;
-        flex-direction: column;
-        gap: 1rem;
-      }
-      
-      .work-item h2 {
-        font-family: 'Alternate-Gothic-No1', arial;
-        font-size: 4rem;
-      }
-      
-      .advantages-bg h2 {
-        font-family: 'Alternate-Gothic-No1', arial;
-        font-size: 4rem;
-      }
-      
-      .advantages-bg p {
-        font-family: 'Alternate-Gothic-No1', arial;
-        font-size: 4rem;
-      }
-      
-      .advantages-bg h3 {
-        font-family: 'Alternate-Gothic-No1', arial;
-        font-size: 2.5rem;
-      }
-      
-      .advantages-bg .flex {
-        flex-direction: column;
-        gap: 2rem;
-      }
-      
-      .team-member h3 {
-        font-family: 'Alternate-Gothic-No1', arial;
-        font-size: 2.5rem;
-      }
-      
-      section h2 {
-        font-family: 'Alternate-Gothic-No1', arial;
-        font-size: 4rem;
-      }
-      
-      section h3 {
-        font-family: 'Alternate-Gothic-No1', arial;
-        font-size: 2.5rem;
-      }
-      
-      section p {
-        font-family: 'Alternate-Gothic-No1', arial;
-        font-size: 3rem;
-      }
-      
-      .hero-video-container {
-        height: 600px;
+      .main {
+        max-width: 100vw;
+        overflow-x: hidden;
       }
       
       .content-container {
+        max-width: 100vw;
+        overflow-x: hidden;
         padding: 0 1rem;
       }
       
-      .header-container {
-        padding: 0 1rem;
+      .hero-content {
+        height: auto !important;
+        justify-content: flex-start !important;
+        padding-top: 1rem;
+        padding-bottom: 0.5rem !important;
       }
       
-      .animate-marquee {
-        font-family: 'Alternate-Gothic-No1', arial;
-        font-size: 3rem;
-        padding: 2rem 0;
-      }
-      
-      .team-member img {
-        width: 200px;
-        height: 200px;
-      }
-      
-      .team-member {
-        width: 200px;
-      }
-      
-      /* Обеспечиваем правильные шрифты для элементов с классом inter */
-      .inter {
-        font-family: "Inter", sans-serif !important;
-      }
-      
-      /* Заголовки должны использовать Alternate-Gothic-No1 */
-      h1, h2, h3, h4, h5, h6 {
-        font-family: 'Alternate-Gothic-No1', arial !important;
-      }
-      
-      /* Номера преимуществ */
-      .advantages-bg p[class*="text-"] {
-        font-family: 'Alternate-Gothic-No1', arial !important;
-      }
-    }
-    
-    @media (max-width: 480px) {
-      .hero-text-content h1 {
+      .hero-text-content {
         font-size: 40px;
         line-height: 1.1;
         font-family: 'Alternate-Gothic-No1', arial;
+        margin-top: -10rem !important;
       }
       
       .photo-video-text {
-        margin-top: 3rem;
+        margin-top: 0rem !important;
         flex-direction: column;
         gap: 0.5rem;
+        margin-bottom: 1.5rem;
       }
       
       .hero-main-content {
-        margin-top: 10rem;
+        margin-top: 0.5rem !important;
         flex-direction: column;
         gap: 2rem;
       }
       
       .hero-text-content {
-        margin-top: 0;
+        margin-top: -5rem !important;
       }
       
       .call-button-container {
         margin-top: 0;
         align-self: center;
+      }
+      
+      /* Исправление позиционирования кнопки шоурилла */
+      .showreel-block {
+        margin-top: 0.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0.5rem 0;
+      }
+      
+
+      .showreel-block .flex {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 1rem;
       }
       
       .work-item {
@@ -897,52 +825,122 @@
       
       .work-details {
         justify-content: center;
-        flex-direction: column;
-        gap: 1rem;
+        flex-direction: row;
+        gap: 2rem;
+      }
+      
+      .work-detail {
+        flex: 1;
+        text-align: center;
+      }
+      
+      .work-detail p {
+        text-align: center !important;
       }
       
       .work-item h2 {
         font-family: 'Alternate-Gothic-No1', arial;
-        font-size: 3rem;
+        font-size: 4rem;
       }
       
       .advantages-bg h2 {
         font-family: 'Alternate-Gothic-No1', arial;
-        font-size: 3rem;
+        font-size: 4rem;
       }
       
       .advantages-bg p {
         font-family: 'Alternate-Gothic-No1', arial;
-        font-size: 3rem;
+        font-size: 4rem;
       }
       
       .advantages-bg h3 {
         font-family: 'Alternate-Gothic-No1', arial;
-        font-size: 2rem;
+        font-size: 2.5rem;
       }
       
-      .advantages-bg .flex {
+      /* Исправление порядка преимуществ */
+      .advantages-bg .grid {
+        display: flex;
         flex-direction: column;
         gap: 2rem;
       }
       
+      .advantages-bg .grid > div:nth-child(1) { order: 1; } /* 01 */
+      .advantages-bg .grid > div:nth-child(2) { order: 4; } /* 04 */
+      .advantages-bg .grid > div:nth-child(3) { order: 2; } /* 02 */
+      .advantages-bg .grid > div:nth-child(4) { order: 5; } /* 05 */
+      .advantages-bg .grid > div:nth-child(5) { order: 3; } /* 03 */
+      .advantages-bg .grid > div:nth-child(6) { order: 6; } /* 06 */
+      
+      .advantages-bg .flex {
+        flex-direction: row;
+        gap: 2rem;
+        text-align: left;
+        align-items: flex-start;
+      }
+      
+      .advantages-bg .flex p[class*="text-"] {
+        font-size: 3rem;
+        line-height: 1;
+        margin-bottom: 0;
+        flex-shrink: 0;
+      }
+      
+      .advantages-bg .flex div {
+        text-align: left;
+        flex: 1;
+      }
+      
+      .advantages-bg .flex div h3 {
+        margin-bottom: 1rem;
+        line-height: 1.2;
+      }
+      
+      .advantages-bg .flex div p {
+        line-height: 1.4;
+        margin-top: 1rem;
+      }
+      
       .team-member h3 {
         font-family: 'Alternate-Gothic-No1', arial;
+
         font-size: 2rem;
       }
       
+      /* Центрирование фотографий команды */
+      .team-member {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+        max-width: 250px;
+        margin: 0 auto;
+      }
+      
+      .team-member img {
+        width: 150px;
+        height: 150px;
+        margin: 0 auto;
+      }
+      
+      .team-name {
+        text-align: center;
+        width: 100%;
+      }
+      
       section h2 {
-        font-family: 'Alternate-Gothic-No1', arial;
+
         font-size: 3rem;
       }
       
       section h3 {
-        font-family: 'Alternate-Gothic-No1', arial;
+
         font-size: 2rem;
       }
       
       section p {
-        font-family: 'Alternate-Gothic-No1', arial;
+
         font-size: 2.5rem;
       }
       
@@ -959,7 +957,6 @@
       }
       
       .animate-marquee {
-        font-family: 'Alternate-Gothic-No1', arial;
         font-size: 2rem;
         padding: 1.5rem 0;
       }
@@ -1008,6 +1005,118 @@
       /* Номера преимуществ */
       .advantages-bg p[class*="text-"] {
         font-family: 'Alternate-Gothic-No1', arial !important;
+      }
+    }
+
+    /* Стили для команды */
+    .team-member {
+      position: relative;
+      cursor: pointer;
+    }
+    
+    /* Стили для блока с шоуриллом */
+    .showreel-block {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    
+    .showreel-block .flex {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .showreel-block .flex:hover {
+      transform: scale(1.05);
+    }
+    
+    .showreel-block i {
+      font-size: 2rem;
+      color: white;
+      transition: all 0.3s ease;
+    }
+    
+    .showreel-block .flex:hover i {
+      color: #ccc;
+    }
+
+    @media (max-width: 768px) {
+      .advantages-bg .flex {
+        flex-direction: row;
+        gap: 2rem;
+        text-align: left;
+        align-items: center;
+      }
+      .advantages-bg .flex p[class*="text-"] {
+        font-size: 5rem;
+        line-height: 1;
+        margin-bottom: 0;
+        flex-shrink: 0;
+      }
+      .advantages-bg .flex div {
+        text-align: left;
+        flex: 1;
+      }
+      .advantages-bg .flex div h3 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+      .advantages-bg .flex div p {
+        font-size: 1rem;
+      }
+    }
+    @media (max-width: 480px) {
+      .advantages-bg .flex {
+        flex-direction: row;
+        gap: 1.5rem;
+        text-align: left;
+        align-items: center;
+      }
+      .advantages-bg .flex p[class*="text-"] {
+        font-size: 4rem;
+        line-height: 1;
+        margin-bottom: 0;
+        flex-shrink: 0;
+      }
+      .advantages-bg .flex div {
+        text-align: left;
+        flex: 1;
+      }
+      .advantages-bg .flex div h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+      }
+      .advantages-bg .flex div p {
+        font-size: 0.9rem;
+      }
+    }
+    @media (max-width: 768px) {
+      .advantages-bg .flex div p {
+        font-size: 1.4rem !important;
+      }
+    }
+    @media (max-width: 480px) {
+      .advantages-bg .flex div p {
+        font-size: 1.2rem !important;
+      }
+    }
+    @media (max-width: 768px) {
+      .team-name {
+        position: static;
+        background: transparent;
+        margin-top: 1rem;
+        text-align: center;
+      }
+    }
+    @media (max-width: 480px) {
+      .team-name {
+        position: static;
+        background: transparent;
+        margin-top: 1rem;
+        text-align: center;
       }
     }
   </style>
@@ -1310,7 +1419,7 @@
                   <p class="text-[140px]">01</p>
                   <div>
                     <h3 class="text-6xl mb-4">Команда</h3>
-                    <p class="text-lg inter">За дело берутся настоящие профессионалы с опытом создания видеоконтента более 8 лет.</p>
+                    <p class="text-2xl inter">За дело берутся настоящие профессионалы с опытом создания видеоконтента более 8 лет.</p>
                   </div>
                 </div>
               </div>
@@ -1321,7 +1430,7 @@
                   <p class="text-[140px]">04</p>
                   <div>
                     <h3 class="text-6xl mb-4">Сжатые сроки</h3>
-                    <p class="text-lg inter">Не боимся экстремальных дедлайнов! За счёт отточенного процесса и сплоченной команды, время полного цикла создания видео составляет 7-14 дней.</p>
+                    <p class="text-2xl inter">Не боимся экстремальных дедлайнов! За счёт отточенного процесса и сплоченной команды, время полного цикла создания видео составляет 7-14 дней.</p>
                   </div>
                 </div>
               </div>
@@ -1332,7 +1441,7 @@
                   <p class="text-[140px]">02</p>
                   <div>
                     <h3 class="text-6xl mb-4">Быстрые правки</h3>
-                    <p class="text-lg inter">Вносим правки в 2 этапа и в течении 2х дней после финальной сдачи, если захотелось что-то изменить.</p>
+                    <p class="text-2xl inter">Вносим правки в 2 этапа и в течении 2х дней после финальной сдачи, если захотелось что-то изменить.</p>
                   </div>
                 </div>
               </div>
@@ -1343,7 +1452,7 @@
                   <p class="text-[140px]">05</p>
                   <div>
                     <h3 class="text-6xl mb-4">Качество в деталях</h3>
-                    <p class="text-lg inter">Новейшее оборудование, которое позволяет снимать видео уровня современного кинематографа и создавать видеоролики</p>
+                    <p class="text-2xl inter">Новейшее оборудование, которое позволяет снимать видео уровня современного кинематографа и создавать видеоролики</p>
                   </div>
                 </div>
               </div>
@@ -1354,7 +1463,7 @@
                   <p class="text-[140px]">03</p>
                   <div>
                     <h3 class="text-6xl mb-4">Полный цикл</h3>
-                    <p class="text-lg inter">От разработки концепта, написания сценария до съёмки видео и постобработки. Поддерживаем связь с клиентом на каждом этапе производства видео.</p>
+                    <p class="text-2xl inter">От разработки концепта, написания сценария до съёмки видео и постобработки. Поддерживаем связь с клиентом на каждом этапе производства видео.</p>
                   </div>
                 </div>
               </div>
@@ -1365,7 +1474,7 @@
                   <p class="text-[140px]">06</p>
                   <div>
                     <h3 class="text-6xl mb-4">Без шаблона</h3>
-                    <p class="text-lg inter">Выявляем потребности, цели, ожидания, чтобы максимально точно подобрать соответствующее решение и создать видео, которое попадет в сердце аудитории.</p>
+                    <p class="text-2xl inter">Выявляем потребности, цели, ожидания, чтобы максимально точно подобрать соответствующее решение и создать видео, которое попадет в сердце аудитории.</p>
                   </div>
                 </div>
               </div>
@@ -1534,14 +1643,14 @@
         <footer class="py-16 px-4 md:px-12 lg:px-24 animate-fade-in animate-delay-3">    
                 <div class="flex flex-col md:flex-row inter">
                     <div class="md:w-2/5 mb-12 md:mb-0">
-                        <h3 class="font-bold text-lg mb-4">О нас</h3>
+                        <h3 class="font-bold text-3xl mb-4">О нас</h3>
                         <p class="text-lg">
                             Artel production – фото и видео<br>продакшн полного цикла.<br>Работаем в Москве, Санкт-<br>Петербурге и по всему миру.
                         </p>
                     </div>
                     
                     <div class="md:w-2/5 mb-12 md:mb-0 md:px-8">
-                        <h3 class="font-bold text-lg mb-4">Быстрые ссылки</h3>
+                        <h3 class="font-bold text-3xl mb-4">Быстрые ссылки</h3>
                         <div class="flex flex-col gap-2">
                             <a href="/index.html" class="text-lg hover:text-gray-300 transition">Главная</a>
                             <a href="#" class="text-lg hover:text-gray-300 transition" onclick="openPrivacyPopup()">Политика конфиденциальности</a>
@@ -1554,7 +1663,7 @@
                     </div>
                     
                     <div class="md:w-1/5">
-                        <h3 class="font-bold text-lg mb-4">Контакты</h3>
+                        <h3 class="font-bold text-3xl mb-4">Контакты</h3>
                         <div class="mb-6">
                             <div class="flex items-center">
                                 <i class="fas fa-envelope mr-2"></i>
@@ -1688,13 +1797,16 @@
           modalContent.innerHTML = '';
         }
         
-        // Закрытие при клике вне окна
-        window.onclick = function(event) {
+        // Закрытие при клике вне окна (поддержка touch)
+        function closeModal(event) {
           if (event.target == modal) {
             modal.style.display = 'none';
             modalContent.innerHTML = '';
           }
         }
+        
+        window.addEventListener('click', closeModal);
+        window.addEventListener('touchend', closeModal);
       }
       
       function handleVideoError(videoElement) {
@@ -1723,13 +1835,16 @@
           modalContent.innerHTML = '';
         }
         
-        // Закрытие при клике вне окна
-        window.onclick = function(event) {
+        // Закрытие при клике вне окна (поддержка touch)
+        function closeModal(event) {
           if (event.target == modal) {
             modal.style.display = 'none';
             modalContent.innerHTML = '';
           }
         }
+        
+        window.addEventListener('click', closeModal);
+        window.addEventListener('touchend', closeModal);
       }
       
       // Функция для открытия попапа заказа звонка
@@ -1744,12 +1859,15 @@
           popup.style.display = 'none';
         }
         
-        // Закрытие при клике вне попапа
-        window.onclick = function(event) {
+        // Закрытие при клике вне попапа (поддержка touch)
+        function closePopup(event) {
           if (event.target == popup) {
             popup.style.display = 'none';
           }
         }
+        
+        window.addEventListener('click', closePopup);
+        window.addEventListener('touchend', closePopup);
       }
       
       // Функция для открытия попапа политики конфиденциальности
